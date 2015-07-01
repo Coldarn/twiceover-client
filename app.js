@@ -1,39 +1,75 @@
 
-function loadDiff(leftText, rightText) {
+var review = null,
+    leftIteration,
+    rightIteration,
+    leftEntry,
+    rightEntry;
+
+function loadDiff(path) {
     var codeEl = document.getElementsByTagName('code')[0],
-        diff = JsDiff.diffChars(leftText, rightText);
+        diff;
 
-    codeEl.innerHTML = diff.map(function (part) {
-        var value = part.value;
-        if (value === '\r\n' || value === '\n') {
-            value = ' \n';
-        }
+    leftEntry = leftIteration.getEntry(path);
+    rightEntry = rightIteration.getEntry(path);
 
-        return part.added ? ('<span class="diff-added">' + value + '</span>')
-            : part.removed ? ('<span class="diff-removed">' + value + '</span>')
-            : part.value;
-    }).join('');
+    if (leftEntry && rightEntry) {
+        diff = JsDiff.diffChars(leftEntry.content, rightEntry.content);
+
+        codeEl.innerHTML = diff.map(function (part) {
+            var value = part.value;
+            if (value === '\r\n' || value === '\n') {
+                value = ' \n';
+            }
+
+            return part.added ? ('<span class="diff-added">' + value + '</span>')
+                : part.removed ? ('<span class="diff-removed">' + value + '</span>')
+                : part.value;
+        }).join('');
+    } else {
+        codeEl.innerHTML = (leftEntry || rightEntry).content;
+    }
+
     hljs.highlightBlock(codeEl);
+    loadFileListPane();
 }
 
-function loadFiles(leftFile, rightFile) {
-    var fs = require('fs');
-    fs.readFile(leftFile, function (err, leftData) {
-        if (err) {
-            throw err;
-        }
+function loadFileListPane() {
+    var fileListEl = document.querySelector('.file-pane');
 
-        fs.readFile(rightFile, function (err, rightData) {
-            if (err) {
-                throw err;
-            }
-            loadDiff(leftData.toString(), rightData.toString());
-        });
-    });
+    fileListEl.innerHTML = '<ul class="file-list">\n'
+        + Util.union(leftIteration.getPaths(), rightIteration.getPaths())
+            .map(function (path) {
+                var activeClass = (leftEntry || rightEntry) && (leftEntry || rightEntry).path === path
+                    ? 'class="selected"' : '';
+                return `<li ${activeClass} onclick="loadDiff('${path}')">${path}</li>`;
+            })
+            .join('\n')
+        + '</li>\n</ul>';
+}
+
+
+function createFileEntry(path, displayPath) {
+    var fs = require('fs');
+    return Entry(fs.readFileSync(path).toString(), displayPath || path);
+}
+
+function createReview() {
+    review = Review();
+
+    var baseItr = review.addIteration(),
+        firstItr = review.addIteration();
+
+    baseItr.addEntry(createFileEntry('test/left.js', 'test/jsTest.js'));
+    firstItr.addEntry(createFileEntry('test/right.js', 'test/jsTest.js'));
+
+    leftIteration = baseItr;
+    rightIteration = firstItr;
 }
 
 hljs.configure({
     tabReplace: '    ', // 4 spaces
 });
 
-loadFiles('test/left.js', 'test/right.js');
+createReview();
+loadFileListPane();
+//loadDiff('test/jsTest.js');

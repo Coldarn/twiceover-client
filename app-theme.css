@@ -11,3 +11,15 @@ code {
 	width: calc(100vw - 1em);
 	height: calc(100vh - 1em);
 }
+
+.diff-added {
+	background: #040;
+	border: 1px solid #007700;
+	margin: 0 -1px;
+}
+
+.diff-removed {
+	background: #400;
+	border: 1px solid #770000;
+	margin: 0 -1px;
+}

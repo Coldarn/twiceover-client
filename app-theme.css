@@ -48,6 +48,10 @@ body, pre, code, div {
 code {
     flex: 1;
 }
+code.hljs {
+    line-height: 1.35em;
+    padding: 15px;
+}
 
 .diff-added {
     background: #040;
@@ -59,4 +63,9 @@ code {
     background: #400;
     border: 1px solid #770000;
     margin: 0 -1px;
+}
+
+.hljs::selection,
+.hljs span::selection {
+  background: #06a;
 }

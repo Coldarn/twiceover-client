@@ -7,6 +7,7 @@ var review = null,
 
 function loadDiff(path) {
     var codeEl = document.getElementsByTagName('code')[0],
+        selFileEl = document.querySelector(`.file-entry.selected`),
         diff;
 
     leftEntry = leftIteration.getEntry(path);
@@ -30,7 +31,11 @@ function loadDiff(path) {
     }
 
     hljs.highlightBlock(codeEl);
-    loadFileListPane();
+
+    if (selFileEl) {
+        selFileEl.classList.remove('selected');
+    }
+    document.querySelector(`.file-entry[data-path="${path}"]`).classList.add('selected');
 }
 
 function loadFileListPane() {
@@ -39,31 +44,28 @@ function loadFileListPane() {
     fileListEl.innerHTML = '<ul class="file-list">\n'
         + Util.union(leftIteration.getPaths(), rightIteration.getPaths())
             .map(function (path) {
-                var activeClass = (leftEntry || rightEntry) && (leftEntry || rightEntry).path === path
-                    ? 'class="selected"' : '';
-                return `<li ${activeClass} onclick="loadDiff('${path}')">${path}</li>`;
+                return `<li class="file-entry" data-path="${path}" onclick="loadDiff('${path}')">${path}</li>`;
             })
             .join('\n')
-        + '</li>\n</ul>';
+        + '</ul>';
 }
 
 
-function createFileEntry(path, displayPath) {
+function createBaseFileEntries(leftPath, rightPath, displayPath) {
     var fs = require('fs');
-    return Entry(fs.readFileSync(path).toString(), displayPath || path);
+
+    leftIteration.addEntry(Entry(fs.readFileSync(leftPath).toString(), displayPath || leftPath));
+    rightIteration.addEntry(Entry(fs.readFileSync(rightPath).toString(), displayPath || rightPath));
 }
 
 function createReview() {
     review = Review();
 
-    var baseItr = review.addIteration(),
-        firstItr = review.addIteration();
+    leftIteration = review.addIteration(),
+    rightIteration = review.addIteration();
 
-    baseItr.addEntry(createFileEntry('test/left.js', 'test/jsTest.js'));
-    firstItr.addEntry(createFileEntry('test/right.js', 'test/jsTest.js'));
-
-    leftIteration = baseItr;
-    rightIteration = firstItr;
+    createBaseFileEntries('test/left.js', 'test/right.js', 'test/jsTest.js');
+    createBaseFileEntries('test/csharp1.cs', 'test/csharp2.cs', 'test/csharp.cs');
 }
 
 hljs.configure({
@@ -72,4 +74,5 @@ hljs.configure({
 
 createReview();
 loadFileListPane();
-//loadDiff('test/jsTest.js');
+
+loadDiff('test/jsTest.js');

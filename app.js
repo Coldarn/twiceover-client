@@ -65,8 +65,24 @@ function createReview() {
     leftIteration = review.addIteration(),
     rightIteration = review.addIteration();
 
-    createBaseFileEntries('test/left.js', 'test/right.js', 'test/jsTest.js');
-    createBaseFileEntries('test/csharp1.cs', 'test/csharp2.cs', 'test/csharp.cs');
+    var files = getReviewFiles(true);
+
+    files.forEach(function (fileInfo) {
+        createBaseFileEntries(fileInfo.basePath, fileInfo.iterationPath, fileInfo.displayPath);
+    });
+}
+
+// Returns an array of fileInfo objects for prospective files to code review
+function getReviewFiles(includeBaselines) {
+    return [{
+        basePath: 'test/left.js',
+        iterationPath: 'test/right.js',
+        displayPath: 'test/jsTest.js'
+    }, {
+        basePath: 'test/csharp1.cs',
+        iterationPath: 'test/csharp2.cs',
+        displayPath: 'test/csharp.cs'
+    }];
 }
 
 hljs.configure({

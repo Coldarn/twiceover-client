@@ -18,8 +18,12 @@ body, pre, code, div {
 
 .file-pane {
     width: 200px;
-    background: #666;
+    background: #444;
     overflow-x: hidden;
+    color: white;
+    font-family: Segoe UI;
+    font-weight: 400;
+    font-size: 13px;
 }
 
 .code-pane {
@@ -34,15 +38,14 @@ body, pre, code, div {
 }
 
 .file-list > li {
-    font-family: Segoe UI;
-    font-weight: 500;
-    font-size: 14px;
-    padding: 0.2em 0.5em;
+    padding: 4px 10px 6px 20px;
     cursor: pointer;
 }
 
 .file-list > li.selected {
-    background: #999;
+    background: #1d1f21;
+    border-top: 1px solid #161616;
+    padding-top: 3px;
 }
 
 code {

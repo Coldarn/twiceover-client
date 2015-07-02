@@ -30,6 +30,7 @@ function loadDiff(path) {
         codeEl.innerHTML = (leftEntry || rightEntry).content;
     }
 
+    codeEl.setAttribute('class', path.substring(path.lastIndexOf('.') + 1));
     hljs.highlightBlock(codeEl);
 
     if (selFileEl) {

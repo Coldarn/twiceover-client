@@ -22,8 +22,8 @@ function loadDiff(path) {
                 value = ' \n';
             }
 
-            return part.added ? ('<span class="diff-added">' + value + '</span>')
-                : part.removed ? ('<span class="diff-removed">' + value + '</span>')
+            return part.added ? `<span class="diff-added">${value}</span>`
+                : part.removed ? `<span class="diff-removed">${value}</span>`
                 : part.value;
         }).join('');
     } else {

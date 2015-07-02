@@ -55,14 +55,16 @@ code.hljs {
 
 .diff-added {
     background: #040;
-    border: 1px solid #007700;
-    margin: 0 -1px;
+    border-bottom: 1px solid #040;
+    outline: 1px solid #007700;
+    margin: 0 0 -1px 0;
 }
 
 .diff-removed {
     background: #400;
-    border: 1px solid #770000;
-    margin: 0 -1px;
+    border-bottom: 1px solid #400;
+    outline: 1px solid #770000;
+    margin: 0 0 -1px 0;
 }
 
 .hljs::selection,

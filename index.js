@@ -3,28 +3,23 @@ requirejs.config({
 });
 
 requirejs([
-    'Util',
+    'App',
+    'util/Util',
     'om/Review',
     'om/Iteration',
     'om/FileEntry',
     'ui/ImportDialog'
-], function (Util, Review, Iteration, FileEntry, ImportDialog) {
-    var review = null,
-        leftIteration,
-        rightIteration,
-        leftEntry,
-        rightEntry;
-
+], function (App, Util, Review, Iteration, FileEntry, ImportDialog) {
     function loadDiff(path) {
         var codeEl = document.getElementsByTagName('code')[0],
             selFileEl = document.querySelector(`.file-entry.selected`),
             diff;
 
-        leftEntry = leftIteration.getEntry(path);
-        rightEntry = rightIteration.getEntry(path);
+        App.leftEntry = App.leftIteration.getEntry(path);
+        App.rightEntry = App.rightIteration.getEntry(path);
 
-        if (leftEntry && rightEntry) {
-            diff = JsDiff.diffChars(leftEntry.content, rightEntry.content);
+        if (App.leftEntry && App.rightEntry) {
+            diff = JsDiff.diffChars(App.leftEntry.content, App.rightEntry.content);
 
             codeEl.innerHTML = diff.map(function (part) {
                 var value = part.value;
@@ -37,7 +32,7 @@ requirejs([
                     : part.value;
             }).join('');
         } else {
-            codeEl.innerHTML = (leftEntry || rightEntry).content;
+            codeEl.innerHTML = (App.leftEntry || App.rightEntry).content;
         }
 
         codeEl.setAttribute('class', path.substring(path.lastIndexOf('.') + 1));
@@ -53,7 +48,7 @@ requirejs([
         var fileListEl = document.querySelector('.file-pane');
 
         fileListEl.innerHTML = '<ul class="file-list">\n'
-            + Util.union(leftIteration.getPaths(), rightIteration.getPaths())
+            + Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths())
                 .map(function (path) {
                     return `<li class="file-entry" data-path="${path}" onclick="loadDiff('${path}')">${path}</li>`;
                 })
@@ -65,15 +60,15 @@ requirejs([
     function createBaseFileEntries(leftPath, rightPath, displayPath) {
         var fs = require('fs');
 
-        leftIteration.addEntry(FileEntry(fs.readFileSync(leftPath).toString(), displayPath || leftPath));
-        rightIteration.addEntry(FileEntry(fs.readFileSync(rightPath).toString(), displayPath || rightPath));
+        App.leftIteration.addEntry(FileEntry(fs.readFileSync(leftPath).toString(), displayPath || leftPath));
+        App.rightIteration.addEntry(FileEntry(fs.readFileSync(rightPath).toString(), displayPath || rightPath));
     }
 
     function createReview() {
-        review = Review();
+        App.setReview(Review());
 
-        leftIteration = review.addIteration(),
-        rightIteration = review.addIteration();
+        App.leftIteration = App.review.addIteration(),
+        App.rightIteration = App.review.addIteration();
 
         var files = getReviewFiles(true);
 

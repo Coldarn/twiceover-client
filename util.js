@@ -1,4 +1,4 @@
-var Util = (function () {
+define(function () {
     return {
         union: function (left, right) {
             var merged = left.slice(),
@@ -16,4 +16,4 @@ var Util = (function () {
             return merged;
         }
     };
-}());
+});

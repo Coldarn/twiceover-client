@@ -1,9 +1,14 @@
+requirejs.config({
+    paths: { text: 'lib/text' }
+});
+
 requirejs([
     'Util',
     'om/Review',
     'om/Iteration',
-    'om/FileEntry'
-], function (Util, Review, Iteration, FileEntry) {
+    'om/FileEntry',
+    'ui/ImportDialog'
+], function (Util, Review, Iteration, FileEntry, ImportDialog) {
     var review = null,
         leftIteration,
         rightIteration,
@@ -98,4 +103,6 @@ requirejs([
     loadFileListPane();
 
     loadDiff('test/jsTest.js');
+    
+    ImportDialog.show();
 });

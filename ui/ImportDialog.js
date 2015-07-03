@@ -1,5 +1,5 @@
 define(function () {
-    return {
+    var ImportDialog = {
         show: function () {
             requirejs(['text!partials/ImportDialog.html'], function (html) {
                 var el = document.getElementById('import-dialog'),
@@ -11,18 +11,17 @@ define(function () {
                     el = dialogEl.firstChild;
                     
                     el.querySelector('button.close').addEventListener('click', function () {
-                        dialogEl.style.visibility = 'hidden';
+                        ImportDialog.hide();
                     });
-                } else {
-                    dialogEl.style.visibility = undefined;
                 }
+                
+                dialogEl.style.display = null;
             });
         },
         hide: function () {
-            var el = document.getElementById('import-dialog');
-            if (el) {
-                el.style.visibility = 'hidden';
-            }
+            document.querySelector('.dialog').style.display = 'none';
         }
     };
+    
+    return ImportDialog;
 });

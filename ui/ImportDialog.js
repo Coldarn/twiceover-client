@@ -2,7 +2,7 @@ define(function () {
     'use strict';
     
     var ImportDialog = {
-        show: function () {
+        show: function (newIteration) {
             requirejs(['text!partials/ImportDialog.html'], function (html) {
                 var el = document.getElementById('import-dialog'),
                     dialogEl = document.querySelector('.dialog');
@@ -17,6 +17,7 @@ define(function () {
                     });
                 }
                 
+                el.querySelector('button.close').style.display = newIteration ? null : 'none';
                 dialogEl.style.display = null;
             });
         },

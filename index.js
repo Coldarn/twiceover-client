@@ -8,6 +8,7 @@ requirejs([
     'om/Review',
     'om/Iteration',
     'om/FileEntry',
+    'ui/MenuBar',
     'ui/FileList',
     'ui/CodeViewer',
     'ui/ImportDialog'

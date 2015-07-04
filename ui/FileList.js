@@ -7,16 +7,23 @@ define([
     var el = document.querySelector('.file-pane'),
         FileList = {
             populate: function () {
-                var fileHtml = Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths()).map(function (path) {
-                    return `<li class="file-entry" data-path="${path}">${path}</li>`;
-                }).join('\n');
+                var paths = Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths()),
+                    fileHtml = paths.map(function (path) {
+                        return `<li class="file-entry" data-path="${path}">${path}</li>`;
+                    }).join('\n');
                 el.innerHTML = `<ul class="file-list">${fileHtml}</ul>`;
                 
+                function onEntryClicked() {
+                    App.setActiveEntry(this.getAttribute('data-path'));
+                }
+                
                 Util.toArray(el.querySelectorAll('.file-entry')).forEach(function(entryEl) {
-                    entryEl.addEventListener('click', function () {
-                        App.setActiveEntry(this.getAttribute('data-path'));
-                    });
+                    entryEl.addEventListener('click', onEntryClicked);
                 });
+                
+                App.setActiveEntry((App.leftEntry && App.leftEntry.path)
+                    || (App.rightEntry && App.rightEntry.path)
+                    || paths[0]);
             },
             
             handlers: {

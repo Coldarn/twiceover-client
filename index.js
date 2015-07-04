@@ -53,7 +53,6 @@ requirejs([
     });
 
     createReview();
-    App.setActiveEntry('test/jsTest.js');
     
 //    ImportDialog.show();
 });

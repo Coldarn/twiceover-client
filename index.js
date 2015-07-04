@@ -9,36 +9,11 @@ requirejs([
     'om/Iteration',
     'om/FileEntry',
     'ui/FileList',
+    'ui/CodeViewer',
     'ui/ImportDialog'
-], function (App, Util, Review, Iteration, FileEntry, FileList, ImportDialog) {
-    function loadDiff(path) {
-        var codeEl = document.getElementsByTagName('code')[0],
-            diff;
-
-        App.setActiveEntry(path);
-
-        if (App.leftEntry && App.rightEntry) {
-            diff = JsDiff.diffChars(App.leftEntry.content, App.rightEntry.content);
-
-            codeEl.innerHTML = diff.map(function (part) {
-                var value = part.value;
-                if (value === '\r\n' || value === '\n') {
-                    value = ' \n';
-                }
-
-                return part.added ? `<span class="diff-added">${value}</span>`
-                    : part.removed ? `<span class="diff-removed">${value}</span>`
-                    : part.value;
-            }).join('');
-        } else {
-            codeEl.innerHTML = (App.leftEntry || App.rightEntry).content;
-        }
-
-        codeEl.setAttribute('class', path.substring(path.lastIndexOf('.') + 1));
-        hljs.highlightBlock(codeEl);
-    }
-
-
+], function (App, Util, Review, Iteration, FileEntry, FileList, CodeViewer, ImportDialog) {
+    'use strict';
+    
     function createBaseFileEntries(fileInfo, leftIteration, rightIteration) {
         var fs = require('fs');
 
@@ -78,8 +53,7 @@ requirejs([
     });
 
     createReview();
-
-    loadDiff('test/jsTest.js');
+    App.setActiveEntry('test/jsTest.js');
     
-    ImportDialog.show();
+//    ImportDialog.show();
 });

@@ -1,5 +1,7 @@
 // A single version of a file in a code review
 define(function () {
+    'use strict';
+    
     var proto = {
     };
 

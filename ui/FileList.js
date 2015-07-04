@@ -2,7 +2,8 @@ define([
     'util/Util',
     'App'
 ], function (Util, App) {
-    console.log(App.foo);
+    'use strict';
+    
     var el = document.querySelector('.file-pane'),
         FileList = {
             populate: function () {

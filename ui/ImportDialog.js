@@ -1,4 +1,6 @@
 define(function () {
+    'use strict';
+    
     var ImportDialog = {
         show: function () {
             requirejs(['text!partials/ImportDialog.html'], function (html) {

@@ -2,6 +2,8 @@
 define([
     'om/Iteration'
 ], function (Iteration) {
+    'use strict';
+    
     var proto = {
         // Creates, adds, and returns a new iteration to this review
         addIteration: function () {

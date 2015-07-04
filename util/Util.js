@@ -1,4 +1,6 @@
 define(function () {
+    'use strict';
+    
     return {
         union: function (left, right) {
             var merged = left.slice(),

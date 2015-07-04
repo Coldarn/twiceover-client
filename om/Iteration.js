@@ -2,6 +2,8 @@
 define([
     'om/FileEntry'
 ], function (FileEntry) {
+    'use strict';
+    
     var proto = {
         // Adds the given entry to the iteration
         addEntry: function (entry) {

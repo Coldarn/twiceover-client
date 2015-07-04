@@ -1,3 +1,11 @@
+/* latin */
+@font-face {
+    font-family: 'Averia Sans Libre';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Averia Sans Libre Italic'), local('AveriaSansLibre-Italic'), url(averiasanslibre.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
 
 body, pre, code, div {
     margin: 0;
@@ -8,16 +16,43 @@ body {
     font-family: Segoe UI;
 }
 
-.container {
+.container-outer {
     position: absolute;
     display: flex;
-    flex-direction: row;
     height: 100vh;
     width: 100vw;
+    flex-direction: column;
 }
 
-.container > * {
-    flex-align: stretch;
+.menu-bar {
+    height: 40px;
+    background: #484;
+    padding-left: 8px;
+    line-height: 40px;
+    font-size: 28px;
+    font-family: 'Averia Sans Libre', cursive;
+    font-style: italic;
+    color: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.45);
+    z-index: 10;
+}
+
+.iteration {
+    display: inline-block;
+    background:  linear-gradient(105deg,
+        #484 0%,
+        #484 10px,
+        rgba(0, 0, 0, 0.35) 11px,
+        #484 16px,
+        #484 100%);
+    padding: 0 2px 0 20px;
+    cursor: pointer;
+}
+
+.container-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
 }
 
 .file-pane {
@@ -27,6 +62,11 @@ body {
     color: white;
     font-weight: 400;
     font-size: 13px;
+    background: linear-gradient(90deg,
+        #444 0%,
+        #444 calc(100% - 5px),
+        #111 calc(100% - 4.999px),
+        #1d1f21 100%);
 }
 
 .code-pane {
@@ -43,12 +83,24 @@ body {
 .file-list > li {
     padding: 4px 10px 6px 20px;
     cursor: pointer;
+    background: linear-gradient(90deg,
+        #444 0%,
+        #444 calc(100% - 5px),
+        #111 calc(100% - 4.999px),
+        #1d1f21 100%);
 }
 
 .file-list > li.selected {
-    background: #1d1f21;
-    border-top: 1px solid #161616;
-    padding-top: 3px;
+    background:
+        linear-gradient(90deg,
+            rgba(29,31,33,0) 0%,
+            rgba(29,31,33,0) calc(100% - 6px),
+            #1d1f21 100%),
+        linear-gradient(180deg,
+            #111 0,
+            #1d1f21 5px,
+            #1d1f21 calc(100% - 3px),
+            #161616 100%);
 }
 
 code {

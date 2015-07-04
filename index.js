@@ -8,15 +8,14 @@ requirejs([
     'om/Review',
     'om/Iteration',
     'om/FileEntry',
+    'ui/FileList',
     'ui/ImportDialog'
-], function (App, Util, Review, Iteration, FileEntry, ImportDialog) {
+], function (App, Util, Review, Iteration, FileEntry, FileList, ImportDialog) {
     function loadDiff(path) {
         var codeEl = document.getElementsByTagName('code')[0],
-            selFileEl = document.querySelector(`.file-entry.selected`),
             diff;
 
-        App.leftEntry = App.leftIteration.getEntry(path);
-        App.rightEntry = App.rightIteration.getEntry(path);
+        App.setActiveEntry(path);
 
         if (App.leftEntry && App.rightEntry) {
             diff = JsDiff.diffChars(App.leftEntry.content, App.rightEntry.content);
@@ -37,44 +36,28 @@ requirejs([
 
         codeEl.setAttribute('class', path.substring(path.lastIndexOf('.') + 1));
         hljs.highlightBlock(codeEl);
-
-        if (selFileEl) {
-            selFileEl.classList.remove('selected');
-        }
-        document.querySelector(`.file-entry[data-path="${path}"]`).classList.add('selected');
-    }
-
-    function loadFileListPane() {
-        var fileListEl = document.querySelector('.file-pane');
-
-        fileListEl.innerHTML = '<ul class="file-list">\n'
-            + Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths())
-                .map(function (path) {
-                    return `<li class="file-entry" data-path="${path}" onclick="loadDiff('${path}')">${path}</li>`;
-                })
-                .join('\n')
-            + '</ul>';
     }
 
 
-    function createBaseFileEntries(leftPath, rightPath, displayPath) {
+    function createBaseFileEntries(fileInfo, leftIteration, rightIteration) {
         var fs = require('fs');
 
-        App.leftIteration.addEntry(FileEntry(fs.readFileSync(leftPath).toString(), displayPath || leftPath));
-        App.rightIteration.addEntry(FileEntry(fs.readFileSync(rightPath).toString(), displayPath || rightPath));
+        leftIteration.addEntry(FileEntry(fs.readFileSync(fileInfo.basePath).toString(), fileInfo.displayPath || fileInfo.basePath));
+        rightIteration.addEntry(FileEntry(fs.readFileSync(fileInfo.iterationPath).toString(), fileInfo.displayPath || fileInfo.iterationPath));
     }
 
     function createReview() {
-        App.setReview(Review());
-
-        App.leftIteration = App.review.addIteration(),
-        App.rightIteration = App.review.addIteration();
-
-        var files = getReviewFiles(true);
+        var review = Review(),
+            leftIteration = review.addIteration(),
+            rightIteration = review.addIteration(),
+            files = getReviewFiles(true);
 
         files.forEach(function (fileInfo) {
-            createBaseFileEntries(fileInfo.basePath, fileInfo.iterationPath, fileInfo.displayPath);
+            createBaseFileEntries(fileInfo, leftIteration, rightIteration);
         });
+        
+        App.setActiveReview(review);
+        App.setActiveIterations(leftIteration, rightIteration);
     }
 
     // Returns an array of fileInfo objects for prospective files to code review
@@ -95,7 +78,6 @@ requirejs([
     });
 
     createReview();
-    loadFileListPane();
 
     loadDiff('test/jsTest.js');
     

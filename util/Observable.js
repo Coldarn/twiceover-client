@@ -17,9 +17,10 @@ define(function () {
         
         fireEvent: function (name) {
             if (this._handlers) {
+                var args = Array.prototype.slice.call(arguments, 1);
                 this._handlers.forEach(function (handler) {
                     if (handler[name]) {
-                        handler[name].apply(handler, Array.prototype.slice.call(arguments, 1));
+                        handler[name].apply(handler, args);
                     }
                 });
             }

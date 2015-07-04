@@ -14,6 +14,10 @@ define(function () {
             merged.push.apply(merged, Object.keys(rightKeys));
             merged.sort();
             return merged;
+        },
+        
+        toArray: function (obj) {
+            return Array.prototype.slice.call(obj);
         }
     };
 });

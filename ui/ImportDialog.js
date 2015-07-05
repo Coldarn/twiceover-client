@@ -1,4 +1,6 @@
-define(function () {
+define([
+    'integrations/TFS'
+], function (TFS) {
     'use strict';
     
     function handleKeydown(event) {
@@ -21,6 +23,14 @@ define(function () {
         entryEl.value = '';
     }
     
+    function handleGetChanges(data) {
+        var changesEl = document.getElementById('change-container');
+        changesEl.innerHTML = data;  
+        outstandingGetChanges = null;
+    }
+    
+    var outstandingGetChanges;
+    
     var ImportDialog = {
         show: function (newIteration) {
             requirejs(['text!partials/ImportDialog.html'], function (html) {
@@ -41,6 +51,11 @@ define(function () {
                 
                 el.querySelector('button.close').style.display = newIteration ? null : 'none';
                 dialogEl.style.display = null;
+                
+                if (!outstandingGetChanges) {
+                    outstandingGetChanges = TFS.getChanges(document.getElementById('change-container'), newIteration)
+                        .then(handleGetChanges, handleGetChanges);
+                }
             });
         },
         hide: function () {

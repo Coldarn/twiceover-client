@@ -2,13 +2,12 @@
     <title>New Review</title>
     <content>
         <div class="column">
-            <label>Changes
-                <div class="changes filler"></div>
-            </label>
+            <label>Changes</label>
+            <div id="change-container" class="filler"></div>
         </div>
         <div class="column">
             <label for="review-title">Title</label>
-            <input id="review-title" type="text" min="5" />
+            <input id="review-title" type="text" min="5" max="1000" />
             
             <label for="review-reviewers">Reviewers</label>
             <div id="revier-container" style="display: none"></div>

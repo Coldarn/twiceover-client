@@ -6,7 +6,7 @@ define([
     'use strict';
     
     var codeEl = document.querySelector('.menu-bar'),
-        MenuBar = {
+        self = {
             populate: function () {
                 var iterationHtml = App.review.iterations.map(function (it, index) {
                     return `<div class="iteration">${index}</div>`;
@@ -18,12 +18,12 @@ define([
             
             handlers: {
                 activeIterationsChanged: function() {
-                    MenuBar.populate();
+                    self.populate();
                 }
             }
         };
     
-    App.subscribe(MenuBar.handlers);
+    App.subscribe(self.handlers);
     
-    return MenuBar;
+    return self;
 });

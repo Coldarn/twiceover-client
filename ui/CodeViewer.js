@@ -5,7 +5,7 @@ define([
     'use strict';
     
     var codeEl = document.querySelector('.code-pane > code'),
-        CodeViewer = {
+        self = {
             loadActiveEntry: function (path, leftEntry, rightEntry) {
                 var diff;
 
@@ -32,12 +32,12 @@ define([
             
             handlers: {
                 activeEntryChanged: function(path, leftEntry, rightEntry) {
-                    CodeViewer.loadActiveEntry(path, leftEntry, rightEntry);
+                    self.loadActiveEntry(path, leftEntry, rightEntry);
                 }
             }
         };
     
-    App.subscribe(CodeViewer.handlers);
+    App.subscribe(self.handlers);
     
-    return CodeViewer;
+    return self;
 });

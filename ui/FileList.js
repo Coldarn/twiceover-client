@@ -5,7 +5,7 @@ define([
     'use strict';
     
     var el = document.querySelector('.file-pane'),
-        FileList = {
+        self = {
             populate: function () {
                 var paths = Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths()),
                     fileHtml = paths.map(function (path) {
@@ -28,7 +28,7 @@ define([
             
             handlers: {
                 activeIterationsChanged: function() {
-                    FileList.populate();
+                    self.populate();
                 },
                 activeEntryChanged: function(path, leftEntry, rightEntry) {
                     var selFileEl = document.querySelector(`.file-entry.selected`);
@@ -40,7 +40,7 @@ define([
             }
         };
     
-    App.subscribe(FileList.handlers);
+    App.subscribe(self.handlers);
     
-    return FileList;
+    return self;
 });

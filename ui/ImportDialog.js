@@ -31,7 +31,7 @@ define([
     
     var outstandingGetChanges;
     
-    var ImportDialog = {
+    var self = {
         show: function (newIteration) {
             requirejs(['text!partials/ImportDialog.html'], function (html) {
                 var el = document.getElementById('import-dialog'),
@@ -43,7 +43,7 @@ define([
                     el = dialogEl.firstChild;
                     
                     el.querySelector('button.close').addEventListener('click', function () {
-                        ImportDialog.hide();
+                        self.hide();
                     });
                     document.getElementById('add-reviewer').addEventListener('click', handleAddReviewer);
                     document.getElementById('review-nameentry').addEventListener('keydown', handleKeydown);
@@ -63,5 +63,5 @@ define([
         }
     };
     
-    return ImportDialog;
+    return self;
 });

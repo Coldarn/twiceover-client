@@ -9,6 +9,8 @@ define([
     
     var App = Observable();
     
+    App.TEST_MODE = true;
+    
     App.review = null,
     App.leftIteration = null,
     App.rightIteration = null,

@@ -11,21 +11,20 @@ define([
     
     function handleAddReviewer() {
         var entryEl = document.getElementById('review-nameentry'),
-            reviewerListEl = document.getElementById('revier-container');
+            reviewerListEl = document.getElementById('reviewer-container');
         
         if (!entryEl.value || entryEl.value.length < 2) {
             return;
         }
         
         reviewerListEl.appendChild(
-            document.createRange().createContextualFragment(`<div>${entryEl.value}</div>`));
+            new Range().createContextualFragment(`<div>${entryEl.value}</div>`));
         reviewerListEl.style.display = null;
         entryEl.value = '';
     }
     
-    function handleGetChanges(data) {
-        var changesEl = document.getElementById('change-container');
-        changesEl.innerHTML = data;  
+    function handleGetChanges(changesEl, failure, data) {
+        changesEl.innerHTML = failure ? `<div class="error">${data}</div>` : data;
         outstandingGetChanges = null;
     }
     
@@ -53,8 +52,15 @@ define([
                 dialogEl.style.display = null;
                 
                 if (!outstandingGetChanges) {
-                    outstandingGetChanges = TFS.getChanges(document.getElementById('change-container'), newIteration)
-                        .then(handleGetChanges, handleGetChanges);
+                    const changesContainer = document.getElementById('change-container');
+                    changesContainer.innerHTML = null;
+                    
+                    function logStatus(message) {
+                        changesContainer.appendChild(new Range().createContextualFragment(`<div>${message}</div>`));
+                    }
+                    
+                    outstandingGetChanges = TFS.getChanges(logStatus, newIteration)
+                        .then(handleGetChanges.bind(null, changesContainer, false), handleGetChanges.bind(null, changesContainer, true));
                 }
             });
         },

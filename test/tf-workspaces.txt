@@ -1,0 +1,5 @@
+Collection: http://tfs2012.domain.com:8080/tfs/tfscollection
+Workspace       Owner    Computer Comment
+--------------- -------- -------- -----------------------------------------------------
+Workspace One   John Doe jdoe01
+Merge Workspace John Doe

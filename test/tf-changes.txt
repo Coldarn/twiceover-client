@@ -1,0 +1,23 @@
+File name                    Change Local path
+---------------------------- ------ --------------------------------------------
+$/TestProject/Dev/2015
+TestProject.csproj           edit   D:\TFS_Data\TestProject\2015\TestProject.csproj
+
+$/TestProject/Dev/2015/UIStatic/TestProject.UIStatic/applications/web/view
+DocumentPageActions.js       add    D:\TFS_Data\TestProject\2015\UIStatic\TestProject.UIStatic\applications\web\view\DocumentPageActions.js
+DocumentsList.js             edit   D:\TFS_Data\TestProject\2015\UIStatic\TestProject.UIStatic\applications\web\view\DocumentsList.js
+DocumentImportWizard.js      edit   D:\TFS_Data\TestProject\2015\UIStatic\TestProject.UIStatic\applications\web\view\DocumentImportWizard.js
+
+$/TestProject/Dev/2015/UIStatic/TestProject.UIStatic/applications/web/controller
+DocumentPageActions.js       remove D:\TFS_Data\TestProject\2015\UIStatic\TestProject.UIStatic\applications\web\controller\DocumentPageActions.js
+
+--------------------------------------------------------------------------------
+Detected Changes:
+--------------------------------------------------------------------------------
+File name                    Change Local path
+---------------------------- ------ --------------------------------------------
+$/TestProject/Dev/2015/UIStatic/TestProject.UIStatic/applications/web/resources
+page-actions.css             add    D:\TFS_Data\TestProject\2015\UIStatic\TestProject.UIStatic\applications\web\resources\page-actions.css
+import-docs.png              add    D:\TFS_Data\TestProject\2015\UIStatic\TestProject.UIStatic\applications\web\resources\import-docs.png
+
+5 change(s), 2 detected change(s)

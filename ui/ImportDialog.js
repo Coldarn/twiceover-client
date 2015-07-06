@@ -24,8 +24,25 @@ define([
     }
     
     function handleGetChanges(changesEl, failure, data) {
-        changesEl.innerHTML = failure ? `<div class="error">${data}</div>` : data;
         outstandingGetChanges = null;
+        
+        if (failure) {
+            changesEl.innerHTML = `<div class="error">${data}</div>`;
+            return;
+        }
+
+        changesEl.innerHTML = buildTree(data);
+    }
+    
+    function buildTree(nodes) {
+        let html = nodes.map(function (node) {
+            if (node.children) {
+                return `<li class="tree-node">${node.name} ${buildTree(node.children)}</li>`;
+            } else {
+                return `<li class="tree-node">${node.name}</div>`;
+            }
+        }).join('');
+        return `<ul class="tree">${html}</ul>`;
     }
     
     var outstandingGetChanges;

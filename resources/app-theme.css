@@ -237,29 +237,45 @@ button {
 
 .tree {
     padding: 0 20px;
+    margin: 0;
 }
 
 .tree-node {
     list-style-type: none;
+}
+
+.tree-node > span {
     cursor: pointer;
+    padding: 0 4px;
+    margin-right: 10px;
 }
 
-.tree-node.children.expanded:before {
-    content: "\f078";
-/*
+.tree-node > span:before {
     font-family: "FontAwesome";
     display: inline-block;
-    width: 20px;
-    margin-left: -20px;
-*/
+    width: 28px;
+    padding-left: 6px;
+    margin-left: -28px;
+    box-sizing: border-box;
 }
 
-.tree-node.children:before {
+.tree-node.selected > span:before {
+    content: "\f00c";
+    color: #484;
+}
+
+.tree-node.selected > span {
+    background: #484;
+}
+
+.tree-node.children > span:before {
     content: "\f054";
-    font-family: "FontAwesome";
-    display: inline-block;
-    width: 20px;
-    margin-left: -20px;
+    color: inherit;
+}
+
+.tree-node.children.expanded > span:before {
+    content: "\f078";
+    color: inherit;
 }
 
 .column {

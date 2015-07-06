@@ -232,6 +232,7 @@ button {
 
 .tree, .tree-node {
     white-space: nowrap;
+    list-style-type: none;
 }
 
 .tree {
@@ -240,13 +241,21 @@ button {
 
 .tree-node {
     list-style-type: none;
+    cursor: pointer;
 }
 
-.tree-node {
-    list-style-type: none;
+.tree-node.children.expanded:before {
+    content: "\f078";
+/*
+    font-family: "FontAwesome";
+    display: inline-block;
+    width: 20px;
+    margin-left: -20px;
+*/
 }
-.tree-node:before {
-    content: "\f096";
+
+.tree-node.children:before {
+    content: "\f054";
     font-family: "FontAwesome";
     display: inline-block;
     width: 20px;

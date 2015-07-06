@@ -1,6 +1,7 @@
 define([
+    'util/Util',
     'integrations/TFS'
-], function (TFS) {
+], function (Util, TFS) {
     'use strict';
     
     function handleKeydown(event) {
@@ -32,12 +33,25 @@ define([
         }
 
         changesEl.innerHTML = buildTree(data);
+        
+        function expandCollapse(event) {
+            var childEl = this.querySelector('ul');
+            if (childEl) {
+                childEl.style.display = this.classList.contains('expanded') ? 'none' : null;
+            }
+            this.classList.toggle('expanded');
+            event.cancelBubble = true;
+        }
+        
+        Util.toArray(changesEl.querySelectorAll('li.tree-node')).forEach(function (el) {
+            el.addEventListener('click', expandCollapse);
+        });
     }
     
     function buildTree(nodes) {
         let html = nodes.map(function (node) {
             if (node.children) {
-                return `<li class="tree-node">${node.name} ${buildTree(node.children)}</li>`;
+                return `<li class="tree-node children expanded">${node.name} ${buildTree(node.children)}</li>`;
             } else {
                 return `<li class="tree-node">${node.name}</div>`;
             }

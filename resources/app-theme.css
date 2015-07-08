@@ -211,6 +211,17 @@ button {
     border: 0;
 }
 
+button.save {
+    background: #484;
+    color: white;
+}
+
+button.save.disabled {
+    opacity: 0.5;
+    cursor: default;
+    color: black;
+}
+
 .dialog #import-dialog content {
     display: flex;
 }

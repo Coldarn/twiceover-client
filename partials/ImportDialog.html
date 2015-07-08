@@ -1,28 +1,30 @@
-<div id="import-dialog">
-    <title>New Review</title>
-    <content>
-        <div class="column">
-            <label>Changes</label>
-            <div id="change-container" class="filler"></div>
-        </div>
-        <div class="column">
-            <label for="review-title">Title</label>
-            <input id="review-title" type="text" min="5" max="1000" />
-
-            <label for="review-reviewers">Reviewers</label>
-            <div id="reviewer-container" style="display: none"></div>
-            <div class="row-group">
-                <input id="review-nameentry" class="filler" type="text" min="5" />
-                <button id="add-reviewer">+</button>
+<div class="dialog" style="display: none">
+    <div id="import-dialog">
+        <title>New Review</title>
+        <content>
+            <div class="column">
+                <label>Changes</label>
+                <div id="change-container" class="filler"></div>
             </div>
+            <div class="column">
+                <label for="review-title">Title</label>
+                <input id="review-title" type="text" min="5" max="1000" />
 
-            <label for="review-description">Description</label>
-            <textarea id="review-description" class="filler"></textarea>
-        </div>
-    </content>
-    <footer>
-        <button class="close">Back</button>
-        <div class="filler"></div>
-        <button class="save disabled">Create Review</button>
-    </footer>
+                <label for="review-reviewers">Reviewers</label>
+                <div id="reviewer-container" style="display: none"></div>
+                <div class="row-group">
+                    <input id="review-nameentry" class="filler" type="text" min="5" />
+                    <button id="add-reviewer">+</button>
+                </div>
+
+                <label for="review-description">Description</label>
+                <textarea id="review-description" class="filler"></textarea>
+            </div>
+        </content>
+        <footer>
+            <button class="close">Back</button>
+            <div class="filler"></div>
+            <button class="save disabled">Create Review</button>
+        </footer>
+    </div>
 </div>

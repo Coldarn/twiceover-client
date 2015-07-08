@@ -1,57 +1,67 @@
 define([
     'util/Util',
+    'ui/Component',
     'integrations/TFS'
-], function (Util, TFS) {
+], function (Util, Component, TFS) {
     'use strict';
 
-    var componentEl,
-        outstandingGetChanges;
+    var outstandingGetChanges;
 
-    var self = {
-        show: function (newIteration) {
-            requirejs(['text!partials/ImportDialog.html'], function (html) {
-                var dialogEl = document.querySelector('.dialog');
-
-                componentEl = document.getElementById('import-dialog');
-
-                if (!componentEl) {
-                    var dialogEl = document.querySelector('.dialog');
-                    dialogEl.innerHTML = html;
-                    componentEl = dialogEl.firstChild;
-
-                    componentEl.querySelector('button.close').addEventListener('click', function () {
-                        self.hide();
-                    });
-                    componentEl.querySelector('button.save').addEventListener('click', function () {
-                        if (validateAll()) {
-                            self.hide();
-                        }
-                    });
-                    document.getElementById('add-reviewer').addEventListener('click', handleAddReviewer);
-                    document.getElementById('review-nameentry').addEventListener('keydown', handleKeydown);
-                    componentEl.querySelector('#review-title').addEventListener('keyup', validateAll);
-                }
-
-                componentEl.querySelector('button.close').style.display = newIteration ? null : 'none';
-                dialogEl.style.display = null;
-
-                if (!outstandingGetChanges) {
-                    const changesContainer = document.getElementById('change-container');
-                    changesContainer.innerHTML = null;
-
-                    function logStatus(message) {
-                        changesContainer.appendChild(new Range().createContextualFragment(`<div>${message}</div>`));
-                    }
-
-                    outstandingGetChanges = TFS.getChanges(logStatus, newIteration)
-                        .then(handleGetChanges.bind(null, changesContainer, false), handleGetChanges.bind(null, changesContainer, true));
-                }
-
-                validateAll();
+    var proto = {
+        __proto__: Component.prototype,
+        
+        initComponent: function () {
+            var me = this;
+            
+            me.el.querySelector('button.close').addEventListener('click', function () {
+                me.hide();
             });
+            me.el.querySelector('button.save').addEventListener('click', function () {
+                if (me.validateAll()) {
+                    me.hide();
+                }
+            });
+            me.el.querySelector('#add-reviewer').addEventListener('click', handleAddReviewer);
+            me.el.querySelector('#review-nameentry').addEventListener('keydown', handleKeydown);
+            me.el.querySelector('#review-title').addEventListener('keyup', me.validateAll.bind(me));
+
+            me.el.querySelector('button.close').style.display = true ? null : 'none';
         },
+        
+        show: function () {
+            var me = this;
+            
+            if (!outstandingGetChanges) {
+                const changesContainer = me.el.querySelector('#change-container');
+                changesContainer.innerHTML = null;
+
+                function logStatus(message) {
+                    changesContainer.appendChild(new Range().createContextualFragment(`<div>${message}</div>`));
+                }
+
+                outstandingGetChanges = TFS.getChanges(logStatus)
+                    .then(handleGetChanges.bind(null, changesContainer, false), handleGetChanges.bind(null, changesContainer, true));
+            }
+            
+            this.setVisible(true);
+        },
+        
         hide: function () {
-            document.querySelector('.dialog').style.display = 'none';
+            this.setVisible(false);
+        },
+
+        validateControl: function (selector, minLength) {
+            var el = this.el.querySelector(selector);
+            return el.value ? el.value.length >= minLength : el.children.length >= minLength;
+        },
+
+        validateAll: function() {
+            var isValid = validateControl('#review-title', 4)
+                && validateControl('#reviewer-container', 1)
+                && this.el.querySelector('.tree-node.selected');
+
+            this.el.querySelector('button.save').classList.toggle('disabled', !isValid);
+            return isValid;
         }
     };
 
@@ -89,20 +99,6 @@ define([
         Util.toArray(changesEl.querySelectorAll('li.tree-node > span')).forEach(function (el) {
             el.addEventListener('click', handleClickTree);
         });
-    }
-
-    function validateControl(selector, minLength) {
-        var el = componentEl.querySelector(selector);
-        return el.value ? el.value.length >= minLength : el.children.length >= minLength;
-    }
-
-    function validateAll() {
-        var isValid = validateControl('#review-title', 4)
-            && validateControl('#reviewer-container', 1)
-            && componentEl.querySelector('.tree-node.selected');
-
-        componentEl.querySelector('button.save').classList.toggle('disabled', !isValid);
-        return isValid;
     }
 
     function updateTreeParentEl(parentEl) {
@@ -160,5 +156,9 @@ define([
         return `<ul class="tree">${html}</ul>`;
     }
 
-    return self;
+    return function ImportDialog() {
+        var obj = Object.create(proto);
+        obj.loadHtml('text!partials/ImportDialog.html');
+        return obj;
+    };
 });

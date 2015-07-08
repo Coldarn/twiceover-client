@@ -9,7 +9,7 @@ define([
         tfPath = getTfPath();
     
     var self = {
-        getChanges: function (logStatus, newIteration) {
+        getChanges: function (logStatus) {
             logStatus('Retrieving TFS workspaces...');
             return new Promise(function (resolve, reject) {
                 if (!tfPath) {

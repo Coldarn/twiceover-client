@@ -100,11 +100,11 @@ define([
                     resolve(parseChanges(sampleOutput, workspaceName));
                 }, 500);
             } else {
-                var ls = child_process.execFile(tfPath, ['status', `/workspace:"${workspaceName}"`], function (err, stdout, stderr) {
+                var ls = child_process.execFile(tfPath, ['status', `/workspace:${workspaceName}`], function (err, stdout, stderr) {
                     if (err || stderr) {
                         reject(err || stderr);
                     } else {
-                        resolve(parseChanges(stdout), workspaceName);
+                        resolve(parseChanges(stdout, workspaceName));
                     }
                 });
             }
@@ -118,7 +118,7 @@ define([
             pathStartIndex,
             activeNode;
         
-        for (const line of tfOutput.replace('\r\n', '\n').split('\n')) {
+        for (const line of tfOutput.replace(/\r\n/g, '\n').split('\n')) {
             if (line.startsWith('---')) {
                 if (!nameEndIndex) {
                     nameEndIndex = line.indexOf('- -') + 1;

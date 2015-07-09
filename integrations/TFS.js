@@ -32,6 +32,10 @@ define([
                 });
                 return values;
             });
+        },
+        
+        getChangeFiles: function (workspaceName, fileRecords) {
+            
         }
     };
     
@@ -100,7 +104,7 @@ define([
                     resolve(parseChanges(sampleOutput, workspaceName));
                 }, 500);
             } else {
-                var ls = child_process.execFile(tfPath, ['status', `/workspace:${workspaceName}`], function (err, stdout, stderr) {
+                child_process.execFile(tfPath, ['status', `/workspace:${workspaceName}`], function (err, stdout, stderr) {
                     if (err || stderr) {
                         reject(err || stderr);
                     } else {
@@ -156,6 +160,37 @@ define([
             name: workspaceName,
             children: changes
         };
+    }
+    
+    function getLocalFile(localPath) {
+        return new Promise(function (resolve, reject) {
+            fs.readFile(localPath, function (err, data) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+    
+    // Returns change information for the given workspace
+    function getFileFromTfs(workspaceName, tfsPath) {
+        return new Promise(function (resolve, reject) {
+            child_process.execFile(tfPath, ['view', `${tfsPath};W${workspaceName}`, '/console'], function (err, stdout, stderr) {
+                if (err) {
+                    reject(err);
+                } else if (stderr) {
+                    if (stderr.endsWith(': No file matches.\n')) {
+                        resolve(null);
+                    } else {
+                        reject(stderr);
+                    }
+                } else {
+                    resolve(stdout);
+                }
+            });
+        });
     }
     
     return self;

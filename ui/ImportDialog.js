@@ -21,8 +21,8 @@ define([
                     me.hide();
                 }
             });
-            me.el.querySelector('#add-reviewer').addEventListener('click', handleAddReviewer);
-            me.el.querySelector('#review-nameentry').addEventListener('keydown', handleKeydown);
+            me.el.querySelector('#add-reviewer').addEventListener('click', me.handleAddReviewer.bind(me));
+            me.el.querySelector('#review-nameentry').addEventListener('keydown', me.handleKeydown.bind(me));
             me.el.querySelector('#review-title').addEventListener('keyup', me.validateAll.bind(me));
 
             me.el.querySelector('button.close').style.display = true ? null : 'none';
@@ -40,7 +40,7 @@ define([
                 }
 
                 outstandingGetChanges = TFS.getChanges(logStatus)
-                    .then(handleGetChanges.bind(null, changesContainer, false), handleGetChanges.bind(null, changesContainer, true));
+                    .then(me.handleGetChanges.bind(me, changesContainer, false), me.handleGetChanges.bind(me, changesContainer, true));
             }
             
             this.setVisible(true);
@@ -55,51 +55,54 @@ define([
             return el.value ? el.value.length >= minLength : el.children.length >= minLength;
         },
 
-        validateAll: function() {
-            var isValid = validateControl('#review-title', 4)
-                && validateControl('#reviewer-container', 1)
+        validateAll: function () {
+            var isValid = this.validateControl('#review-title', 4)
+                && this.validateControl('#reviewer-container', 1)
                 && this.el.querySelector('.tree-node.selected');
 
             this.el.querySelector('button.save').classList.toggle('disabled', !isValid);
             return isValid;
+        },
+        
+
+        handleKeydown: function (event) {
+            if (event.keyCode === 13) {
+                this.handleAddReviewer();
+            }
+        },
+
+        handleAddReviewer: function() {
+            var entryEl = this.el.querySelector('#review-nameentry'),
+                reviewerListEl = this.el.querySelector('#reviewer-container');
+
+            if (!entryEl.value || entryEl.value.length < 2) {
+                return;
+            }
+
+            reviewerListEl.appendChild(new Range().createContextualFragment(`<div>${entryEl.value}</div>`));
+            reviewerListEl.style.display = null;
+            entryEl.value = '';
+            this.validateAll();
+        },
+
+        handleGetChanges: function (changesEl, failure, data) {
+            var me = this;
+            
+            outstandingGetChanges = null;
+
+            if (failure) {
+                changesEl.innerHTML = `<div class="error">${data}</div>`;
+                return;
+            }
+
+            changesEl.innerHTML = buildTree(data);
+
+            Util.toArray(changesEl.querySelectorAll('li.tree-node > span')).forEach(function (el) {
+                el.addEventListener('click', handleClickTree);
+            });
         }
     };
-
-    function handleKeydown(event) {
-        if (event.keyCode === 13) {
-            handleAddReviewer();
-        }
-    }
-
-    function handleAddReviewer() {
-        var entryEl = document.getElementById('review-nameentry'),
-            reviewerListEl = document.getElementById('reviewer-container');
-
-        if (!entryEl.value || entryEl.value.length < 2) {
-            return;
-        }
-
-        reviewerListEl.appendChild(
-            new Range().createContextualFragment(`<div>${entryEl.value}</div>`));
-        reviewerListEl.style.display = null;
-        entryEl.value = '';
-        validateAll();
-    }
-
-    function handleGetChanges(changesEl, failure, data) {
-        outstandingGetChanges = null;
-
-        if (failure) {
-            changesEl.innerHTML = `<div class="error">${data}</div>`;
-            return;
-        }
-
-        changesEl.innerHTML = buildTree(data);
-
-        Util.toArray(changesEl.querySelectorAll('li.tree-node > span')).forEach(function (el) {
-            el.addEventListener('click', handleClickTree);
-        });
-    }
+    
 
     function updateTreeParentEl(parentEl) {
         if (parentEl.tagName !== 'LI') {
@@ -124,13 +127,13 @@ define([
         // Select/deselect parent nodes
         updateTreeParentEl(itemEl.parentNode.parentNode);
 
-        validateAll();
+        // TODO: Get this working after refactoring the tree to be a self-contained component
+//        validateAll();
     }
 
     function handleClickTree(event) {
         var itemEl = this.parentNode,
             childEl = itemEl.querySelector('ul');
-
 
         if (childEl) {
             if (event.x < this.getBoundingClientRect().left + 8) {
@@ -155,7 +158,7 @@ define([
         }).join('');
         return `<ul class="tree">${html}</ul>`;
     }
-
+    
     return function ImportDialog() {
         var obj = Object.create(proto);
         obj.loadHtml('text!partials/ImportDialog.html');

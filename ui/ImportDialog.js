@@ -109,19 +109,28 @@ define([
             return;
         }
 
-        parentEl.classList.toggle('selected', Util.toArray(parentEl.querySelector('ul').children).every(function (el) {
+        const directChildEls = Util.toArray(parentEl.querySelector('ul').children);
+        const allSelected = directChildEls.every(function (el) {
             return el.classList.contains('tree-node') && el.classList.contains('selected');
-        }));
+        });
+        const someSelected = !allSelected && directChildEls.some(function (el) {
+            return el.classList.contains('tree-node') && (el.classList.contains('selected') || el.classList.contains('partial-select'));
+        });
+        
+        parentEl.classList.toggle('selected', allSelected);
+        parentEl.classList.toggle('partial-select', someSelected);
 
         updateTreeParentEl(parentEl.parentNode.parentNode);
     }
 
     function selectTreeEl(itemEl) {
         const addClass = itemEl.classList.toggle('selected');
+        itemEl.classList.remove('partial-select');
 
         // Select/deselect all child nodes
         Util.toArray(itemEl.querySelectorAll('.tree-node')).forEach(function (el) {
             el.classList.toggle('selected', addClass);
+            el.classList.remove('partial-select');
         });
 
         // Select/deselect parent nodes

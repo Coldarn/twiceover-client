@@ -238,7 +238,7 @@ button.save.disabled {
     overflow: auto;
     box-sizing: border-box;
     margin-right: -10px;
-    padding-right: 10px;
+    padding: 4px 0;
 }
 
 .tree, .tree-node {
@@ -256,9 +256,13 @@ button.save.disabled {
 }
 
 .tree-node > span {
+    display: inline-block;
     cursor: pointer;
     padding: 0 4px;
     margin-right: 10px;
+    margin-bottom: -2px;
+    box-sizing: border-box;
+    border: 2px solid transparent;
 }
 
 .tree-node > span:before {
@@ -277,6 +281,11 @@ button.save.disabled {
 
 .tree-node.selected > span {
     background: #484;
+    border: 2px solid #484
+}
+
+.tree-node.partial-select > span {
+    border: 2px solid #484
 }
 
 .tree-node.children > span:before {

@@ -188,7 +188,7 @@ label {
 
 .toolbar, .toolbar label {
     font-size: 14px;
-    line-height: 26px;
+    line-height: 30px;
 }
 
 .row-group > button {
@@ -233,7 +233,7 @@ select {
     color: black;
     font-family: inherit;
     font-size: 14px;
-    height: 24px;
+    height: 30px;
 }
 
 option::focus {
@@ -258,7 +258,7 @@ option::focus {
 }
 
 #change-container {
-    margin-top: 5px;
+    margin-top: 1px;
     margin-right: -10px;
 }
 

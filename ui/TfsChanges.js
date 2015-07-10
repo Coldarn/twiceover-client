@@ -44,7 +44,7 @@ define([
         loadWorkspaceChanges: function (workspaceName) {
             var me = this;
             
-            me.contentEl.innerHTML = `<div>Discovering active changes for workspace "${workspaceName}"...</div>`;
+            me.contentEl.innerHTML = `<div>Discovering changes for workspace "${workspaceName}"...</div>`;
             
             TFS.getChanges(workspaceName).then(function (changes) {
                 me.contentEl.innerHTML = changes.name;

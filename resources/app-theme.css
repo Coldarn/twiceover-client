@@ -234,17 +234,14 @@ select {
     font-family: inherit;
     font-size: 14px;
     height: 30px;
-}
-
-option::focus {
-    background: white;
+    cursor: pointer;
 }
 
 .dialog #import-dialog content {
     display: flex;
 }
 
-#change-container > * {
+#change-container, #change-container > * {
     display: flex;
     flex-direction: column;
 }

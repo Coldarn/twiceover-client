@@ -18,6 +18,7 @@ define([
             function setEl(htmlStr) {
                 me.destroy();
                 me.el = new Range().createContextualFragment(htmlStr).firstChild;
+                me.el.component = me;
                 me.initComponent();
                 if (me.parentEl) {
                     me.parentEl.appendChild(me.el);

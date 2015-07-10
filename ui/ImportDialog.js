@@ -6,8 +6,6 @@ define([
 ], function (Util, Component, TfsChanges, TFS) {
     'use strict';
 
-    var outstandingGetChanges;
-
     var proto = {
         __proto__: Component.prototype,
         
@@ -86,90 +84,8 @@ define([
             reviewerListEl.style.display = null;
             entryEl.value = '';
             this.validateAll();
-        },
-
-        handleGetChanges: function (changesEl, failure, data) {
-            var me = this;
-            
-            outstandingGetChanges = null;
-
-            if (failure) {
-                changesEl.innerHTML = `<div class="error">${data}</div>`;
-                return;
-            }
-
-            changesEl.innerHTML = buildTree(data);
-
-            Util.toArray(changesEl.querySelectorAll('li.tree-node > span')).forEach(function (el) {
-                el.addEventListener('click', handleClickTree);
-            });
         }
     };
-    
-
-    function updateTreeParentEl(parentEl) {
-        if (parentEl.tagName !== 'LI') {
-            return;
-        }
-
-        const directChildEls = Util.toArray(parentEl.querySelector('ul').children);
-        const allSelected = directChildEls.every(function (el) {
-            return el.classList.contains('tree-node') && el.classList.contains('selected');
-        });
-        const someSelected = !allSelected && directChildEls.some(function (el) {
-            return el.classList.contains('tree-node') && (el.classList.contains('selected') || el.classList.contains('partial-select'));
-        });
-        
-        parentEl.classList.toggle('selected', allSelected);
-        parentEl.classList.toggle('partial-select', someSelected);
-
-        updateTreeParentEl(parentEl.parentNode.parentNode);
-    }
-
-    function selectTreeEl(itemEl) {
-        const addClass = itemEl.classList.toggle('selected');
-        itemEl.classList.remove('partial-select');
-
-        // Select/deselect all child nodes
-        Util.toArray(itemEl.querySelectorAll('.tree-node')).forEach(function (el) {
-            el.classList.toggle('selected', addClass);
-            el.classList.remove('partial-select');
-        });
-
-        // Select/deselect parent nodes
-        updateTreeParentEl(itemEl.parentNode.parentNode);
-
-        // TODO: Get this working after refactoring the tree to be a self-contained component
-//        validateAll();
-    }
-
-    function handleClickTree(event) {
-        var itemEl = this.parentNode,
-            childEl = itemEl.querySelector('ul');
-
-        if (childEl) {
-            if (event.x < this.getBoundingClientRect().left + 8) {
-                childEl.style.display = itemEl.classList.contains('expanded') ? 'none' : null;
-                itemEl.classList.toggle('expanded');
-            } else {
-                selectTreeEl(itemEl);
-            }
-        } else {
-            selectTreeEl(itemEl);
-        }
-        event.cancelBubble = true;
-    }
-
-    function buildTree(nodes) {
-        let html = nodes.map(function (node) {
-            if (node.children) {
-                return `<li class="tree-node children expanded"><span>${node.name}</span> ${buildTree(node.children)}</li>`;
-            } else {
-                return `<li class="tree-node"><span>${node.name}</span></div>`;
-            }
-        }).join('');
-        return `<ul class="tree">${html}</ul>`;
-    }
     
     return function ImportDialog() {
         var obj = Object.create(proto);

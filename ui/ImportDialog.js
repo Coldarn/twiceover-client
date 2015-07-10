@@ -1,8 +1,9 @@
 define([
     'util/Util',
     'ui/Component',
+    'ui/TfsChanges',
     'integrations/TFS'
-], function (Util, Component, TFS) {
+], function (Util, Component, TfsChanges, TFS) {
     'use strict';
 
     var outstandingGetChanges;
@@ -26,22 +27,24 @@ define([
             me.el.querySelector('#review-title').addEventListener('keyup', me.validateAll.bind(me));
 
             me.el.querySelector('button.close').style.display = true ? null : 'none';
+            
+            me.changesControl.appendTo(me.el.querySelector('#change-container'));
         },
         
         show: function () {
             var me = this;
             
-            if (!outstandingGetChanges) {
-                const changesContainer = me.el.querySelector('#change-container');
-                changesContainer.innerHTML = null;
-
-                function logStatus(message) {
-                    changesContainer.appendChild(new Range().createContextualFragment(`<div>${message}</div>`));
-                }
-
-                outstandingGetChanges = TFS.getChanges(logStatus)
-                    .then(me.handleGetChanges.bind(me, changesContainer, false), me.handleGetChanges.bind(me, changesContainer, true));
-            }
+//            if (!outstandingGetChanges) {
+//                const changesContainer = me.el.querySelector('#change-container');
+//                changesContainer.innerHTML = null;
+//
+//                function logStatus(message) {
+//                    changesContainer.appendChild(new Range().createContextualFragment(`<div>${message}</div>`));
+//                }
+//
+//                outstandingGetChanges = TFS.getChanges(logStatus)
+//                    .then(me.handleGetChanges.bind(me, changesContainer, false), me.handleGetChanges.bind(me, changesContainer, true));
+//            }
             
             this.setVisible(true);
         },
@@ -171,6 +174,7 @@ define([
     return function ImportDialog() {
         var obj = Object.create(proto);
         obj.loadHtml('text!partials/ImportDialog.html');
+        obj.changesControl = TfsChanges();
         return obj;
     };
 });

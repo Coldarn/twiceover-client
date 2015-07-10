@@ -9,29 +9,18 @@ define([
         tfPath = getTfPath();
     
     var self = {
-        getChanges: function (logStatus) {
-            logStatus('Retrieving TFS workspaces...');
+        getWorkspace: function () {
             return new Promise(function (resolve, reject) {
                 if (!tfPath) {
                     reject('Visual Studio not found on the system! Visual Studio 2015, 2013, 2012, or 2010 is required to get changes from TFS.');
                 } else {
                     resolve(getWorkspaces());
                 }
-            }).then(function (workspaces) {
-                if (!workspaces.length) {
-                    throw 'No TFS workspaces found';
-                }
-
-                logStatus('Disovering changes...');
-                return Promise.all(workspaces.map(function (workspaceName) {
-                    return getChangesForWorkspace(workspaceName);
-                }));
-            }).then(function (values) {
-                values.sort(function (left, right) {
-                    return left.name < right.name ? -1 : left.name > right.name ? 1 : 0;
-                });
-                return values;
             });
+        },
+        
+        getChanges: function (workspaceName) {
+            return getChangesForWorkspace(workspaceName);
         },
         
         getChangeFiles: function (workspaceName, fileRecords) {

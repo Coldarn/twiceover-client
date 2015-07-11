@@ -90,14 +90,14 @@ define([
             if (App.TEST_MODE) {
                 setTimeout(function () {
                     var sampleOutput = fs.readFileSync('test/tf-changes.txt').toString();
-                    resolve(parseChanges(sampleOutput, workspaceName));
+                    resolve(parseChanges(sampleOutput));
                 }, 500);
             } else {
                 child_process.execFile(tfPath, ['status', `/workspace:${workspaceName}`], function (err, stdout, stderr) {
                     if (err || stderr) {
                         reject(err || stderr);
                     } else {
-                        resolve(parseChanges(stdout, workspaceName));
+                        resolve(parseChanges(stdout));
                     }
                 });
             }
@@ -105,7 +105,7 @@ define([
     }
     
     // Parses file changes out of the `tf status` command output
-    function parseChanges(tfOutput, workspaceName) {
+    function parseChanges(tfOutput) {
         var changes = [],
             nameEndIndex,
             pathStartIndex,
@@ -145,10 +145,16 @@ define([
             }
         }
         
-        return {
-            name: workspaceName,
-            children: changes
-        };
+        function flatten(fileList, node) {
+            if (node.children) {
+                node.children.reduce(flatten, fileList);
+            } else {
+                fileList.push(node);
+            }
+            return fileList;
+        }
+        
+        return changes.reduce(flatten, []);
     }
     
     function getLocalFile(localPath) {

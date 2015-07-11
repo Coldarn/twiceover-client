@@ -60,6 +60,7 @@ define([
             me.enableWorkspacePicker(false);
             
             outstandingGetChanges = TFS.getChanges(workspaceName).then(function (changes) {
+                changes = Util.collapseCommonPaths(changes);
                 workspaceChanges[workspaceName] = changes;
                 outstandingGetChanges = null;
                 me.enableWorkspacePicker(true);
@@ -70,7 +71,7 @@ define([
         renderChanges: function (changes) {
             var me = this;
             
-            me.contentEl.innerHTML = buildTree([changes]);
+            me.contentEl.innerHTML = buildTree(changes);
             const nodes = Util.toArray(me.contentEl.querySelectorAll('li.tree-node > span'));
             nodes.forEach(function (el) {
                 el.addEventListener('click', handleClickTree);

@@ -1,13 +1,13 @@
 define([
-    'util/Util'
-], function (Util) {
+    'util/Util',
+    'util/ElementProxy'
+], function (Util, ElementProxy) {
     'use strict';
     
-    var proto = {
+    const proto = {
         el: null,
-        parentEl: null,
         
-        loadHtml: function (htmlOrPath) {
+        setHtml: function (htmlOrPath) {
             var me = this;
             
             htmlOrPath = htmlOrPath || me.el;
@@ -16,19 +16,24 @@ define([
             }
             
             function setEl(htmlStr) {
-                me.destroy();
-                me.el = new Range().createContextualFragment(htmlStr).firstChild;
-                me.el.component = me;
-                me.initComponent();
-                if (me.parentEl) {
-                    me.parentEl.appendChild(me.el);
-                }
+                me.setEl(new Range().createContextualFragment(htmlStr).firstChild);
             }
 
             if (htmlOrPath.startsWith('text!')) {
                 requirejs([htmlOrPath], setEl);
             } else {
                 setEl(htmlOrPath);
+            }
+        },
+        
+        setEl: function (el) {
+            this.destroy();
+            this.el = el;
+            this.el.component = this;
+            this.initComponent();
+            if (this.pendingParentEl) {
+                this.pendingParentEl.appendChild(this.el);
+                delete this.pendingParentEl;
             }
         },
         
@@ -40,10 +45,19 @@ define([
             return this;
         },
         
+        query: function (selector) {
+            return ElementProxy([this.el.querySelector(selector)]);
+        },
+        
+        queryAll: function (selector) {
+            return ElementProxy(this.el.querySelectorAll(selector));
+        },
+        
         appendTo: function (parentEl) {
-            this.parentEl = parentEl;
             if (this.el && typeof this.el !== 'string') {
-                this.parentEl.appendChild(this.el);
+                (parentEl.el || parentEl).appendChild(this.el);
+            } else {
+                this.pendingParentEl = parentEl;
             }
             return this;
         },
@@ -53,7 +67,7 @@ define([
             
             if (childEls.el) {
                 me.el.appendChild(childEls.el);
-            } else if (childEls.nodeType === 1 && typeof childEls.nodeName === "string") {
+            } else if (Util.isElement(childEls)) {
                 me.el.appendChild(childEls);
             } else {
                 childEls.forEach(function (el) {
@@ -71,8 +85,17 @@ define([
     };
     
     function Component(html) {
+        if (html && Util.isElement(html)) {
+            if (html.component) {
+                return html.component;
+            }
+            var obj = Object.create(proto);
+            obj.setEl(html);
+            return obj;
+        }
+        
         var obj = Object.create(proto);
-        obj.loadHtml(html);
+        obj.setHtml(html);
         return obj;
     }
     

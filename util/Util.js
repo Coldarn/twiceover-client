@@ -22,12 +22,25 @@ define(function () {
             return Array.prototype.slice.call(obj);
         },
         
+        isElement: function (el) {
+            return el.nodeType === 1 && typeof el.nodeName === "string";
+        },
+        
         find: function (array, checkCallback) {
             for (let i in array) {
                 if (checkCallback(array[i])) {
                     return array[i];
                 }
             }
+        },
+        
+        findIndex: function (array, checkCallback) {
+            for (let i in array) {
+                if (checkCallback(array[i])) {
+                    return i;
+                }
+            }
+            return -1;
         },
         
         collapseCommonPaths: function (filePaths) {

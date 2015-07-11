@@ -23,8 +23,18 @@ define([
             return getChangesForWorkspace(workspaceName);
         },
         
-        getChangeFiles: function (workspaceName, fileRecords) {
-            
+        getChangeFiles: function (workspaceName, changeRecord) {
+            if (App.TEST_MODE) {
+                var whichFile = Math.random() >= 0.5;
+                return Promise.all([
+                    getLocalFile(whichFile ? 'test/left.js' : 'test/csharp1.cs'),
+                    getLocalFile(whichFile ? 'test/right.js' : 'test/csharp1.cs')
+                ]);
+            }
+            return Promise.all([
+                getFileFromTfs(workspaceName, changeRecord.basePath),
+                getLocalFile(changeRecord.iterationPath)
+            ]);
         }
     };
     
@@ -159,13 +169,19 @@ define([
     
     function getLocalFile(localPath) {
         return new Promise(function (resolve, reject) {
-            fs.readFile(localPath, function (err, data) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
+            if (App.TEST_MODE) {
+                setTimeout(function () {
+                    resolve(fs.readFileSync(localPath).toString());
+                }, Math.random() * 10000);
+            } else {
+                fs.readFile(localPath, function (err, data) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(data);
+                    }
+                });
+            }
         });
     }
     

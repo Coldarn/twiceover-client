@@ -1,12 +1,14 @@
 define([
     'util/Util',
+    'util/EventBus',
     'ui/Component',
     'integrations/TFS'
-], function (Util, Component, TFS) {
+], function (Util, EventBus, Component, TFS) {
     'use strict';
     
     var outstandingGetChanges,
-        workspaceChanges = {};
+        workspaceChanges = {},
+        activeWorkspace;
     
     var proto = {
         __proto__: Component.prototype,
@@ -48,11 +50,22 @@ define([
             }).catch(me.displayError.bind(me));
         },
         
+        getChanges: function () {
+            return Util.toArray(this.el.querySelectorAll('.tree-node.selected.change-file')).map(function (el) {
+                return el.fileChange;
+            });
+        },
+        
+        getChangeFiles: function (changeRecord) {
+            return TFS.getChangeFiles(activeWorkspace, changeRecord);
+        },
+        
         loadWorkspaceChanges: function (workspaceName) {
             var me = this;
             
+            activeWorkspace = workspaceName;
             if (workspaceChanges[workspaceName]) {
-                me.renderChanges(workspaceName);
+                me.renderChanges();
                 return;
             }
             
@@ -64,14 +77,14 @@ define([
                 me.enableWorkspacePicker(true);
                 
                 workspaceChanges[workspaceName] = buildTree(Util.collapseCommonPaths(changes));
-                me.renderChanges(workspaceName);
+                me.renderChanges();
             }).catch(me.displayError.bind(me));
         },
         
-        renderChanges: function (workspaceName) {
+        renderChanges: function () {
             var me = this;
             me.contentEl.innerHTML = null;
-            workspaceChanges[workspaceName].appendTo(me.contentEl);
+            workspaceChanges[activeWorkspace].appendTo(me.contentEl);
         },
         
         displayError: function (message) {
@@ -117,8 +130,7 @@ define([
         // Select/deselect parent nodes
         updateTreeParentEl(itemEl.parentNode.parentNode);
 
-        // TODO: Get this working after refactoring the tree to be a self-contained component
-//        validateAll();
+        EventBus.fire('change_node_selected');
     }
 
     function handleClickTree(event) {
@@ -145,7 +157,7 @@ define([
                 fileEl = Component(`<li class="tree-node children expanded selected"><span>${node.name}</span></li>`);
                 fileEl.append(buildTree(node.children));
             } else {
-                fileEl = Component(`<li class="tree-node selected"><span>${node.name}</span></li>`);
+                fileEl = Component(`<li class="tree-node selected change-file"><span>${node.name}</span></li>`);
                 fileEl.el.fileChange = node;
             }
             fileEl.el.querySelector('span').addEventListener('click', handleClickTree);
@@ -156,7 +168,7 @@ define([
     
     return function TfsChanges() {
         var obj = Object.create(proto);
-        obj.loadHtml('text!partials/TfsChanges.html');
+        obj.setHtml('text!partials/TfsChanges.html');
         return obj;
     };
 });

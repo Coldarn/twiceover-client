@@ -226,7 +226,7 @@ button.save {
 
 button.save.disabled {
     opacity: 0.5;
-    cursor: default;
+    pointer-events: none;
     color: black;
 }
 
@@ -240,8 +240,14 @@ select {
     cursor: pointer;
 }
 
-.dialog #import-dialog content {
+#import-dialog content {
     display: flex;
+}
+
+#import-dialog content.import-status {
+    padding: 5px 10px;
+    flex-direction: column;
+    overflow: auto;
 }
 
 #change-container, #change-container > * {

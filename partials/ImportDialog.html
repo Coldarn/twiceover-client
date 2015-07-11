@@ -1,7 +1,7 @@
 <div class="dialog" style="display: none">
     <div id="import-dialog">
         <title>New Review</title>
-        <content>
+        <content class="import-content">
             <div class="column">
                 <label>Changes</label>
                 <div id="change-container" class="filler"></div>
@@ -21,10 +21,16 @@
                 <textarea id="review-description" class="filler"></textarea>
             </div>
         </content>
-        <footer>
+        <footer class="import-content">
             <button class="close">Back</button>
             <div class="filler"></div>
             <button class="save disabled">Create Review</button>
         </footer>
+        <content class="import-status" style="display: none">
+            <label>Loading changes...</label>
+            <div class="filler">
+                <ul class="tree"></ul>
+            </div>
+        </content>
     </div>
 </div>

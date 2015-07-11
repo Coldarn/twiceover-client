@@ -12,13 +12,15 @@ define([
         initComponent: function () {
             var me = this;
             
-            me.el.querySelector('button.close').addEventListener('click', me.hide.bind(me));
-            me.el.querySelector('button.save').addEventListener('click', me.handleCreate.bind(me));
-            me.el.querySelector('#add-reviewer').addEventListener('click', me.handleAddReviewer.bind(me));
-            me.el.querySelector('#review-nameentry').addEventListener('keydown', me.handleKeydown.bind(me));
-            me.el.querySelector('#review-title').addEventListener('keyup', me.validateAll.bind(me));
+            me.query('.import-content button.close').on('click', me.hide.bind(me));
+            me.query('.import-content button.save').on('click', me.handleCreate.bind(me));
+            me.query('.import-status button.close').on('click', me.handleCloseCreate.bind(me));
+            
+            me.query('#add-reviewer').on('click', me.handleAddReviewer.bind(me));
+            me.query('#review-nameentry').on('keydown', me.handleKeydown.bind(me));
+            me.query('#review-title').on('keyup', me.validateAll.bind(me));
 
-            me.el.querySelector('button.close').style.display = true ? null : 'none';
+//            me.query('button.close').style.display = true ? null : 'none';
             
             me.changesControl.appendTo(me.el.querySelector('#change-container'));
             
@@ -26,6 +28,7 @@ define([
         },
         
         show: function () {
+            this.showCreate(false);
             this.setVisible(true);
         },
         
@@ -46,6 +49,13 @@ define([
             this.el.querySelector('button.save').classList.toggle('disabled', !isValid);
             return isValid;
         },
+        
+        showCreate: function (show) {
+            this.loadingChanges = show;
+            this.queryAll('.import-content').setVisible(!show);
+            this.queryAll('.import-status').setVisible(show);
+        },
+        
         
 
         handleKeydown: function (event) {
@@ -71,11 +81,11 @@ define([
         handleCreate: function () {
             var me = this;
             
-            me.queryAll('.import-content').setVisible(false);
-            me.query('.import-status').setVisible(true);
+            me.showCreate(true);
             
             const changeRecords = me.changesControl.getChanges();
-            const fileList = me.el.querySelector('.import-status .tree');
+            const fileList = me.query('.import-status .tree');
+            fileList.queryAll('*').remove();
             
             Promise.all(changeRecords.map(function (changeRecord) {
                 const el = Component(`<li class="tree-node"><span>${changeRecord.displayPath}</span></li>`);
@@ -88,9 +98,17 @@ define([
                 }, function (error) {
                     Component(`<div class="error">${error}</div>`).appendTo(el);
                 });
-            })).then(function () {
-                me.hide();
-            });
+            })).then(me.handleCreateFinished.bind(me));
+        },
+        
+        handleCreateFinished: function () {
+            if (this.loadingChanges) {
+                this.hide();
+            }
+        },
+        
+        handleCloseCreate: function () {
+            this.showCreate(false);
         }
     };
     
@@ -98,6 +116,7 @@ define([
         var obj = Object.create(proto);
         obj.setHtml('text!partials/ImportDialog.html');
         obj.changesControl = TfsChanges();
+        obj.loadingChanges = false;
         return obj;
     };
 });

@@ -46,7 +46,7 @@ define([
         },
         
         query: function (selector) {
-            return ElementProxy([this.el.querySelector(selector)]);
+            return ElementProxy(this.el.querySelector(selector));
         },
         
         queryAll: function (selector) {
@@ -55,7 +55,7 @@ define([
         
         appendTo: function (parentEl) {
             if (this.el && typeof this.el !== 'string') {
-                (parentEl.el || parentEl).appendChild(this.el);
+                (parentEl.el || parentEl[0] || parentEl).appendChild(this.el);
             } else {
                 this.pendingParentEl = parentEl;
             }

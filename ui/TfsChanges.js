@@ -52,7 +52,7 @@ define([
             var me = this;
             
             if (workspaceChanges[workspaceName]) {
-                me.renderChanges(workspaceChanges[workspaceName]);
+                me.renderChanges(workspaceName);
                 return;
             }
             
@@ -60,23 +60,18 @@ define([
             me.enableWorkspacePicker(false);
             
             outstandingGetChanges = TFS.getChanges(workspaceName).then(function (changes) {
-                changes = Util.collapseCommonPaths(changes);
-                workspaceChanges[workspaceName] = changes;
                 outstandingGetChanges = null;
                 me.enableWorkspacePicker(true);
-                me.renderChanges(changes);
+                
+                workspaceChanges[workspaceName] = buildTree(Util.collapseCommonPaths(changes));
+                me.renderChanges(workspaceName);
             }).catch(me.displayError.bind(me));
         },
         
-        renderChanges: function (changes) {
+        renderChanges: function (workspaceName) {
             var me = this;
-            
-            me.contentEl.innerHTML = buildTree(changes);
-            const nodes = Util.toArray(me.contentEl.querySelectorAll('li.tree-node > span'));
-            nodes.forEach(function (el) {
-                el.addEventListener('click', handleClickTree);
-            });
-            handleClickTree.call(nodes[0], { x: 10000 });
+            me.contentEl.innerHTML = null;
+            workspaceChanges[workspaceName].appendTo(me.contentEl);
         },
         
         displayError: function (message) {
@@ -144,14 +139,19 @@ define([
     }
 
     function buildTree(nodes) {
-        let html = nodes.map(function (node) {
+        let elements = nodes.map(function (node) {
+            var fileEl;
             if (node.children) {
-                return `<li class="tree-node children expanded"><span>${node.name}</span> ${buildTree(node.children)}</li>`;
+                fileEl = Component(`<li class="tree-node children expanded selected"><span>${node.name}</span></li>`);
+                fileEl.append(buildTree(node.children));
             } else {
-                return `<li class="tree-node"><span>${node.name}</span></div>`;
+                fileEl = Component(`<li class="tree-node selected"><span>${node.name}</span></li>`);
+                fileEl.el.fileChange = node;
             }
-        }).join('');
-        return `<ul class="tree">${html}</ul>`;
+            fileEl.el.querySelector('span').addEventListener('click', handleClickTree);
+            return fileEl;
+        });
+        return Component(`<ul class="tree"></ul>`).append(elements);
     }
     
     return function TfsChanges() {

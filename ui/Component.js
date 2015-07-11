@@ -37,6 +37,7 @@ define([
         
         setVisible: function (visible) {
             this.el.style.display = visible ? null : 'none';
+            return this;
         },
         
         appendTo: function (parentEl) {
@@ -44,6 +45,22 @@ define([
             if (this.el && typeof this.el !== 'string') {
                 this.parentEl.appendChild(this.el);
             }
+            return this;
+        },
+        
+        append: function (childEls) {
+            var me = this;
+            
+            if (childEls.el) {
+                me.el.appendChild(childEls.el);
+            } else if (childEls.nodeType === 1 && typeof childEls.nodeName === "string") {
+                me.el.appendChild(childEls);
+            } else {
+                childEls.forEach(function (el) {
+                    me.append(el);
+                });
+            }
+            return me;
         },
         
         destroy: function () {

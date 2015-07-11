@@ -259,7 +259,7 @@ select {
 
 #change-container {
     margin-top: 1px;
-    margin-right: -10px;
+    margin-right: -7px;
 }
 
 #change-container .content {
@@ -304,7 +304,7 @@ select {
 
 .tree-node.selected > span:before {
     content: "\f00c";
-    color: #484;
+    color: #6a6;
 }
 
 .tree-node.selected > span {

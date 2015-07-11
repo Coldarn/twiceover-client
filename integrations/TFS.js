@@ -25,10 +25,10 @@ define([
         
         getChangeFiles: function (workspaceName, changeRecord) {
             if (App.TEST_MODE) {
-                var whichFile = Math.random() >= 0.5;
+                const choices = ['test/left.js', 'test/right.js', 'test/csharp1.cs', 'test/csharp2.cs'];
                 return Promise.all([
-                    getLocalFile(whichFile ? 'test/left.js' : 'test/csharp1.cs'),
-                    getLocalFile(whichFile ? 'test/right.js' : 'test/csharp1.cs')
+                    getLocalFile(choices[(choices.length * Math.random()) | 0]),
+                    getLocalFile(choices[(choices.length * Math.random()) | 0])
                 ]);
             }
             return Promise.all([
@@ -172,7 +172,7 @@ define([
             if (App.TEST_MODE) {
                 setTimeout(function () {
                     resolve(fs.readFileSync(localPath).toString());
-                }, Math.random() * 10000);
+                }, Math.random() * 5000);
             } else {
                 fs.readFile(localPath, function (err, data) {
                     if (err) {

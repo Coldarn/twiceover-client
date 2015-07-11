@@ -1,9 +1,13 @@
 define([
+    'App',
     'util/Util',
     'util/EventBus',
+    'om/Review',
+    'om/Iteration',
+    'om/FileEntry',
     'ui/Component',
     'ui/TfsChanges',
-], function (Util, EventBus, Component, TfsChanges) {
+], function (App, Util, EventBus, Review, Iteration, FileEntry, Component, TfsChanges) {
     'use strict';
 
     var proto = {
@@ -20,7 +24,7 @@ define([
             me.query('#review-nameentry').on('keydown', me.handleKeydown.bind(me));
             me.query('#review-title').on('keyup', me.validateAll.bind(me));
 
-//            me.query('button.close').style.display = true ? null : 'none';
+            me.query('button.close')[0].style.display = 'none';
             
             me.changesControl.appendTo(me.el.querySelector('#change-container'));
             
@@ -83,11 +87,11 @@ define([
             
             me.showCreate(true);
             
-            const changeRecords = me.changesControl.getChanges();
+            me.changeRecords = me.changesControl.getChanges();
             const fileList = me.query('.import-status .tree');
             fileList.queryAll('*').remove();
             
-            Promise.all(changeRecords.map(function (changeRecord) {
+            Promise.all(me.changeRecords.map(function (changeRecord) {
                 const el = Component(`<li class="tree-node"><span>${changeRecord.displayPath}</span></li>`);
                 el.appendTo(fileList);
                 
@@ -103,6 +107,18 @@ define([
         
         handleCreateFinished: function () {
             if (this.loadingChanges) {
+                const review = Review(),
+                    leftIteration = review.addIteration(),
+                    rightIteration = review.addIteration();
+                
+                this.changeRecords.forEach(function (change) {
+                    leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
+                    rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                });
+
+                App.setActiveReview(review);
+                App.setActiveIterations(leftIteration, rightIteration);
+                
                 this.hide();
             }
         },

@@ -1,7 +1,8 @@
 define([
     'util/Util',
+    'util/EventBus',
     'App'
-], function (Util, App) {
+], function (Util, EventBus, App) {
     'use strict';
     
     var codeEl = document.querySelector('.code-pane > code'),
@@ -30,14 +31,12 @@ define([
                 hljs.highlightBlock(codeEl);
             },
             
-            handlers: {
-                activeEntryChanged: function(path, leftEntry, rightEntry) {
-                    self.loadActiveEntry(path, leftEntry, rightEntry);
-                }
+            handleActiveEntryChanged: function(path, leftEntry, rightEntry) {
+                self.loadActiveEntry(path, leftEntry, rightEntry);
             }
         };
     
-    App.subscribe(self.handlers);
+    EventBus.on('active_entry_changed', self.handleActiveEntryChanged, self);
     
     return self;
 });

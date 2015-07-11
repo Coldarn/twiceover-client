@@ -1,44 +1,45 @@
 define([
     'util/Util',
-    'util/Observable',
+    'util/EventBus',
     'om/Review',
     'om/Iteration',
     'om/FileEntry'
-], function (Util, Observable, Review, Iteration, FileEntry) {
+], function (Util, EventBus, Review, Iteration, FileEntry) {
     'use strict';
     
-    var App = Observable();
+    var App = {
     
-    App.TEST_MODE = true;
-    
-    App.review = null,
-    App.leftIteration = null,
-    App.rightIteration = null,
-    App.leftEntry = null,
-    App.rightEntry = null,
+        TEST_MODE: true,
 
-    App.setActiveReview = function (review) {
-        App.review = review;
-        App.fireEvent('activeReviewChanged', review);
-    };
+        review: null,
+        leftIteration: null,
+        rightIteration: null,
+        leftEntry: null,
+        rightEntry: null,
 
-    App.setActiveIterations = function (left, right) {
-        App.leftIteration = App.review.getIteration(left);
-        App.rightIteration = App.review.getIteration(right);
-        App.fireEvent('activeIterationsChanged', App.leftIteration, App.rightIteration);
-    };
-    
-    App.setActiveEntry = function (displayPath) {
-        var leftEntry = App.leftIteration.getEntry(displayPath),
-            rightEntry = App.rightIteration.getEntry(displayPath);
-        
-        if (!leftEntry && !rightEntry) {
-            throw new Error(`No entries found with the given path: ${displayPath}`);
+        setActiveReview: function (review) {
+            App.review = review;
+            EventBus.fire('active_review_changed', review);
+        },
+
+        setActiveIterations: function (left, right) {
+            App.leftIteration = App.review.getIteration(left);
+            App.rightIteration = App.review.getIteration(right);
+            EventBus.fire('active_iterations_changed', App.leftIteration, App.rightIteration);
+        },
+
+        setActiveEntry: function (displayPath) {
+            var leftEntry = App.leftIteration.getEntry(displayPath),
+                rightEntry = App.rightIteration.getEntry(displayPath);
+
+            if (!leftEntry && !rightEntry) {
+                throw new Error(`No entries found with the given path: ${displayPath}`);
+            }
+            App.leftEntry = leftEntry;
+            App.rightEntry = rightEntry;
+
+            EventBus.fire('active_entry_changed', displayPath, App.leftEntry, App.rightEntry);
         }
-        App.leftEntry = leftEntry;
-        App.rightEntry = rightEntry;
-        
-        App.fireEvent('activeEntryChanged', displayPath, App.leftEntry, App.rightEntry);
     };
     
     return App;

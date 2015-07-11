@@ -27,13 +27,17 @@ define([
         },
         
         setEl: function (el) {
-            this.destroy();
-            this.el = el;
-            this.el.component = this;
-            this.initComponent();
-            if (this.pendingParentEl) {
-                this.pendingParentEl.appendChild(this.el);
-                delete this.pendingParentEl;
+            var me = this;
+            
+            me.destroy();
+            me.el = el;
+            me.el.component = this;
+            me.initComponent();
+            if (me.pendingLoadCallbacks) {
+                me.pendingLoadCallbacks.forEach(function (callback) {
+                    callback(me);
+                });
+                delete me.pendingLoadCallbacks;
             }
         },
         
@@ -57,7 +61,7 @@ define([
             if (this.el && typeof this.el !== 'string') {
                 (parentEl.el || parentEl[0] || parentEl).appendChild(this.el);
             } else {
-                this.pendingParentEl = parentEl;
+                this.whenLoaded(function (me) { (parentEl.el || parentEl[0] || parentEl).appendChild(me.el); });
             }
             return this;
         },
@@ -74,6 +78,13 @@ define([
                     me.append(el);
                 });
             }
+            return me;
+        },
+        
+        whenLoaded: function (callback) {
+            var me = this;
+            me.pendingLoadCallbacks = me.pendingLoadCallbacks || [];
+            me.pendingLoadCallbacks.push(callback);
             return me;
         },
         

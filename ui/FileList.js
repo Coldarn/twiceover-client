@@ -1,7 +1,8 @@
 define([
     'util/Util',
+    'util/EventBus',
     'App'
-], function (Util, App) {
+], function (Util, EventBus, App) {
     'use strict';
     
     var el = document.querySelector('.file-pane'),
@@ -9,7 +10,9 @@ define([
             populate: function () {
                 var paths = Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths()),
                     fileHtml = paths.map(function (path) {
-                        return `<li class="file-entry" data-path="${path}">${path}</li>`;
+                        const splitPath = path.split('/');
+                        const name = splitPath[splitPath.length - 1];
+                        return `<li class="file-entry" data-path="${path}">${name}</li>`;
                     }).join('\n');
                 el.innerHTML = `<ul class="file-list">${fileHtml}</ul>`;
                 
@@ -26,21 +29,21 @@ define([
                     || paths[0]);
             },
             
-            handlers: {
-                activeIterationsChanged: function() {
-                    self.populate();
-                },
-                activeEntryChanged: function(path, leftEntry, rightEntry) {
-                    var selFileEl = document.querySelector(`.file-entry.selected`);
-                    if (selFileEl) {
-                        selFileEl.classList.remove('selected');
-                    }
-                    document.querySelector(`.file-entry[data-path="${path}"]`).classList.add('selected');
+            handleActiveIterationsChanged: function() {
+                self.populate();
+            },
+            
+            handleActiveEntryChanged: function(path, leftEntry, rightEntry) {
+                var selFileEl = document.querySelector(`.file-entry.selected`);
+                if (selFileEl) {
+                    selFileEl.classList.remove('selected');
                 }
+                document.querySelector(`.file-entry[data-path="${path}"]`).classList.add('selected');
             }
         };
     
-    App.subscribe(self.handlers);
+    EventBus.on('active_iterations_changed', self.handleActiveIterationsChanged, self);
+    EventBus.on('active_entry_changed', self.handleActiveEntryChanged, self);
     
     return self;
 });

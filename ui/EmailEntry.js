@@ -14,6 +14,7 @@ define([
             
             me.entryEl = this.el.querySelector('#review-nameentry');
             me.suggestionsEl = me.el.querySelector('.email-suggestions');
+            me.addButtonEl = me.el.querySelector('#add-reviewer');
             
             ElementProxy(me.suggestionsEl).on('click', function (event) {
                 me.selectSuggestion(event.toElement.innerText);
@@ -23,8 +24,7 @@ define([
                     focusedEl.classList.remove('focus');
                 }
             });
-            
-            me.query('#add-reviewer').on('click', me.handleAddReviewer.bind(me));
+            ElementProxy(me.addButtonEl).on('click', me.handleAddReviewer.bind(me));
             me.query('#review-nameentry')
                 .on('keydown', me.handleKeydown.bind(me))
                 .on('keypress', me.handleEmailTextEntry.bind(me))
@@ -32,13 +32,14 @@ define([
 		},
         
         loadSuggestions: function () {
-            const me = this;
+            const me = this,
+                checkValue = me.entryEl.value;
             
-            if (me.pendingSuggestions || me.entryEl.value === me.lastCheckValue) {
+            this.checkInputValid();
+            if (me.pendingSuggestions || checkValue === me.lastCheckValue) {
                 return;
             }
             
-            const checkValue = me.entryEl.value;
             me.lastCheckValue = checkValue;
             me.pendingSuggestions = EmailChecker.getSuggestions(checkValue).then(function (suggestions) {
                 me.pendingSuggestions = null;
@@ -68,6 +69,12 @@ define([
         selectSuggestion: function (text) {
             this.entryEl.value = text;
             this.handleAddReviewer();
+        },
+        
+        checkInputValid: function () {
+            const isValid = /[^@]+@[^@.]+\.[^@.]+/.test(this.entryEl.value);
+            this.addButtonEl.classList.toggle('disabled', !isValid);
+            return isValid;
         },
         
         
@@ -115,7 +122,7 @@ define([
             const me = this,
                 reviewerListEl = this.el.querySelector('#reviewer-container');
 
-            if (me.entryEl.value.length < 2) {
+            if (me.entryEl.value.length < 2 || !me.checkInputValid()) {
                 return;
             }
 
@@ -126,6 +133,7 @@ define([
             reviewerListEl.style.display = null;
             me.entryEl.value = '';
             me.clearSuggestions();
+            me.checkInputValid();
             me.entryEl.focus();
 			
 			EventBus.fire('reviewer_add_remove');

@@ -225,7 +225,8 @@ button.save {
     color: white;
 }
 
-button.save.disabled {
+button.disabled {
+    background: #999;
     opacity: 0.5;
     pointer-events: none;
     color: black;

@@ -27,7 +27,10 @@ define([
                 return;
             }
 
-            reviewerListEl.appendChild(new Range().createContextualFragment(`<div class="email"><span>${entryEl.value}</span><span class="fa fa-times"></span></div>`));
+            const itemEl = Component(`<div class="email"><span>${entryEl.value}</span><span class="fa fa-times"></span></div>`);
+            itemEl.appendTo(reviewerListEl);
+            itemEl.query('.fa').on('click', function () { itemEl.destroy(); });
+            
             reviewerListEl.style.display = null;
             entryEl.value = '';
 			

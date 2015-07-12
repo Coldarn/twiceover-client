@@ -6,8 +6,9 @@ define([
     'om/Iteration',
     'om/FileEntry',
     'ui/Component',
+    'ui/EmailEntry',
     'integrations/TfsChanges',
-], function (App, Util, EventBus, Review, Iteration, FileEntry, Component, TfsChanges) {
+], function (App, Util, EventBus, Review, Iteration, FileEntry, Component, EmailEntry, TfsChanges) {
     'use strict';
 
     var proto = {
@@ -20,15 +21,15 @@ define([
             me.query('.import-content button.save').on('click', me.handleCreate.bind(me));
             me.query('.import-status button.close').on('click', me.handleCloseCreate.bind(me));
             
-            me.query('#add-reviewer').on('click', me.handleAddReviewer.bind(me));
-            me.query('#review-nameentry').on('keydown', me.handleKeydown.bind(me));
             me.query('#review-title').on('keyup', me.validateAll.bind(me));
 
             me.query('button.close')[0].style.display = 'none';
             
             me.changesControl.appendTo(me.el.querySelector('#change-container'));
+            me.emailControl.prependTo(me.el.querySelector('.new-review-right'));
             
             EventBus.on('change_node_selected', me.validateAll, me);
+			EventBus.on('reviewer_add_remove', me.validateAll, me);
         },
         
         show: function () {
@@ -62,25 +63,6 @@ define([
         
         
 
-        handleKeydown: function (event) {
-            if (event.keyCode === 13) {
-                this.handleAddReviewer();
-            }
-        },
-
-        handleAddReviewer: function() {
-            var entryEl = this.el.querySelector('#review-nameentry'),
-                reviewerListEl = this.el.querySelector('#reviewer-container');
-
-            if (!entryEl.value || entryEl.value.length < 2) {
-                return;
-            }
-
-            reviewerListEl.appendChild(new Range().createContextualFragment(`<div>${entryEl.value}</div>`));
-            reviewerListEl.style.display = null;
-            entryEl.value = '';
-            this.validateAll();
-        },
         
         handleCreate: function () {
             var me = this;
@@ -132,6 +114,7 @@ define([
         var obj = Object.create(proto);
         obj.setHtml('text!partials/ImportDialog.html');
         obj.changesControl = TfsChanges();
+        obj.emailControl = EmailEntry();
         obj.loadingChanges = false;
         return obj;
     };

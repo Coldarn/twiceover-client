@@ -143,6 +143,7 @@ code.hljs {
 label {
     font-size: 18px;
     line-height: 30px;
+    margin-top: 6px;
 }
 
 .dialog {
@@ -257,10 +258,23 @@ select {
 
 #reviewer-container {
     margin-bottom: 6px;
+    -webkit-column-count: 2;
+    column-count: 2;
 }
 
 #reviewer-container > *, #change-container {
     font-size: 14px;
+}
+
+.email > span {
+    line-height: 20px;
+}
+
+.email > .fa {
+    display: inline-block;
+    color: #c00;
+    padding: 0 8px;
+    cursor: pointer;
 }
 
 #change-container {
@@ -334,8 +348,11 @@ select {
 
 .column {
     display: flex;
-    flex: 1;
     flex-direction: column;
+}
+
+.import-content > .column {
+    flex: 1;
     padding: 10px;
 }
 

@@ -66,6 +66,16 @@ define([
             return this;
         },
         
+        prependTo: function (parentEl) {
+            parentEl = parentEl.el || parentEl[0] || parentEl;
+            if (this.el && typeof this.el !== 'string') {
+                parentEl.insertBefore(this.el, parentEl.firstChild);
+            } else {
+                this.whenLoaded(function (me) { parentEl.insertBefore(me.el, parentEl.firstChild); });
+            }
+            return this;
+        },
+        
         append: function (childEls) {
             var me = this;
             

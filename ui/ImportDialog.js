@@ -6,7 +6,7 @@ define([
     'om/Iteration',
     'om/FileEntry',
     'ui/Component',
-    'ui/TfsChanges',
+    'integrations/TfsChanges',
 ], function (App, Util, EventBus, Review, Iteration, FileEntry, Component, TfsChanges) {
     'use strict';
 

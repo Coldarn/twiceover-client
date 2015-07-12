@@ -256,6 +256,10 @@ select {
     flex-direction: column;
 }
 
+.dropdown-anchor {
+    position: relative;
+}
+
 #reviewer-container {
     margin-bottom: 6px;
     -webkit-column-count: 2;
@@ -275,6 +279,23 @@ select {
     color: #c00;
     padding: 0 8px;
     cursor: pointer;
+}
+
+.email-suggestions {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #666;
+    box-shadow: 0 1px 6px black;
+}
+
+.email-suggestions > div {
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+.email-suggestions > div:hover, .email-suggestions > div.focus {
+    background: #484;
 }
 
 #change-container {

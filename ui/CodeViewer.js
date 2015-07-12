@@ -31,7 +31,7 @@ define([
                             : part.value;
                     }).join('');
             } else {
-                self.el.innerHTML = App.diffMode === 'left' ? (App.leftEntry && App.leftEntry.content) || ''
+                self.el.innerText = App.diffMode === 'left' ? (App.leftEntry && App.leftEntry.content) || ''
                     : App.diffMode === 'right' ? (App.rightEntry && App.rightEntry.content) || ''
                     : (App.leftEntry || App.rightEntry).content;
             }

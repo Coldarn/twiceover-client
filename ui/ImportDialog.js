@@ -72,6 +72,7 @@ define([
             me.changeRecords = me.changesControl.getChanges();
             const fileList = me.query('.import-status .tree');
             fileList.queryAll('*').remove();
+            me.createError = null;
             
             Promise.all(me.changeRecords.map(function (changeRecord) {
                 const el = Component(`<li class="tree-node"><span>${changeRecord.displayPath}</span></li>`);
@@ -83,19 +84,24 @@ define([
                     changeRecord.iterationContent = files[1];
                 }, function (error) {
                     Component(`<div class="error">${error}</div>`).appendTo(el);
+                    me.createError = error;
                 });
             })).then(me.handleCreateFinished.bind(me));
         },
         
         handleCreateFinished: function () {
-            if (this.loadingChanges) {
+            if (this.loadingChanges && !this.createError) {
                 const review = Review(),
                     leftIteration = review.addIteration(),
                     rightIteration = review.addIteration();
                 
                 this.changeRecords.forEach(function (change) {
-                    leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
-                    rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                    if (change.baseContent) {
+                        leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
+                    }
+                    if (change.iterationContent) {
+                        rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                    }
                 });
 
                 App.setActiveReview(review);

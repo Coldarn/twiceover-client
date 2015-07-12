@@ -16,6 +16,8 @@ define([
         rightIteration: null,
         leftEntry: null,
         rightEntry: null,
+        
+        diffMode: 'line',
 
         setActiveReview: function (review) {
             App.review = review;
@@ -39,6 +41,11 @@ define([
             App.rightEntry = rightEntry;
 
             EventBus.fire('active_entry_changed', displayPath, App.leftEntry, App.rightEntry);
+        },
+        
+        setDiffMode: function (mode) {
+            App.diffMode = mode;
+            EventBus.fire('diff_mode_changed', mode);
         }
     };
     

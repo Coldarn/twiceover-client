@@ -172,7 +172,7 @@ define([
             if (App.TEST_MODE) {
                 setTimeout(function () {
                     resolve(fs.readFileSync(localPath).toString());
-                }, Math.random() * 5000);
+                }, Math.random() * 3000);
             } else {
                 fs.readFile(localPath, function (err, data) {
                     if (err) {

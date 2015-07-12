@@ -79,13 +79,18 @@ body {
     
 }
 
+.file-pane > content {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .code-pane {
     flex: 1;
     display: flex;
 }
 
 .file-list {
-    margin: 1em 0;
+    margin: 10px 0;
     padding: 0;
     list-style-type: none;
     -moz-user-select: none;
@@ -94,7 +99,7 @@ body {
 }
 
 .file-list > li {
-    padding: 4px 10px 6px 20px;
+    padding: 4px 10px 6px 15px;
     cursor: pointer;
     background: linear-gradient(90deg,
         #444 0%,

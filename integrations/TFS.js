@@ -25,7 +25,7 @@ define([
         
         getChangeFiles: function (workspaceName, changeRecord) {
             if (App.TEST_MODE) {
-                const choices = ['test/left.js', 'test/right.js', 'test/csharp1.cs', 'test/csharp2.cs'];
+                const choices = ['test/left.js', 'test/right.js', 'test/csharp1.cs', 'test/csharp2.cs', ''];
                 return Promise.all([
                     getLocalFile(choices[(choices.length * Math.random()) | 0]),
                     getLocalFile(choices[(choices.length * Math.random()) | 0])
@@ -169,11 +169,7 @@ define([
     
     function getLocalFile(localPath) {
         return new Promise(function (resolve, reject) {
-            if (App.TEST_MODE) {
-                setTimeout(function () {
-                    resolve(fs.readFileSync(localPath).toString());
-                }, Math.random() * 3000);
-            } else {
+            function returnContents() {
                 fs.readFile(localPath, function (err, data) {
                     if (err) {
                         reject(err);
@@ -181,6 +177,14 @@ define([
                         resolve(data);
                     }
                 });
+            }
+            
+            if (App.TEST_MODE) {
+                setTimeout(function () {
+                    returnContents();
+                }, Math.random() * 3000);
+            } else {
+                returnContents();
             }
         });
     }

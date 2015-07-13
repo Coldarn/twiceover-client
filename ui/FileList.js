@@ -29,10 +29,6 @@ define([
             self.queryAll('.file-entry').on('click', function () {
                 App.setActiveEntry(this.dataset.path);
             });
-
-            App.setActiveEntry((App.leftEntry && App.leftEntry.path)
-                || (App.rightEntry && App.rightEntry.path)
-                || paths[0]);
         },
 
         handleActiveIterationsChanged: function() {

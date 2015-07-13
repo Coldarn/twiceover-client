@@ -23,16 +23,16 @@ define([
             return getChangesForWorkspace(workspaceName);
         },
         
-        getChangeFiles: function (workspaceName, changeRecord) {
+        getChangeFiles: function (workspaceName, changeRecord, localFilesOnly) {
             if (App.TEST_MODE) {
                 const choices = ['test/left.js', 'test/right.js', 'test/csharp1.cs', 'test/csharp2.cs', ''];
                 return Promise.all([
-                    getLocalFile(choices[(choices.length * Math.random()) | 0]),
+                    localFilesOnly ? undefined : getLocalFile(choices[(choices.length * Math.random()) | 0]),
                     getLocalFile(choices[(choices.length * Math.random()) | 0])
                 ]);
             }
             return Promise.all([
-                getFileFromTfs(workspaceName, changeRecord.basePath),
+                localFilesOnly ? undefined : getFileFromTfs(workspaceName, changeRecord.basePath),
                 getLocalFile(changeRecord.iterationPath)
             ]);
         }

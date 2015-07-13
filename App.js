@@ -28,6 +28,10 @@ define([
             App.leftIteration = App.review.getIteration(left);
             App.rightIteration = App.review.getIteration(right);
             EventBus.fire('active_iterations_changed', App.leftIteration, App.rightIteration);
+
+            const lastPath = (App.leftEntry && App.leftEntry.path) || (App.rightEntry && App.rightEntry.path);
+            const availablePaths = App.getActiveEntryPaths();
+            App.setActiveEntry(lastPath && availablePaths.indexOf(lastPath) >= 0 ? lastPath : availablePaths[0]);
         },
 
         setActiveEntry: function (displayPath) {

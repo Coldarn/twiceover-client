@@ -23,17 +23,24 @@ define([
             
             me.query('#review-title').on('keyup', me.validateAll.bind(me));
 
-            me.query('button.close')[0].style.display = 'none';
-            
             me.changesControl.appendTo(me.el.querySelector('#change-container'));
             me.emailControl.prependTo(me.el.querySelector('.new-review-right'));
             
             EventBus.on('change_node_selected', me.validateAll, me);
 			EventBus.on('reviewer_add_remove', me.validateAll, me);
+			EventBus.on('show_add_iteration_ui', me.show.bind(me, true));
         },
         
-        show: function () {
+        show: function (newIteration) {
             this.showCreate(false);
+            
+            this.inIterationMode = !!newIteration;
+            this.query('title')[0].innerText = this.inIterationMode ? 'New Iteration' : 'New Review';
+            this.query('.new-review-right').setVisible(!this.inIterationMode);
+            this.query('.import-content button.save')[0].innerText = this.inIterationMode ? 'Create Iteration' : 'Create Review';
+            this.query('.import-content button.close').setVisible(this.inIterationMode);
+            this.changesControl.loadChanges();
+            
             this.setVisible(true);
         },
         
@@ -47,9 +54,8 @@ define([
         },
 
         validateAll: function () {
-            var isValid = this.validateControl('#review-title', 4)
-                && this.validateControl('#reviewer-container', 1)
-                && this.changesControl.getChanges().length;
+            var isValid = this.changesControl.getChanges().length > 0 && (this.inIterationMode
+                  || (this.validateControl('#review-title', 4) && this.validateControl('#reviewer-container', 1)));
 
             this.el.querySelector('button.save').classList.toggle('disabled', !isValid);
             return isValid;
@@ -78,7 +84,7 @@ define([
                 const el = Component(`<li class="tree-node"><span>${changeRecord.displayPath}</span></li>`);
                 el.appendTo(fileList);
                 
-                return me.changesControl.getChangeFiles(changeRecord).then(function (files) {
+                return me.changesControl.getChangeFiles(changeRecord, me.inIterationMode).then(function (files) {
                     el.el.classList.add('selected');
                     changeRecord.baseContent = files[0];
                     changeRecord.iterationContent = files[1];
@@ -91,21 +97,33 @@ define([
         
         handleCreateFinished: function () {
             if (this.loadingChanges && !this.createError) {
-                const review = Review(),
-                    leftIteration = review.addIteration(),
-                    rightIteration = review.addIteration();
-                
-                this.changeRecords.forEach(function (change) {
-                    if (change.baseContent) {
-                        leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
-                    }
-                    if (change.iterationContent) {
-                        rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
-                    }
-                });
+                if (this.inIterationMode) {
+                    const rightIteration = App.review.addIteration();
+                    
+                    this.changeRecords.forEach(function (change) {
+                        if (change.iterationContent) {
+                            rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                        }
+                    });
+                    
+                    App.setActiveIterations(App.review.iterations[0], rightIteration);
+                } else {
+                    const review = Review(),
+                        leftIteration = review.addIteration(),
+                        rightIteration = review.addIteration();
 
-                App.setActiveReview(review);
-                App.setActiveIterations(leftIteration, rightIteration);
+                    this.changeRecords.forEach(function (change) {
+                        if (change.baseContent) {
+                            leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
+                        }
+                        if (change.iterationContent) {
+                            rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                        }
+                    });
+
+                    App.setActiveReview(review);
+                    App.setActiveIterations(leftIteration, rightIteration);
+                }
                 
                 this.hide();
             }
@@ -122,6 +140,7 @@ define([
         obj.changesControl = TfsChanges();
         obj.emailControl = EmailEntry();
         obj.loadingChanges = false;
+        obj.inIterationMode = false;
         return obj;
     };
 });

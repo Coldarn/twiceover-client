@@ -18,9 +18,6 @@ define([
             
             me.workspacePickerEl = me.el.querySelector('#workspace-picker');
             me.enableWorkspacePicker(!outstandingGetChanges);
-            if (!outstandingGetChanges) {
-                workspaceChanges = {};
-            }
             
             me.contentEl = me.el.querySelector('.content');
             me.contentEl.innerHTML = '<div>Discovering TFS workspaces...</div>';
@@ -50,14 +47,24 @@ define([
             }).catch(me.displayError.bind(me));
         },
         
+        loadChanges: function () {
+            if (!this.workspacePickerEl) {
+                return;
+            }
+            if (!outstandingGetChanges) {
+                workspaceChanges = {};
+            }
+            this.loadWorkspaceChanges(this.workspacePickerEl.value);
+        },
+        
         getChanges: function () {
             return Util.toArray(this.el.querySelectorAll('.tree-node.selected.change-file')).map(function (el) {
                 return el.fileChange;
             });
         },
         
-        getChangeFiles: function (changeRecord) {
-            return TFS.getChangeFiles(activeWorkspace, changeRecord);
+        getChangeFiles: function (changeRecord, localFilesOnly) {
+            return TFS.getChangeFiles(activeWorkspace, changeRecord, localFilesOnly);
         },
         
         loadWorkspaceChanges: function (workspaceName) {

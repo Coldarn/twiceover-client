@@ -172,7 +172,11 @@ define([
             function returnContents() {
                 fs.readFile(localPath, function (err, data) {
                     if (err) {
-                        reject(err);
+                        if (err.message.startsWith('ENOENT: no such file or directory, open')) {
+                            resolve('');
+                        } else {
+                            reject(err);
+                        }
                     } else {
                         resolve(data.toString());
                     }

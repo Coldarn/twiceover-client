@@ -2,8 +2,8 @@
     "name": "Twice-Over",
     "main": "index.html",
     "window": {
-        "toolbar": true,
-        "width": 800,
-        "height": 600
+        "toolbar": false,
+        "width": 1024,
+        "height": 700
     }
 }

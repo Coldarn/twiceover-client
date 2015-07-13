@@ -18,11 +18,11 @@ define([
         },
 
         populate: function () {
-            var paths = Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths()),
+            var paths = App.getActiveEntryPaths(),
                 fileHtml = paths.map(function (path) {
                     const splitPath = path.split('/');
                     const name = splitPath[splitPath.length - 1];
-                    return `<li class="file-entry" data-path="${path}">${name}</li>`;
+                    return `<li class="file-entry" title="${path}" data-path="${path}">${name}</li>`;
                 }).join('');
             self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul>`;
 

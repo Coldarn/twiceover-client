@@ -1,6 +1,8 @@
 define(function () {
     'use strict';
     
+    const htmlEscapeEl = document.createElement('div');
+    
     const Util = {
         union: function (left, right) {
             var merged = left.slice(),
@@ -41,6 +43,11 @@ define(function () {
                 }
             }
             return -1;
+        },
+        
+        escapeHtml: function (html) {
+            htmlEscapeEl.innerText = html;
+            return htmlEscapeEl.innerHTML;
         },
         
         collapseCommonPaths: function (filePaths) {

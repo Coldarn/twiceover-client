@@ -46,6 +46,19 @@ define([
         setDiffMode: function (mode) {
             App.diffMode = mode;
             EventBus.fire('diff_mode_changed', mode);
+        },
+        
+        getActiveEntryPaths: function () {
+            return Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths());
+        },
+        
+        getActiveEntries: function () {
+            return App.getActiveEntryPaths().map(function (path) {
+                return {
+                    left: App.leftIteration.getEntry(path),
+                    right: App.rightIteration.getEntry(path)
+                }
+            });
         }
     };
     

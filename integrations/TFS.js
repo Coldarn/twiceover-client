@@ -173,7 +173,7 @@ define([
                 fs.readFile(localPath, function (err, data) {
                     if (err) {
                         if (err.message.startsWith('ENOENT: no such file or directory, open')) {
-                            resolve('');
+                            resolve(null);
                         } else {
                             reject(err);
                         }
@@ -201,7 +201,7 @@ define([
                 function (err, stdout, stderr) {
                     if (err || stderr) {
                         if (stderr.indexOf(': No file matches.') > -1) {
-                            resolve('');
+                            resolve(null);
                         } else if (err.message === "stdout maxBuffer exceeded.") {
                             resolve('*** File too large to display! ***');
                         } else {

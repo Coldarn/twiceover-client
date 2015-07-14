@@ -53,16 +53,46 @@ define([
         },
         
         getActiveEntryPaths: function () {
-            return Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths());
+            // The files involved in any two given iterations is their union UNLESS THE LEFT ITERATION
+            // IS THE BASE, in which case the right iteration's files are the full set.
+            return App.leftIteration === App.review.iterations[0]
+                ? App.rightIteration.getPaths()
+                : Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths());
         },
         
         getActiveEntries: function () {
             return App.getActiveEntryPaths().map(function (path) {
                 return {
+                    path: path,
                     left: App.leftIteration.getEntry(path),
                     right: App.rightIteration.getEntry(path)
                 }
             });
+        },
+        
+        getEntryStatus: function (path) {
+            const left = App.leftIteration.getEntry(path),
+                right = App.rightIteration.getEntry(path);
+            
+            if (left && right) {
+                if (left.content === right.content) {
+                    return 'unchanged';
+                } else {
+                    return left.content === null ? 'added'
+                        : right.content === null ? 'removed'
+                        : 'changed';
+                }
+            } else if (left && !right) {
+                return return App.leftIteration === App.review.iterations[0]
+                    ? throw new Error('Extra base file included! How did you get here?!?')
+                    : 'removed';
+            } else if (!left && right) {
+                return return App.leftIteration === App.review.iterations[0]
+                    ? throw new Error('Base file missing! How did this happen?!?')
+                    : 'added';
+            } else {
+                throw new Error('Both files missing! What have you done?!?')
+            }
         }
     };
     

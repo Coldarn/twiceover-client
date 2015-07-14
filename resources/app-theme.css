@@ -99,7 +99,7 @@ body {
 }
 
 .file-list > li {
-    padding: 4px 10px 6px 15px;
+    padding: 4px 10px 6px 24px;
     cursor: pointer;
     background: linear-gradient(90deg,
         #444 0%,
@@ -119,6 +119,44 @@ body {
             #1d1f21 5px,
             #1d1f21 calc(100% - 3px),
             #161616 100%);
+}
+
+.file-list > li:before {
+    font-family: "FontAwesome";
+    display: inline-block;
+    width: 22px;
+    padding-left: 6px;
+    margin-left: -22px;
+    box-sizing: border-box;
+    font-size: 11px;
+}
+
+.file-list > li.added {
+    color: #5c5;
+}
+
+.file-list > li.added:before {
+    content: "\f067";
+}
+
+.file-list > li.removed {
+    color: #e66;
+}
+
+.file-list > li.removed:before {
+    content: "\f068";
+}
+
+.file-list > li.unchanged {
+    color: #99f;
+}
+
+.file-list > li.unchanged:before {
+    content: "=";
+    font-family: inherit;
+    font-size: 17px;
+    line-height: 11px;
+    font-weight: bold;
 }
 
 code {

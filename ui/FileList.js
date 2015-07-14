@@ -22,7 +22,8 @@ define([
                 fileHtml = paths.map(function (path) {
                     const splitPath = path.split('/');
                     const name = splitPath[splitPath.length - 1];
-                    return `<li class="file-entry" title="${path}" data-path="${path}">${name}</li>`;
+                    const diffStatus = App.getEntryStatus(path);
+                    return `<li class="file-entry ${diffStatus}" title="${path}" data-path="${path}">${name}</li>`;
                 }).join('');
             self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul>`;
 

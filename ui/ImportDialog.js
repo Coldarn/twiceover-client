@@ -101,9 +101,7 @@ define([
                     const rightIteration = App.review.addIteration();
                     
                     this.changeRecords.forEach(function (change) {
-                        if (change.iterationContent) {
-                            rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
-                        }
+                        rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
                     });
                     
                     App.setActiveIterations(App.review.iterations[0], rightIteration);
@@ -113,12 +111,8 @@ define([
                         rightIteration = review.addIteration();
 
                     this.changeRecords.forEach(function (change) {
-                        if (change.baseContent) {
-                            leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
-                        }
-                        if (change.iterationContent) {
-                            rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
-                        }
+                        leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
+                        rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
                     });
 
                     App.setActiveReview(review);

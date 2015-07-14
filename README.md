@@ -23,9 +23,9 @@ nw.js-based thick client to support code review creation from changes on the loc
 - email alias autocomplete via Active Directory queries through subprocess calls to  [EmailChecker](https://github.com/Coldarn/twiceover-emailchecker)
 - code file differencing via [jsdiff](https://github.com/kpdecker/jsdiff)
 - code syntax highlighting via [Highlight.js](https://github.com/isagalaev/highlight.js)
+- adding new iterations and diffing between any pair of them
 
 **To Do:**
-- adding new iterations
 - inline commenting
 - server communication for persisting and loading reviews
 

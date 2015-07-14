@@ -23,9 +23,10 @@ define([
         }
     };
 
-    return function Iteration(entries) {
+    return function Iteration(index, entries) {
         var obj = Object.create(proto);
 
+        obj.index = index;      // Index of this iteration in the review
         obj.entryOrder = [];    // Order of entries
         obj.entries = {};       // Entry lookup
         

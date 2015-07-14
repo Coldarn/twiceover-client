@@ -25,8 +25,15 @@ define([
         },
 
         setActiveIterations: function (left, right) {
-            App.leftIteration = App.review.getIteration(left);
-            App.rightIteration = App.review.getIteration(right);
+            const newLeft = App.review.getIteration(left);
+            const newRight = App.review.getIteration(right);
+            
+            if (App.leftIteration === newLeft && App.rightIteration === newRight) {
+                return;
+            }
+            
+            App.leftIteration = newLeft;
+            App.rightIteration = newRight;
             EventBus.fire('active_iterations_changed', App.leftIteration, App.rightIteration);
 
             const lastPath = (App.leftEntry && App.leftEntry.path) || (App.rightEntry && App.rightEntry.path);
@@ -55,7 +62,7 @@ define([
         getActiveEntryPaths: function () {
             // The files involved in any two given iterations is their union UNLESS THE LEFT ITERATION
             // IS THE BASE, in which case the right iteration's files are the full set.
-            return App.leftIteration === App.review.iterations[0]
+            return App.leftIteration.index === 0
                 ? App.rightIteration.getPaths()
                 : Util.union(App.leftIteration.getPaths(), App.rightIteration.getPaths());
         },
@@ -83,13 +90,15 @@ define([
                         : 'changed';
                 }
             } else if (left && !right) {
-                return return App.leftIteration === App.review.iterations[0]
-                    ? throw new Error('Extra base file included! How did you get here?!?')
-                    : 'removed';
+                if (App.leftIteration.index === 0) {
+                    throw new Error('Extra base file included! How did you get here?!?');
+                }
+                return 'removed';
             } else if (!left && right) {
-                return return App.leftIteration === App.review.iterations[0]
-                    ? throw new Error('Base file missing! How did this happen?!?')
-                    : 'added';
+                if (App.leftIteration.index === 0) {
+                    throw new Error('Base file missing! How did this happen?!?')
+                }
+                return 'added';
             } else {
                 throw new Error('Both files missing! What have you done?!?')
             }

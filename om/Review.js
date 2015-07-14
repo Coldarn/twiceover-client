@@ -7,7 +7,7 @@ define([
     var proto = {
         // Creates, adds, and returns a new iteration to this review
         addIteration: function () {
-            var iteration = Iteration();
+            var iteration = Iteration(this.iterations.length);
             this.iterations.push(iteration);
             return iteration;
         },

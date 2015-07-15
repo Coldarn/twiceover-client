@@ -89,6 +89,12 @@ define([
     
     const workQueue = WorkQueue();
     
+    function highlightDifference(diff, line) {
+        return diff.added ? `<span class="diff-added">${line}</span>`
+            : diff.removed ? `<span class="diff-removed">${line}</span>`
+            : line;
+    }
+    
     const self = {
         __proto__: Component.prototype,
 
@@ -100,21 +106,23 @@ define([
             self.activeTaskName = taskName;
 
             if (task && task.diff) {
-                self.el.innerHTML = task.diff
+                const content = task.diff
                     .filter(function (part) {
                         return !((App.diffMode === 'left' && part.added) || (App.diffMode === 'right' && part.removed));
                     })
                     .map(function (part) {
-                        var value = Util.escapeHtml(part.value);
-                        if (value === '\r\n') {
-                            value = ' \n';
+                        if (App.diffMode === 'char') {
+                            return Util.escapeHtml(part.value)
+                                .replace(/\r\n/g, '\n')
+                                .split('\n')
+                                .map(highlightDifference.bind(null, part))
+                                .join('</div><div class="code-line">');
+                        } else {
+                            return highlightDifference(part, part.value);
                         }
-    
-                        return part.added ? `<span class="diff-added">${value}</span>`
-                            : part.removed ? `<span class="diff-removed">${value}</span>`
-                            : value;
                     }).join('');
-    
+                
+                self.el.innerHTML = App.diffMode === 'char' ? `<div class="code-line">${content}</div>` : content;
                 self.el.setAttribute('class', path.substring(path.lastIndexOf('.') + 1));
                 hljs.highlightBlock(self.el);
             }

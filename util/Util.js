@@ -1,7 +1,12 @@
 define(function () {
     'use strict';
     
-    const htmlEscapeEl = document.createElement('div');
+    const htmlEscapeEl = document.createElement('div'),
+        textEscapeEl = document.createTextNode(''),
+        b58alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
+        base58 = b58alphabet.length;
+    
+    htmlEscapeEl.appendChild(textEscapeEl);
     
     const Util = {
         union: function (left, right) {
@@ -46,7 +51,7 @@ define(function () {
         },
         
         escapeHtml: function (html) {
-            htmlEscapeEl.innerText = html;
+            textEscapeEl.nodeValue = html;
             return htmlEscapeEl.innerHTML;
         },
         
@@ -90,6 +95,14 @@ define(function () {
             }
             
             return root;
+        },
+        
+        randomID: function () {
+            var encoded = new Array(22);
+            for (var i = encoded.length; i >= 0; i--) {
+                encoded[i] = b58alphabet[Math.floor(Math.random() * base58)];
+            }
+            return encoded.join('');
         }
     };
     

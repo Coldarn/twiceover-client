@@ -96,6 +96,7 @@ body {
 .code-pane {
     flex: 1;
     display: flex;
+    overflow: auto;
 }
 
 .file-list {
@@ -166,16 +167,43 @@ body {
     margin-left: -18px;
 }
 
-code {
+.code-pane > * {
     flex: 1;
-}
-code.hljs {
-    line-height: 1.35em;
-    padding: 15px;
+    display: flex;
 }
 
-.code-line:hover {
-    background: gray;
+code.hljs {
+    flex: 1;
+    padding: 5px;
+    line-height: 1.35em;
+    background: transparent;
+}
+
+code.code-block {
+    position: relative;
+    overflow: visible;
+}
+
+code.line-highlights {
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    z-index: -1;
+}
+.code-line.added {
+    background: rgba(0, 255, 0, 0.08);
+}
+.code-line.removed {
+    background: rgba(255, 0, 0, 0.12);
+}
+.code-line.added.removed {
+    background: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 0, 0, 0.12),
+        rgba(255, 0, 0, 0.12) 5px,
+        rgba(0, 255, 0, 0.08) 5px,
+        rgba(0, 255, 0, 0.08) 10px
+    );
 }
 
 .diff-added {

@@ -114,12 +114,14 @@ define([
                         const value = Util.escapeHtml(part.value);
                         let newlineCount = countLines(value);
                     
-                        if (part.added || part.removed) {
-                            const lastHighlight = highlightBlocks[highlightBlocks.length - 1];
-                            lastHighlight.set(part.added, part.removed);
-                        }
-                        for (; newlineCount > 0; newlineCount -= 1) {
-                            highlightBlocks.push(LineHighlight(part.added, part.removed));
+                        if (App.diffMode === 'char') {
+                            if (part.added || part.removed) {
+                                const lastHighlight = highlightBlocks[highlightBlocks.length - 1];
+                                lastHighlight.set(part.added, part.removed);
+                            }
+                            for (; newlineCount > 0; newlineCount -= 1) {
+                                highlightBlocks.push(LineHighlight(part.added && newlineCount > 1, part.removed && newlineCount > 1));
+                            }
                         }
                     
                         return part.added ? `<span class="diff-added">${value}</span>`

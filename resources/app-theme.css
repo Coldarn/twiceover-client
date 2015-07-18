@@ -17,6 +17,19 @@ body {
     background: #1d1f21;
 }
 
+::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+}
+
+::-webkit-scrollbar-corner, ::-webkit-scrollbar {
+    background: transparent;
+}
+
 .container-outer {
     position: absolute;
     display: flex;

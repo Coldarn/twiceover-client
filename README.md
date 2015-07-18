@@ -1,5 +1,5 @@
 # Twice-Over
-A cross-platform, stand-alone, iterative code review tool.
+An iterative code review tool supporting cross-iteration diffing and change commenting with syntax highlighting. Built to support Windows environments using TFS and Visual Studio.
 
 ## Why another code review tool?
 Corporate development shops not willing or able to use version control systems like git or mercurial are stuck in the dark ages when it comes to code reviews. Twice-Over aims to fix this.

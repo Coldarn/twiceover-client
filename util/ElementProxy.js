@@ -22,6 +22,22 @@ define([
             return this;
         },
         
+        setClass: function (name, add) {
+            this.forEach(function (el) {
+                el.classList.toggle(name, add);
+            });
+        },
+        
+        setAttribute: function (name, value) {
+            this.forEach(function (el) {
+                if (value === null) {
+                    el.removeAttribute(name);
+                } else {
+                    el.setAttribute(name, value);
+                }
+            });
+        },
+        
         remove: function () {
             this.forEach(function (el) {
                 el.remove();

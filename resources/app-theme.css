@@ -197,10 +197,12 @@ code.code-block {
     overflow: visible;
 }
 
-code.line-highlights {
+code.lines {
     position: absolute;
     width: calc(100% - 10px);
     height: calc(100% - 10px);
+}
+code.lines.highlights {
     z-index: -1;
 }
 .code-line.added {
@@ -217,6 +219,24 @@ code.line-highlights {
         rgba(0, 255, 0, 0.08) 5px,
         rgba(0, 255, 0, 0.08) 10px
     );
+}
+code.lines.diffs {
+    z-index: 1;
+    pointer-events: none;
+}
+code.lines.diffs > .diff-start {
+    border-top: 1px solid gray;
+    margin-top: -1px;
+}
+code.lines.diffs > .diff-side {
+    border-left: 1px solid gray;
+    margin-left: -1px;
+    border-right: 1px solid gray;
+    margin-right: -1px;
+}
+code.lines.diffs > .diff-end {
+    border-bottom: 1px solid gray;
+    margin-bottom: -1px;
 }
 
 .diff-added {

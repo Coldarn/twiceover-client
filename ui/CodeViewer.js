@@ -14,7 +14,7 @@ define([
         
         initComponent: function () {
             self.codeEl = self.el.querySelector('.code-block');
-            self.codeEl.addEventListener('mouseup', self.handleMouseUp);
+            self.el.addEventListener('mouseup', self.handleMouseUp);
         },
 
         loadActiveEntry: function () {
@@ -37,7 +37,12 @@ define([
                         const value = Util.escapeHtml(part.value);
                         let newlineCount = countLines(value);
                     
-                        // Insert a row into our highlights array for each line of text in the source
+                        // Inserts a div for each line into the diffs element
+                        if (newlineCount) {
+                            diffBlocks.push('<div>\n</div>'.repeat(newlineCount));
+                        }
+                        
+                        // Inserts an object into our highlights array to highlight lines with diffs
                         if (highlightLines) {
                             if (part.added || part.removed) {
                                 const lastHighlight = highlightBlocks[highlightBlocks.length - 1];
@@ -47,7 +52,6 @@ define([
                                 highlightBlocks.push(LineHighlight(part.added && newlineCount > 1, part.removed && newlineCount > 1));
                             }
                         }
-                        diffBlocks.push('<div>\n</div>'.repeat(newlineCount));
                     
                         return part.added ? `<span class="diff-added">${value}</span>`
                             : part.removed ? `<span class="diff-removed">${value}</span>`

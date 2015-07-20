@@ -32,6 +32,10 @@ define([
             });
         },
 
+        handleActiveReviewChanged: function (review) {
+            self.query('header')[0].innerText = review.title;
+        },
+        
         handleActiveIterationsChanged: function() {
             self.populate();
         },
@@ -51,6 +55,7 @@ define([
         }
     };
     
+    EventBus.on('active_review_changed', self.handleActiveReviewChanged, self);
     EventBus.on('active_iterations_changed', self.handleActiveIterationsChanged, self);
     EventBus.on('active_entry_changed', self.handleActiveEntryChanged, self);
     EventBus.on('diff_mode_changed', self.handleDiffModeChanged, self);

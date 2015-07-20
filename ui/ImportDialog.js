@@ -106,9 +106,11 @@ define([
                     
                     App.setActiveIterations(App.review.iterations[0], rightIteration);
                 } else {
-                    const review = Review(),
-                        leftIteration = review.addIteration(),
-                        rightIteration = review.addIteration();
+                    const title = this.el.querySelector('#review-title').value;
+                    const description = this.el.querySelector('#review-description').value;
+                    const review = Review(title, description);
+                    const leftIteration = review.addIteration();
+                    const rightIteration = review.addIteration();
 
                     this.changeRecords.forEach(function (change) {
                         leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));

@@ -31,9 +31,11 @@ define([
         }
     };
 
-    return function Review() {
+    return function Review(title, description) {
         var obj = Object.create(proto);
 
+        obj.title = title.trim();
+        obj.description = description || '';
         obj.iterations = [];          // Array of Iterations
 
         return obj;

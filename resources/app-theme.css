@@ -38,7 +38,7 @@ body {
     flex-direction: column;
 }
 
-.menu-bar, .file-list {
+.menu-bar, .file-pane, .dialog {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -97,8 +97,17 @@ body {
     background: linear-gradient(90deg,
         #444 0%,
         #444 calc(100% - 5px),
-        #111 calc(100% - 4.999px),
-        #1d1f21 100%);
+        #111 calc(100% - 5px),
+        transparent 100%);
+}
+
+.file-pane > header {
+    line-height: 40px;
+    padding: 0 10px;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .file-pane > content {
@@ -106,14 +115,8 @@ body {
     overflow-x: hidden;
 }
 
-.code-pane {
-    flex: 1;
-    display: flex;
-    overflow: auto;
-}
-
 .file-list {
-    margin: 10px 0;
+    margin: 0;
     padding: 0;
     list-style-type: none;
 }
@@ -180,21 +183,32 @@ body {
     margin-left: -18px;
 }
 
+.code-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 .code-pane > * {
     flex: 1;
     display: flex;
 }
 
-code.hljs {
-    flex: 1;
-    padding: 5px;
-    line-height: 1.35em;
-    background: transparent;
+.code-pane > header {
+    flex: 0 1 auto;
+    height: 26px;
+    background: #444;
+    margin-left: -10px;
+    padding-left: 10px;
 }
 
 code.code-block {
+    flex: 1;
     position: relative;
-    overflow: visible;
+    padding: 5px;
+    line-height: 1.35em;
+    background: transparent;
+    overflow: auto;
 }
 
 code.lines {
@@ -272,9 +286,6 @@ label {
     width: 100vw;
     height: 100vh;
     display: flex;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
 }
 
 .dialog > * {

@@ -196,13 +196,16 @@ body {
 
 .code-pane > header {
     flex: 0 1 auto;
-    height: 26px;
-    background: #444;
+    height: 30px;
     margin-left: -5px;
+    margin-bottom: -4px;
+    z-index: 1;
+    background: linear-gradient(180deg, #444, #444 calc(100% - 4px), rgba(0, 0, 0, 0.5) calc(100% - 4px), transparent 100%);
 }
 .code-pane > header > button {
     background: #aaa;
     font-size: 16px;
+    margin-bottom: 4px;
 }
 .code-pane > header > div {
     color: #ccc;

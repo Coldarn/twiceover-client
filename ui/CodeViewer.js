@@ -14,6 +14,9 @@ define([
         
         initComponent: function () {
             self.codeEl = self.el.querySelector('.code-block');
+            self.addCommentEl = self.el.querySelector('header > button');
+            self.headerTextEl = self.el.querySelector('header > .filler');
+            
             self.el.addEventListener('mouseup', self.handleMouseUp);
         },
 
@@ -23,6 +26,7 @@ define([
                 task = workQueue.getTask(taskName);
 
             self.activeTaskName = taskName;
+            self.headerTextEl.innerText = path;
 
             if (task && task.diff) {
                 const highlightBlocks = [LineHighlight()],
@@ -80,7 +84,10 @@ define([
             var selection = window.getSelection(),
                 selRange = selection.isCollapsed ? null : selection.getRangeAt(0);
             
-            if (!selRange) {
+            self.diffs.queryAll('div').setAttribute('class', null);
+            self.addCommentEl.style.display = 'none';
+            
+            if (!selRange || !self.codeEl.contains(selRange.commonAncestorContainer)) {
                 return;
             }
             
@@ -91,12 +98,12 @@ define([
             const startLine = beforeRange.toString().split('\n').length - 1;
             const lineCount = selRange.toString().split('\n').length - 1;
             
-            self.diffs.queryAll('div').setAttribute('class', null);
             self.diffs.el.children[startLine].classList.add('diff-start');
             for (let i = startLine + lineCount; i >= startLine; i--) {
                 self.diffs.el.children[i].classList.add('diff-side');
             }
             self.diffs.el.children[startLine + lineCount].classList.add('diff-end');
+            self.addCommentEl.style.display = null;
 //            console.log(self.codeEl.innerText.split('\n').slice(startLine, startLine + lineCount).join('\n'));
         },
 

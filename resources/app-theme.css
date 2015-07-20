@@ -198,8 +198,19 @@ body {
     flex: 0 1 auto;
     height: 26px;
     background: #444;
-    margin-left: -10px;
-    padding-left: 10px;
+    margin-left: -5px;
+}
+.code-pane > header > button {
+    background: #aaa;
+    font-size: 16px;
+}
+.code-pane > header > div {
+    color: #ccc;
+    line-height: 26px;
+    font-size: 14px;
+    padding: 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 code.code-block {

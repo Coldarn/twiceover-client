@@ -11,11 +11,11 @@ define([], function () {
         
         toString: function () {
             return [
-                ('0000' + this.lineStart).slice(-5),    // Pad with zeroes for lex sorting
-                this.lineCount,
-                this.leftIteration,
-                this.rightIteration,
-                this.diffMode
+                ('00' + this.rightIteration).slice(-3), // Pad with zeroes for lex sorting, right iteration first
+                ('0000' + this.lineStart).slice(-5),    // Then by line next
+                ('00' + this.leftIteration).slice(-3),  // Then by left iteration
+                ('0000' + this.lineCount).slice(-5),    // Then by number of lines
+                this.diffMode                           // Finally by diff mode, though this should never come up
             ].join(',');
         },
         
@@ -24,15 +24,27 @@ define([], function () {
         }
     };
     
-    return function Comment(leftIt, rightIt, diffMode, lineStart, lineCount) {
+    return function CommentLocation(leftIt, rightIt, diffMode, lineStart, lineCount) {
         const obj = Object.create(proto);
         
-        obj.leftIteration = leftIt;
-        obj.rightIteration = rightIt;
-        obj.diffMode = diffMode.toLowerCase();
-        obj.lineStart = lineStart;
-        obj.lineCount = lineCount;
-        
+        if (typeof leftIt === 'string') {
+            const parts = leftIt.split(',');
+            if (parts.length !== 5) {
+                throw new Error(`CommentLocation hash could not be parsed: ${leftIt}`);
+            }
+            
+            obj.leftIteration = Number(parts[2]);
+            obj.rightIteration = Number(parts[0]);
+            obj.diffMode = parts[4];
+            obj.lineStart = Number(parts[1]);
+            obj.lineCount = Number(parts[3]);
+        } else {
+            obj.leftIteration = leftIt;
+            obj.rightIteration = rightIt;
+            obj.diffMode = diffMode.toLowerCase();
+            obj.lineStart = lineStart;
+            obj.lineCount = lineCount;
+        }
         return obj;
     };
 });

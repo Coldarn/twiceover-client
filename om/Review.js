@@ -35,6 +35,11 @@ define([
                 return iteration;
             }
         },
+        
+        // Returns the metadata class for the given file path
+        getFileMeta: function (path) {
+            return this.fileMetas[path.toLowerCase()];
+        },
 
         serialize: function () {
             return JSON.stringify(this);

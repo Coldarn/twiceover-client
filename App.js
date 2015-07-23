@@ -42,7 +42,7 @@ define([
         },
 
         setActiveEntry: function (displayPath) {
-            var leftEntry = App.leftIteration.getEntry(displayPath),
+            const leftEntry = App.leftIteration.getEntry(displayPath),
                 rightEntry = App.rightIteration.getEntry(displayPath);
 
             if (!leftEntry && !rightEntry) {
@@ -50,6 +50,7 @@ define([
             }
             App.leftEntry = leftEntry;
             App.rightEntry = rightEntry;
+            App.fileMeta = App.review.getFileMeta(displayPath);
 
             EventBus.fire('active_entry_changed', displayPath, App.leftEntry, App.rightEntry);
         },

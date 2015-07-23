@@ -98,24 +98,28 @@ define([
         handleCreateFinished: function () {
             if (this.loadingChanges && !this.createError) {
                 if (this.inIterationMode) {
-                    const rightIteration = App.review.addIteration();
+                    const rightIteration = Iteration();
                     
                     this.changeRecords.forEach(function (change) {
                         rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
                     });
                     
+                    App.review.addIteration(rightIteration);
                     App.setActiveIterations(App.review.iterations[0], rightIteration);
                 } else {
                     const title = this.el.querySelector('#review-title').value;
                     const description = this.el.querySelector('#review-description').value;
                     const review = Review(title, description);
-                    const leftIteration = review.addIteration();
-                    const rightIteration = review.addIteration();
+                    const leftIteration = Iteration();
+                    const rightIteration = Iteration();
 
                     this.changeRecords.forEach(function (change) {
                         leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
                         rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
                     });
+                    
+                    review.addIteration(leftIteration);
+                    review.addIteration(rightIteration);
 
                     App.setActiveReview(review);
                     App.setActiveIterations(leftIteration, rightIteration);

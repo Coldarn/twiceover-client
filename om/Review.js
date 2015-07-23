@@ -1,16 +1,26 @@
 // Collection of iterations for a code review
 define([
-    'om/Iteration'
-], function (Iteration) {
+    'om/Iteration',
+    'om/FileMeta'
+], function (Iteration, FileMeta) {
     'use strict';
     
     var proto = {
         // Creates, adds, and returns a new iteration to this review
-        addIteration: function () {
-            var iteration = Iteration(this.iterations.length);
+        addIteration: function (iteration) {
+            var me = this;
+            
+            iteration.index = this.iterations.length;
             this.iterations.push(iteration);
-            return iteration;
+            
+            iteration.entryOrder.forEach(function (path) {
+                const lowerPath = path.toLowerCase();
+                if (!me.fileMetas[lowerPath]) {
+                    me.fileMetas[lowerPath] = FileMeta(path);
+                }
+            });
         },
+        
         // Returns the Iteration at the given index
         getIteration: function (iteration) {
             if (typeof iteration === 'number') {
@@ -35,8 +45,9 @@ define([
         var obj = Object.create(proto);
 
         obj.title = title.trim();
-        obj.description = description || '';
+        obj.description = description ? description.trim() : '';
         obj.iterations = [];          // Array of Iterations
+        obj.fileMetas = {};           // Map of file paths to metadata for all files in the review
 
         return obj;
     };

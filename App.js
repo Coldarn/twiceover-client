@@ -69,10 +69,13 @@ define([
         
         getActiveEntries: function () {
             return App.getActiveEntryPaths().map(function (path) {
+                const left = App.leftIteration.getEntry(path),
+                    right = App.rightIteration.getEntry(path);
+                
                 return {
-                    path: path,
-                    left: App.leftIteration.getEntry(path),
-                    right: App.rightIteration.getEntry(path)
+                    path: (left || right).path,
+                    left: left,
+                    right: right
                 }
             });
         },

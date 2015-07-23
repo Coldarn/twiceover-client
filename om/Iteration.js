@@ -7,14 +7,21 @@ define([
     var proto = {
         // Adds the given entry to the iteration
         addEntry: function (entry) {
-            this.entryOrder.push(entry.path);
-            this.entries[entry.path] = entry;
+            if (typeof this.index === 'number') {
+                throw new Error('Cannot modify an iteration after adding it to a review!');
+            }
+            
+            const pathLower = entry.path.toLowerCase();
+            
+            this.entryOrder.push(pathLower);
+            this.entries[pathLower] = entry;
+            
             return entry;
         },
 
         // Returns an entry by path
         getEntry: function (path) {
-            return this.entries[path];
+            return this.entries[path.toLowerCase()];
         },
 
         // Returns an array of all entry file paths
@@ -23,18 +30,15 @@ define([
         }
     };
 
-    return function Iteration(index, entries) {
+    return function Iteration(entries) {
         var obj = Object.create(proto);
 
-        obj.index = index;      // Index of this iteration in the review
+        obj.index = null;       // Index of this iteration in the review
         obj.entryOrder = [];    // Order of entries
         obj.entries = {};       // Entry lookup
         
         if (entries) {
-            entries.forEach(function (entry) {
-                obj.entryOrder.push(entry.path);
-                obj.entries[entry.path] = entry;
-            });
+            entries.forEach(obj.addEntry.bind(obj));
         }
 
         return obj;

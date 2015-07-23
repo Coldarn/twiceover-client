@@ -10,7 +10,6 @@ define(function () {
 
         obj.content = content;              // String content of the file or null if it couldn't be loaded
         obj.path = path;                    // Path to the file, for display in the UI
-        obj.comments = [];                  // Array of source comments objects
         obj.errorMessage = errorMessage;    // Error message string if the file couldn't be loaded
         
         const splitPath = path.split('/');

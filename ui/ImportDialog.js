@@ -109,7 +109,7 @@ define([
                 } else {
                     const title = this.el.querySelector('#review-title').value;
                     const description = this.el.querySelector('#review-description').value;
-                    const review = Review(title, description);
+                    const review = Review(App.user, title, description);
                     const leftIteration = Iteration();
                     const rightIteration = Iteration();
 

@@ -4,12 +4,14 @@ requirejs.config({
 
 requirejs([
     'App',
+    'om/User',
+    'integrations/EmailChecker',
     'util/ElementProxy',
     'ui/MenuBar',
     'ui/FileList',
     'ui/CodeViewer',
     'ui/ImportDialog'
-], function (App, ElementProxy, MenuBar, FileList, CodeViewer, ImportDialog) {
+], function (App, User, EmailChecker, ElementProxy, MenuBar, FileList, CodeViewer, ImportDialog) {
     'use strict';
 
     hljs.configure({
@@ -25,6 +27,16 @@ requirejs([
             gui.Window.get().showDevTools();
         }
     });
+    
+    if (App.TEST_MODE) {
+        App.user = User('John Doe', 'john.doe@example.com');
+    } else {
+        EmailChecker.getCurrentUser().then(function (user) {
+            App.user = user;
+        }, function (error) {
+            document.body.innerText = error.toString();
+        });
+    }
 
     ImportDialog()
         .appendTo(document.body)

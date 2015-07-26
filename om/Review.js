@@ -46,9 +46,10 @@ define([
         }
     };
 
-    return function Review(title, description) {
+    return function Review(owningUser, title, description) {
         var obj = Object.create(proto);
 
+        obj.owningUser = owningUser;
         obj.title = title.trim();
         obj.description = description ? description.trim() : '';
         obj.iterations = [];          // Array of Iterations

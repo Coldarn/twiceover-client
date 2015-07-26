@@ -40,7 +40,7 @@ define([
     
     // Looks for an install of Visual Studio and returns the path to tf.exe if found
     function getTfPath() {
-        var varsToCheck = ['VS130COMNTOOLS', 'VS120COMNTOOLS', 'VS110COMNTOOLS', 'VS100COMNTOOLS'],
+        var varsToCheck = ['VS140COMNTOOLS', 'VS120COMNTOOLS', 'VS110COMNTOOLS', 'VS100COMNTOOLS'],
             potentialPath;
         
         for (const varName of varsToCheck) {

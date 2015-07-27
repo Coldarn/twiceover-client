@@ -49,6 +49,15 @@ define([
             return this;
         },
         
+        on: function (eventName, handlerFn) {
+            if (this.el) {
+                this.el.addEventListener(eventName, handlerFn);
+            } else {
+                this.whenLoaded(function (me) { me.el.addEventListener(eventName, handlerFn); });
+            }
+            return this;
+        },
+        
         query: function (selector) {
             return ElementProxy(this.el.querySelector(selector));
         },
@@ -77,7 +86,7 @@ define([
         },
         
         append: function (childEls) {
-            var me = this;
+            const me = this;
             
             if (childEls.el) {
                 me.el.appendChild(childEls.el);

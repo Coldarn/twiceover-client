@@ -32,7 +32,6 @@ define([
             self.addCommentEl = self.el.querySelector('header > button');
             self.headerTextEl = self.el.querySelector('header > .filler');
             
-            self.codeEl.addEventListener('mousedown', self.handleMouseDown);
             self.on('mouseup', self.handleMouseUp);
 
             self.addCommentEl.addEventListener('click', self.handleAddComment);
@@ -97,31 +96,39 @@ define([
             }
         },
         
-        clearSelection: function () {
-            self.diffs.lineBorders.queryAll('div').setAttribute('class', null);
-            self.addCommentEl.style.display = 'none';
-            self.selection = null;
-            
+        setSelection: function (selection) {
             if (self.activeComment) {
                 self.activeComment.close();
                 self.activeComment = null;
             }
+            if (selection) {
+                self.selection = selection;
+            }
         },
         
-        handleMouseDown: function (event) {
-            self.clearSelection();
+        clearSelection: function () {
+            self.diffs.lineBorders.queryAll('div').setAttribute('class', null);
+            self.addCommentEl.style.display = 'none';
+            self.setSelection(null);
         },
+        
+        isTargetInternal: function (event) {
+            return self.codeEl.contains(event.target) && !self.diffs.el.contains(event.target);
+        },
+        
+        
+        
         
         handleMouseUp: function (event) {
             var selection = window.getSelection(),
                 selRange = selection.isCollapsed ? null : selection.getRangeAt(0);
             
-            self.clearSelection();
+            if (!self.isTargetInternal(event)) {
+                return;
+            }
             
-            if (!selRange
-                    || !self.codeEl.contains(selRange.commonAncestorContainer)
-                    || self.diffs.el.contains(selRange.startContainer)
-                    || self.diffs.el.contains(selRange.endContainer)) {
+            if (!selRange || !self.codeEl.contains(selRange.commonAncestorContainer)) {
+                self.clearSelection();
                 return;
             }
             
@@ -131,6 +138,13 @@ define([
             
             const startLine = Util.countLines(beforeRange.toString());
             const lineCount = Util.countLines(selRange.toString());
+            const commentLoc = CommentLocation(App.leftIteration.index, App.rightIteration.index, App.diffMode, startLine, lineCount);
+            
+            // If the selection hasn't changed, abort now
+            if (self.selection && self.selection.location.is(commentLoc)) {
+                return;
+            }
+            self.clearSelection();
             
             self.diffs.lineBorders[0].children[startLine].classList.add('diff-start');
             for (let i = startLine + lineCount; i >= startLine; i--) {
@@ -147,11 +161,11 @@ define([
             const topOffset = self.diffs.lineBorders[0].children[startLine].getBoundingClientRect().top -
                 self.diffs.el.getBoundingClientRect().top;
             const code = allCodeRange.toString().split('\n').slice(startLine, startLine + lineCount + 1).join('\n');
-            self.selection = {
+            self.setSelection({
                 topOffset: topOffset,
-                location: CommentLocation(App.leftIteration.index, App.rightIteration.index, App.diffMode, startLine, lineCount),
+                location: commentLoc,
                 comment: Comment(App.user, code),
-            };
+            });
         },
         
         handleAddComment: function () {

@@ -21,11 +21,6 @@ define([
             this.textEditor.value = this.comment.text || '';
             this.handleTextEdited();
 
-            function cancel(event) {
-                event.stopPropagation();
-            }
-            this.on('mousedown', cancel)
-                .on('mouseup', cancel);
             this.el.style.top = this.topOffset + 'px';
         },
         

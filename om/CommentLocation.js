@@ -9,6 +9,12 @@ define([], function () {
         lineStart: null,        // Index of the first line of the comment in the source
         lineCount: null,        // Number of lines included in the comment
         
+        is: function (otherCommentLoc) {
+            return otherCommentLoc
+                && Object.getPrototypeOf(otherCommentLoc) === proto
+                && otherCommentLoc.toString() == this.toString();
+        },
+        
         toString: function () {
             return [
                 ('00' + this.rightIteration).slice(-3), // Pad with zeroes for lex sorting, right iteration first

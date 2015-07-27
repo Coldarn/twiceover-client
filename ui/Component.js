@@ -10,7 +10,7 @@ define([
         setHtml: function (htmlOrPath) {
             var me = this;
             
-            htmlOrPath = htmlOrPath || me.el;
+            htmlOrPath = htmlOrPath;
             if (typeof htmlOrPath !== 'string') {
                 return;
             }
@@ -58,7 +58,7 @@ define([
         },
         
         appendTo: function (parentEl) {
-            if (this.el && typeof this.el !== 'string') {
+            if (this.el) {
                 (parentEl.el || parentEl[0] || parentEl).appendChild(this.el);
             } else {
                 this.whenLoaded(function (me) { (parentEl.el || parentEl[0] || parentEl).appendChild(me.el); });
@@ -68,7 +68,7 @@ define([
         
         prependTo: function (parentEl) {
             parentEl = parentEl.el || parentEl[0] || parentEl;
-            if (this.el && typeof this.el !== 'string') {
+            if (this.el) {
                 parentEl.insertBefore(this.el, parentEl.firstChild);
             } else {
                 this.whenLoaded(function (me) { parentEl.insertBefore(me.el, parentEl.firstChild); });
@@ -99,7 +99,7 @@ define([
         },
         
         destroy: function () {
-            if (this.el && typeof this.el !== 'string') {
+            if (this.el) {
                 this.el.remove();
             }
         }

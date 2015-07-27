@@ -3,8 +3,11 @@ define([
     'util/EventBus',
     'util/DiffWorkQueue',
     'ui/Component',
+    'ui/CodeComment',
+    'om/CommentLocation',
+    'om/Comment',
     'App'
-], function (Util, EventBus, DiffWorkQueue, Component, App) {
+], function (Util, EventBus, DiffWorkQueue, Component, CodeComment, CommentLocation, Comment, App) {
     'use strict';
     
     const workQueue = DiffWorkQueue();
@@ -12,12 +15,27 @@ define([
     const self = {
         __proto__: Component.prototype,
         
+        
+        codeEl: null,           // Root level <code> element hosting the code view
+        addCommentEl: null,     // "Add Comment" button element
+        headerTextEl: null,     // Element containing the file path text
+        
+        diffs: null,            // Component containing foreground elements to display diffs and selections
+        highlights: null,       // Component containing background line highlights to help draw attention to diffs
+        
+        selection: null,        // Active code block selection
+        activeComment: null,    // Currently-active comment component
+        
+        
         initComponent: function () {
             self.codeEl = self.el.querySelector('.code-block');
             self.addCommentEl = self.el.querySelector('header > button');
             self.headerTextEl = self.el.querySelector('header > .filler');
             
-            self.el.addEventListener('mouseup', self.handleMouseUp);
+            self.codeEl.addEventListener('mousedown', self.handleMouseDown);
+            self.on('mouseup', self.handleMouseUp);
+
+            self.addCommentEl.addEventListener('click', self.handleAddComment);
         },
 
         loadActiveEntry: function () {
@@ -39,7 +57,7 @@ define([
                     })
                     .map(function (part) {
                         const value = Util.escapeHtml(part.value);
-                        let newlineCount = countLines(value);
+                        let newlineCount = Util.countLines(value);
                     
                         // Inserts a div for each line into the diffs element
                         if (newlineCount) {
@@ -69,25 +87,41 @@ define([
                 hljs.highlightBlock(self.codeEl);
                 
                 // Setup the inner, foreground element's HTML (used for diff blocks and interation)
-                self.diffs = Component('<code class="lines diffs"></code>');
+                self.diffs = Component(`<code class="lines diffs"><div class="line-borders">${diffBlocks.join('')}</div></code>`);
+                self.diffs.lineBorders = self.diffs.query('.line-borders');
                 self.codeEl.insertBefore(self.diffs.el, self.codeEl.firstChild);
-                self.diffs.el.innerHTML = diffBlocks.join('');
                 
                 // Setup the inner, background element's HTML (used for line highlights in 'char' diff mode)
-                self.highlights = Component('<code class="lines highlights"></code>');
+                self.highlights = Component(`<code class="lines highlights">${highlightBlocks.join('')}</code>`);
                 self.codeEl.insertBefore(self.highlights.el, self.codeEl.firstChild);
-                self.highlights.el.innerHTML = highlightBlocks.join('');
             }
+        },
+        
+        clearSelection: function () {
+            self.diffs.lineBorders.queryAll('div').setAttribute('class', null);
+            self.addCommentEl.style.display = 'none';
+            self.selection = null;
+            
+            if (self.activeComment) {
+                self.activeComment.close();
+                self.activeComment = null;
+            }
+        },
+        
+        handleMouseDown: function (event) {
+            self.clearSelection();
         },
         
         handleMouseUp: function (event) {
             var selection = window.getSelection(),
                 selRange = selection.isCollapsed ? null : selection.getRangeAt(0);
             
-            self.diffs.queryAll('div').setAttribute('class', null);
-            self.addCommentEl.style.display = 'none';
+            self.clearSelection();
             
-            if (!selRange || !self.codeEl.contains(selRange.commonAncestorContainer)) {
+            if (!selRange
+                    || !self.codeEl.contains(selRange.commonAncestorContainer)
+                    || self.diffs.el.contains(selRange.startContainer)
+                    || self.diffs.el.contains(selRange.endContainer)) {
                 return;
             }
             
@@ -95,16 +129,41 @@ define([
             beforeRange.setStartAfter(self.diffs.el);
             beforeRange.setEnd(selRange.startContainer, selRange.startOffset);
             
-            const startLine = beforeRange.toString().split('\n').length - 1;
-            const lineCount = selRange.toString().split('\n').length - 1;
+            const startLine = Util.countLines(beforeRange.toString());
+            const lineCount = Util.countLines(selRange.toString());
             
-            self.diffs.el.children[startLine].classList.add('diff-start');
+            self.diffs.lineBorders[0].children[startLine].classList.add('diff-start');
             for (let i = startLine + lineCount; i >= startLine; i--) {
-                self.diffs.el.children[i].classList.add('diff-side');
+                self.diffs.lineBorders[0].children[i].classList.add('diff-side');
             }
-            self.diffs.el.children[startLine + lineCount].classList.add('diff-end');
+            self.diffs.lineBorders[0].children[startLine + lineCount].classList.add('diff-end');
             self.addCommentEl.style.display = null;
-//            console.log(self.codeEl.innerText.split('\n').slice(startLine, startLine + lineCount).join('\n'));
+
+            // Create a range encapsulating just the code text so we can extract matching lines
+            const allCodeRange = new Range();
+            allCodeRange.selectNodeContents(self.codeEl);
+            allCodeRange.setStartAfter(self.diffs.el);
+            
+            const topOffset = self.diffs.lineBorders[0].children[startLine].getBoundingClientRect().top -
+                self.diffs.el.getBoundingClientRect().top;
+            const code = allCodeRange.toString().split('\n').slice(startLine, startLine + lineCount + 1).join('\n');
+            self.selection = {
+                topOffset: topOffset,
+                location: CommentLocation(App.leftIteration.index, App.rightIteration.index, App.diffMode, startLine, lineCount),
+                comment: Comment(App.user, code),
+            };
+        },
+        
+        handleAddComment: function () {
+            if (!self.selection) {
+                return;
+            }
+            
+            const selection = self.selection;
+            self.clearSelection();
+            
+            self.activeComment = CodeComment(selection.topOffset, selection.location, selection.comment);
+            self.activeComment.appendTo(self.diffs);
         },
 
         handleActiveEntryChanged: function(path, leftEntry, rightEntry) {
@@ -142,16 +201,6 @@ define([
     self.setEl(document.querySelector('.code-pane'));
     
     
-    
-    function countLines(str) {
-        let count = -1,
-            lastIndex = -1;
-        do {
-            count += 1
-            lastIndex = str.indexOf('\n', lastIndex + 1);
-        } while (lastIndex >= 0);
-        return count;
-    }
     
     const LineHighlight = (function () {
         const proto = {

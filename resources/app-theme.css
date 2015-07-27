@@ -253,17 +253,17 @@ code.lines.diffs {
     z-index: 1;
     pointer-events: none;
 }
-code.lines.diffs > .diff-start {
+code.lines.diffs .diff-start {
     border-top: 1px solid gray;
     margin-top: -1px;
 }
-code.lines.diffs > .diff-side {
+code.lines.diffs .diff-side {
     border-left: 1px solid gray;
     margin-left: -1px;
     border-right: 1px solid gray;
     margin-right: -1px;
 }
-code.lines.diffs > .diff-end {
+code.lines.diffs .diff-end {
     border-bottom: 1px solid gray;
     margin-bottom: -1px;
 }
@@ -286,6 +286,33 @@ code.lines.diffs > .diff-end {
 .hljs span::selection {
     background: #06a;
 }
+
+comment {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background: #333;
+    box-shadow: 0 1px 8px black;
+    pointer-events: auto;
+    border-top: 1px solid transparent;
+    outline: 1px solid #555;
+}
+
+comment > textarea {
+    background: #444;
+    border: 0;
+    border-top: 1px solid #555;
+    resize: none;
+    color: #bbb;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
+    padding: 2px 4px 3px 4px;
+}
+
+
+
 
 label {
     font-size: 18px;

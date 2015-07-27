@@ -50,6 +50,16 @@ define(function () {
             return -1;
         },
         
+        countLines: function (str) {
+            let count = -1,
+                lastIndex = -1;
+            do {
+                count += 1
+                lastIndex = str.indexOf('\n', lastIndex + 1);
+            } while (lastIndex >= 0);
+            return count;
+        },
+        
         escapeHtml: function (html) {
             textEscapeEl.nodeValue = html;
             return htmlEscapeEl.innerHTML;

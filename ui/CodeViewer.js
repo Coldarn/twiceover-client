@@ -116,6 +116,10 @@ define([
             return self.codeEl.contains(event.target) && !self.diffs.el.contains(event.target);
         },
         
+        isSelectionInsideComment: function (selRange) {
+            return self.diffs.el.contains(selRange.startContainer) || self.diffs.el.contains(selRange.endContainer);
+        },
+        
         
         
         
@@ -123,7 +127,7 @@ define([
             var selection = window.getSelection(),
                 selRange = selection.isCollapsed ? null : selection.getRangeAt(0);
             
-            if (!self.isTargetInternal(event)) {
+            if (!self.isTargetInternal(event) || (selRange && self.isSelectionInsideComment(selRange))) {
                 return;
             }
             

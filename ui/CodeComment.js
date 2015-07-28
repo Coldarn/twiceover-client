@@ -13,15 +13,41 @@ define([
         
         initComponent: function () {
             this.codeEditor = this.query('code')
-                .on('keyup', this.handleCodeEdited.bind(this))[0];
+                .on('blur', this.syntaxHighlightCode.bind(this))
+                .on('keyup', this.handleCodeEdited.bind(this))
+                .on('paste', this.pastePlainText)[0];
             this.codeEditor.innerHTML = Util.escapeHtml(this.comment.code);
+            this.syntaxHighlightCode(true);
             
-            this.textEditor = this.query('textarea')
-                .on('keyup', this.handleTextEdited.bind(this))[0];
-            this.textEditor.value = this.comment.text || '';
-            this.handleTextEdited();
+            this.textEditor = this.query('note')
+                .on('keyup', this.handleNoteEdited.bind(this))
+                .on('paste', this.pastePlainText)[0];
+            this.textEditor.innerText = this.comment.text || '';
 
             this.el.style.top = this.topOffset + 'px';
+        },
+        
+        pastePlainText: function (event) {
+            event.preventDefault();
+            if (event.clipboardData) {
+                const text = event.clipboardData.getData('text/plain');
+                if (text) {
+                    document.execCommand('insertText', false, text);
+                }
+            }
+        },
+
+        syntaxHighlightCode: function (force) {
+            // First, check if the code has changed
+            const code = this.codeEditor.innerText;
+            if (!force && this.comment.code === code) {
+                return;
+            }
+
+            // Rip out any existing styling and re-style
+            this.codeEditor.innerHTML = Util.escapeHtml(code);
+            this.codeEditor.setAttribute('class', App.fileMeta.path.substring(App.fileMeta.path.lastIndexOf('.') + 1));
+            hljs.highlightBlock(this.codeEditor);
         },
         
         close: function () {
@@ -32,8 +58,7 @@ define([
         handleCodeEdited: function () {
         },
         
-        handleTextEdited: function () {
-            this.textEditor.setAttribute('rows', Util.countLines(this.textEditor.value) || 1);
+        handleNoteEdited: function () {
         }
     };
     

@@ -300,7 +300,13 @@ comment {
     outline: 1px solid #555;
 }
 
-comment > textarea {
+comment > code.hljs {
+    background: none;
+    padding: 0;
+}
+
+comment > note {
+    display: block;
     background: #444;
     border: 0;
     border-top: 1px solid #555;

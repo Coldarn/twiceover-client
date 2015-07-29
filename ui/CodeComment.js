@@ -13,18 +13,28 @@ define([
         
         initComponent: function () {
             this.codeEditor = this.query('code')
-                .on('blur', this.syntaxHighlightCode.bind(this))
-                .on('keyup', this.handleCodeEdited.bind(this))
+                .on('blur', this.handleCodeEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
             this.codeEditor.innerHTML = Util.escapeHtml(this.comment.code);
-            this.syntaxHighlightCode(true);
+            this.syntaxHighlightCode();
             
             this.textEditor = this.query('note')
-                .on('keyup', this.handleNoteEdited.bind(this))
+                .on('blur', this.handleNoteEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
-            this.textEditor.innerText = this.comment.text || '';
+            this.textEditor.innerText = this.comment.note || '';
 
             this.el.style.top = this.topOffset + 'px';
+            this.codeEditor.focus();
+        },
+        
+        hasCodeChanged: function () {
+            const code = this.codeEditor.innerText;
+            return this.comment.code !== code;
+        },
+
+        hasNoteChanged: function () {
+            const code = this.textEditor.innerText;
+            return this.comment.note !== code;
         },
         
         pastePlainText: function (event) {
@@ -37,15 +47,9 @@ define([
             }
         },
 
-        syntaxHighlightCode: function (force) {
-            // First, check if the code has changed
-            const code = this.codeEditor.innerText;
-            if (!force && this.comment.code === code) {
-                return;
-            }
-
+        syntaxHighlightCode: function () {
             // Rip out any existing styling and re-style
-            this.codeEditor.innerHTML = Util.escapeHtml(code);
+            this.codeEditor.innerHTML = Util.escapeHtml(this.codeEditor.innerText);
             this.codeEditor.setAttribute('class', App.fileMeta.path.substring(App.fileMeta.path.lastIndexOf('.') + 1));
             hljs.highlightBlock(this.codeEditor);
         },
@@ -54,11 +58,17 @@ define([
             this.destroy();
         },
         
-        
         handleCodeEdited: function () {
+            if (this.hasCodeChanged()) {
+                this.syntaxHighlightCode();
+                // TODO: Save the comment!
+            }
         },
         
         handleNoteEdited: function () {
+            if (this.hasNoteChanged()) {
+                // TODO: Save the comment!
+            }
         }
     };
     

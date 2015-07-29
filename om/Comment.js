@@ -6,7 +6,7 @@ define([], function () {
         user: null,         // User who posted the comment
         date: null,         // When the comment was posted
         code: null,         // Optional code-based comment
-        text: null,         // Optional plain-text comment
+        note: null,         // Optional plain-text comment
         
         // Only used for sorting
         toString: function () {
@@ -14,13 +14,13 @@ define([], function () {
         }
     };
     
-    return function Comment(user, code, text) {
+    return function Comment(user, code, note) {
         const obj = Object.create(proto);
         
         obj.user = user;
         obj.date = new Date().toISOString();
         obj.code = code || null;
-        obj.text = text || null;
+        obj.note = note || null;
         
         return obj;
     };

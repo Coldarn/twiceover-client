@@ -81,8 +81,8 @@ define([
         obj.iterations = [];          // Array of Iterations
         obj.fileMetas = {};           // Map of file paths to metadata for all files in the review
         
-        eventLog.processEventsSince(0, obj.handleEvent.bind(obj));
         eventLog.subscribe(obj.handleEvent, obj);
+        eventLog.processEventsSince(0);
 
         return obj;
     };

@@ -23,12 +23,12 @@ define([
             return this;
         },
 
-        add: function (event) {
+        add: function (event, keepTimestamp) {
             if (!event.type) {
                 throw new Error(`Event malformed: ${JSON.stringify(event)}`);
             }
             
-            event.id = Util.highResTime();
+            event.id = keepTimestamp && event.id || Util.highResTime();
             event.user = String(event.user || this.currentUser);
             
             this.log.push(event);
@@ -44,23 +44,35 @@ define([
             eventLog.log.forEach(this.add.bind(this));
         },
         
-        processEventsSince: function (lastEventID, callbackFn) {
+        processEventsSince: function (lastEventID) {
             const startIndex = Util.bisectSearch(this.log, function (event) {
                 return lastEventID - event.id;
             });
             
             for (let i = Math.max(startIndex, 0); i < this.log.length; i += 1) {
-                callbackFn(this.log[i]);
+                const event = this.log[i];
+                this.listeners.forEach(function (listener) {
+                    listener[0].call(listener[1], event);
+                });
             }
             return this;
         }
     };
 
-    return function EventLog(currentUser) {
+    function EventLog(currentUser) {
         const obj = Object.create(proto);
         obj.listeners = [];
         obj.log = [];
         obj.currentUser = currentUser || '';
         return obj;
+    }
+    
+    EventLog.load = function (events) {
+        const obj = EventLog();
+        obj.log = events;
+        obj.currentUser = events[0].user;
+        return obj;
     };
+    
+    return EventLog;
 });

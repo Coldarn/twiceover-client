@@ -303,6 +303,7 @@ comment {
 comment > code.hljs {
     background: none;
     padding: 0;
+    padding-bottom: 2px;
 }
 
 comment > note {

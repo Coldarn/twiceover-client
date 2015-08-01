@@ -57,6 +57,9 @@ define([
         },
         
         setDiffMode: function (mode) {
+            if (['left', 'line', 'char', 'right'].indexOf(mode) < 0) {
+                throw new Error(`Invalid diff mode: ${mode}`);
+            }
             App.diffMode = mode;
             EventBus.fire('diff_mode_changed', mode);
         },

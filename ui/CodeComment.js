@@ -18,10 +18,10 @@ define([
             this.codeEditor.innerHTML = Util.escapeHtml(this.comment.code);
             this.syntaxHighlightCode();
             
-            this.textEditor = this.query('note')
+            this.noteEditor = this.query('note')
                 .on('blur', this.handleNoteEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
-            this.textEditor.innerText = this.comment.note || '';
+            this.noteEditor.innerText = this.comment.note;
 
             this.el.style.top = this.topOffset + 'px';
             this.codeEditor.focus();
@@ -33,8 +33,12 @@ define([
         },
 
         hasNoteChanged: function () {
-            const code = this.textEditor.innerText;
+            const code = this.noteEditor.innerText;
             return this.comment.note !== code;
+        },
+        
+        hasCommentBeenSaved: function () {
+            return !!App.fileMeta.getComment(this.comment.id);
         },
         
         pastePlainText: function (event) {
@@ -61,13 +65,23 @@ define([
         handleCodeEdited: function () {
             if (this.hasCodeChanged()) {
                 this.syntaxHighlightCode();
-                // TODO: Save the comment!
+                this.comment.code = this.codeEditor.innerText;
+                if (!this.hasCommentBeenSaved()) {
+                    App.fileMeta.addComment(this.location, this.comment);
+                } else {
+                    App.fileMeta.editComment(this.comment.id, 'code', this.comment.code);
+                }
             }
         },
         
         handleNoteEdited: function () {
             if (this.hasNoteChanged()) {
-                // TODO: Save the comment!
+                this.comment.note = this.noteEditor.innerText;
+                if (!this.hasCommentBeenSaved()) {
+                    App.fileMeta.addComment(this.location, this.comment);
+                } else {
+                    App.fileMeta.editComment(this.comment.id, 'note', this.comment.note);
+                }
             }
         }
     };

@@ -14,11 +14,11 @@ define([], function () {
         }
     };
     
-    return function Comment(user, code, note) {
+    return function Comment(user, code, note, date) {
         const obj = Object.create(proto);
         
         obj.user = user;
-        obj.date = new Date().toISOString();
+        obj.date = date || null;
         obj.code = code || null;
         obj.note = note || null;
         

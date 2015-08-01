@@ -1,10 +1,13 @@
 define(function () {
     'use strict';
     
-    const htmlEscapeEl = document.createElement('div'),
-        textEscapeEl = document.createTextNode(''),
-        b58alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
-        base58 = b58alphabet.length;
+    const htmlEscapeEl = document.createElement('div');
+    const textEscapeEl = document.createTextNode('');
+    
+    const b58alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+    const base58 = b58alphabet.length;
+    
+    const highResTimeBase = Date.now() - performance.now();
     
     htmlEscapeEl.appendChild(textEscapeEl);
     
@@ -33,20 +36,45 @@ define(function () {
             return el.nodeType === 1 && typeof el.nodeName === "string";
         },
         
-        find: function (array, checkCallback) {
+        find: function (array, checkFn) {
             for (let i in array) {
-                if (checkCallback(array[i])) {
+                if (checkFn(array[i])) {
                     return array[i];
                 }
             }
         },
         
-        findIndex: function (array, checkCallback) {
+        findIndex: function (array, checkFn) {
             for (let i in array) {
-                if (checkCallback(array[i])) {
+                if (checkFn(array[i])) {
                     return i;
                 }
             }
+            return -1;
+        },
+        
+        // Uses a bisect search algorithm to find a record in a sorted array.
+        // compareFn must return negative or positive integers indicating search direction.
+        bisectSearch: function (array, compareFn) {
+            let leftIndex = 0;
+            let rightIndex = array.length - 1;
+            
+            if (rightIndex - leftIndex < 0) {
+                return -1;
+            }
+            
+            do {
+                const checkIndex = Math.ceil((rightIndex + leftIndex) / 2);
+                const comparison = compareFn(array[checkIndex]);
+                if (comparison > 0) {
+                    leftIndex = checkIndex + 1;
+                } else if (comparison < 0) {
+                    rightIndex = checkIndex - 1;
+                } else {
+                    return checkIndex;
+                }
+            } while (rightIndex >= leftIndex);
+            
             return -1;
         },
         
@@ -107,12 +135,17 @@ define(function () {
             return root;
         },
         
+        // Returns a base58-encoded UUID (to save space/bandwidth)
         randomID: function () {
             var encoded = new Array(22);
             for (var i = encoded.length; i >= 0; i--) {
-                encoded[i] = b58alphabet[Math.floor(Math.random() * base58)];
+                encoded[i] = b58alphabet[Math.random() * base58 | 0];
             }
             return encoded.join('');
+        },
+        
+        highResTime: function () {
+            return highResTimeBase + performance.now();
         }
     };
     

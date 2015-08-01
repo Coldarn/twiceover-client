@@ -9,15 +9,16 @@ define([
     
     var App = {
     
-        TEST_MODE: true,
+        TEST_MODE: true,        // Provides pre-canned differences for quick testing
 
-        review: null,
-        leftIteration: null,
-        rightIteration: null,
-        leftEntry: null,
-        rightEntry: null,
+        user: null,             // Filled in on startup by querying the local system
+        review: null,           // Active review
+        leftIteration: null,    // Active left iteration
+        rightIteration: null,   // Active right iteration
+        leftEntry: null,        // Active left file entry being viewed
+        rightEntry: null,       // Active right file entry being viewed
         
-        diffMode: 'line',
+        diffMode: 'line',       // Current difference display setting
 
         setActiveReview: function (review) {
             App.review = review;

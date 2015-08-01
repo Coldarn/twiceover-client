@@ -8,14 +8,15 @@ define([], function () {
         
         // Adds the given comment at the specified CommentLocation
         addComment: function (location, comment) {
-            const locationHash = location.toString(),
-                commentArray = this.comments[locationHash];
-            
-            if (!commentArray) {
-                this.comments[locationHash] = commentArray = [];
-            }
-            commentArray.push(comment);
-            commentArray.sort();
+            this.eventLog.add({
+                type: 'addComment',
+                data: {
+                    path: this.path.toLowerCase(),
+                    location: location.toString(),
+                    code: comment.code,
+                    note: comment.note
+                }
+            });
         },
         
         // Returns all comment locations for this file in sorted order
@@ -36,14 +37,42 @@ define([], function () {
                 .map(this.getCommentsAtLocation.bind(this));
             
             return Array.prototype.concat.apply([], commentArrays);
+        },
+        
+        
+        
+        
+        handleEvent: function (event) {
+            switch (event.type) {
+                case 'addComment':
+                    if (event.data.path === this.path.toLowerCase()) {
+                        const commentArray = this.comments[event.data.location],
+                              comment = Comment(
+                                  User.parse(event.user),
+                                  event.data.code,
+                                  event.data.note,
+                                  event.id
+                              );
+
+                        if (!commentArray) {
+                            this.comments[event.data.location] = commentArray = [];
+                        }
+                        commentArray.push(comment);
+                        commentArray.sort();
+                    }
+                    break;
+            }
         }
     };
     
-    return function FileMeta(displayPath) {
+    return function FileMeta(eventLog, displayPath) {
         const obj = Object.create(proto);
         
         obj.path = displayPath;
         obj.comments = {};
+        
+        obj.eventLog = eventLog;
+        obj.eventLog.subscribe(obj.handleEvent, obj);
         
         return obj;
     };

@@ -101,11 +101,11 @@ define([
                     const rightIteration = Iteration();
                     
                     this.changeRecords.forEach(function (change) {
-                        rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                        rightIteration.addEntry(FileEntry(change.iterationContent, change.iterationPath, change.displayPath));
                     });
                     
                     App.review.addIteration(rightIteration);
-                    App.setActiveIterations(App.review.iterations[0], rightIteration);
+                    App.setActiveIterations(0, rightIteration);
                 } else {
                     const title = this.el.querySelector('#review-title').value;
                     const description = this.el.querySelector('#review-description').value;
@@ -114,8 +114,8 @@ define([
                     const rightIteration = Iteration();
 
                     this.changeRecords.forEach(function (change) {
-                        leftIteration.addEntry(FileEntry(change.baseContent, change.displayPath));
-                        rightIteration.addEntry(FileEntry(change.iterationContent, change.displayPath));
+                        leftIteration.addEntry(FileEntry(change.baseContent, change.iterationPath, change.displayPath));
+                        rightIteration.addEntry(FileEntry(change.iterationContent, change.iterationPath, change.displayPath));
                     });
                     
                     review.addIteration(leftIteration);

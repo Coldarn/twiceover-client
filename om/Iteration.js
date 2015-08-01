@@ -1,22 +1,24 @@
 // File collection for a single iteration in a code review
 define([
+    'util/Util',
+    'util/EventLog',
     'om/FileEntry'
-], function (FileEntry) {
+], function (Util, EventLog, FileEntry) {
     'use strict';
     
     var proto = {
         // Adds the given entry to the iteration
         addEntry: function (entry) {
-            if (typeof this.index === 'number') {
-                throw new Error('Cannot modify an iteration after adding it to a review!');
-            }
-            
-            const pathLower = entry.path.toLowerCase();
-            
-            this.entryOrder.push(pathLower);
-            this.entries[pathLower] = entry;
-            
-            return entry;
+            this.eventLog.add({
+                type: 'newEntry',
+                data: {
+                    iterationID: this.id,
+                    path: entry.path,
+                    diskPath: entry.diskPath,
+                    errorMessage: entry.errorMessage,
+                    content: entry.content
+                }
+            });
         },
 
         // Returns an entry by path
@@ -27,20 +29,55 @@ define([
         // Returns an array of all entry file paths
         getPaths: function () {
             return this.entryOrder.slice();
+        },
+        
+        
+        
+        
+        handleEvent: function (event) {
+            switch (event.type) {
+                case 'newEntry':
+                    if (event.data.iterationID === this.id) {
+                        const entry = FileEntry(
+                            event.data.content,
+                            event.data.diskPath,
+                            event.data.path,
+                            event.data.errorMessage
+                        );
+                        const pathLower = entry.path.toLowerCase();
+
+                        this.entryOrder.push(pathLower);
+                        this.entries[pathLower] = entry;
+                    }
+                    break;
+            }
         }
     };
 
-    return function Iteration(entries) {
+    function Iteration() {
+        const eventLog = EventLog();
+        eventLog.add({
+            type: 'newIteration',
+            data: {
+                id: Util.randomID()
+            }
+        });
+        return Iteration.load(eventLog, eventLog.log[0]);
+    };
+    
+    Iteration.load = function (eventLog, createEvent) {
         var obj = Object.create(proto);
 
-        obj.index = null;       // Index of this iteration in the review
-        obj.entryOrder = [];    // Order of entries
-        obj.entries = {};       // Entry lookup
-        
-        if (entries) {
-            entries.forEach(obj.addEntry.bind(obj));
-        }
+        obj.id = createEvent.data.id;   // UUID for this instance
+        obj.index = null;               // Index of this iteration in the review
+        obj.entryOrder = [];            // Order of entries
+        obj.entries = {};               // Entry lookup
+
+        obj.eventLog = eventLog;
+        obj.eventLog.subscribe(obj.handleEvent, obj);
 
         return obj;
     };
+    
+    return Iteration;
 });

@@ -29,6 +29,8 @@ requirejs([
             gui.Window.get().showDevTools();
         }
     });
+
+    const importDialog = ImportDialog().appendTo(document.body)
     
     if (App.TEST_MODE) {
         App.user = User('John Doe', 'john.doe@example.com');
@@ -43,8 +45,6 @@ requirejs([
         }, function (error) {
             document.body.innerText = error.toString();
         });
-        ImportDialog()
-            .appendTo(document.body)
-            .whenLoaded(function (comp) { comp.show(); });
+        importDialog.whenLoaded(function (comp) { comp.show(); });
     }
 });

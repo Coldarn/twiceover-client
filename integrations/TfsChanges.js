@@ -92,6 +92,7 @@ define([
             var me = this;
             me.contentEl.innerHTML = null;
             workspaceChanges[activeWorkspace].appendTo(me.contentEl);
+            EventBus.fire('change_picker_ui_loaded');
         },
         
         displayError: function (message) {

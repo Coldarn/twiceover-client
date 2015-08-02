@@ -28,7 +28,8 @@ define([
             
             EventBus.on('change_node_selected', me.validateAll, me);
 			EventBus.on('reviewer_add_remove', me.validateAll, me);
-			EventBus.on('show_add_iteration_ui', me.show.bind(me, true));
+            EventBus.on('change_picker_ui_loaded', me.validateAll, me);
+            EventBus.on('show_add_iteration_ui', me.show.bind(me, true));
         },
         
         show: function (newIteration) {
@@ -84,7 +85,9 @@ define([
                 const el = Component(`<li class="tree-node"><span>${changeRecord.displayPath}</span></li>`);
                 el.appendTo(fileList);
                 
-                return me.changesControl.getChangeFiles(changeRecord, me.inIterationMode).then(function (files) {
+                const skipBaseFile = !!(me.inIterationMode && App.review.getFileMeta(changeRecord.displayPath));
+                
+                return me.changesControl.getChangeFiles(changeRecord, skipBaseFile).then(function (files) {
                     el.el.classList.add('selected');
                     changeRecord.baseContent = files[0];
                     changeRecord.iterationContent = files[1];
@@ -98,9 +101,13 @@ define([
         handleCreateFinished: function () {
             if (this.loadingChanges && !this.createError) {
                 if (this.inIterationMode) {
+                    const leftIteration = App.review.iterations[0];
                     const rightIteration = Iteration();
                     
                     this.changeRecords.forEach(function (change) {
+                        if (!App.review.getFileMeta(change.displayPath)) {
+                            leftIteration.addEntry(FileEntry(change.baseContent, change.iterationPath, change.displayPath));
+                        }
                         rightIteration.addEntry(FileEntry(change.iterationContent, change.iterationPath, change.displayPath));
                     });
                     

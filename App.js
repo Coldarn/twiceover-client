@@ -74,8 +74,8 @@ define([
         
         getActiveEntries: function () {
             return App.getActiveEntryPaths().map(function (path) {
-                const left = App.leftIteration.getEntry(path),
-                    right = App.rightIteration.getEntry(path);
+                const left = App.leftIteration.getEntry(path);
+                const right = App.rightIteration.getEntry(path);
                 
                 return {
                     path: (left || right).path,

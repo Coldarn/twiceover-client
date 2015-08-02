@@ -44,10 +44,9 @@ define([
                             event.data.path,
                             event.data.errorMessage
                         );
-                        const pathLower = entry.path.toLowerCase();
 
-                        this.entryOrder.push(pathLower);
-                        this.entries[pathLower] = entry;
+                        this.entryOrder.push(entry.path);
+                        this.entries[entry.path.toLowerCase()] = entry;
                     }
                     break;
             }

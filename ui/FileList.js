@@ -25,7 +25,7 @@ define([
                     const diffStatus = App.getEntryStatus(path);
                     return `<li class="file-entry ${diffStatus}" title="${path}" data-path="${path}">${name}</li>`;
                 }).join('');
-            self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul>`;
+            self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul><div class="filler"> </div>`;
 
             self.queryAll('.file-entry').on('click', function () {
                 App.setActiveEntry(this.dataset.path);

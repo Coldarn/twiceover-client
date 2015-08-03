@@ -240,7 +240,7 @@ body {
 code.code-block {
     flex: 1;
     position: relative;
-    padding: 5px;
+    padding: 10px;
     line-height: 1.35em;
     background: transparent;
     overflow: auto;

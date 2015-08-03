@@ -80,7 +80,7 @@ define([
                     }).join('');
                 
                 // Set our root code element HTML
-                self.codeEl.innerHTML = codeHtml;
+                self.codeEl.innerHTML = `<span>${codeHtml}</span>`;
                 self.codeEl.setAttribute('class', 'code-block ' + path.substring(path.lastIndexOf('.') + 1));
                 
                 hljs.highlightBlock(self.codeEl);
@@ -93,6 +93,8 @@ define([
                 // Setup the inner, background element's HTML (used for line highlights in 'char' diff mode)
                 self.highlights = Component(`<code class="lines highlights">${highlightBlocks.join('')}</code>`);
                 self.codeEl.insertBefore(self.highlights.el, self.codeEl.firstChild);
+                
+                self.diffs.el.style.minWidth = (self.codeEl.lastChild.offsetWidth + 2) + 'px';
             }
         },
         

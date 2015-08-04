@@ -152,11 +152,12 @@ define([
             }
             self.clearSelection();
             
-            self.diffs.lineBorders[0].children[startLine].classList.add('diff-start');
+            const lineBorderEl = self.diffs.lineBorders[0];
+            lineBorderEl.children[startLine].classList.add('diff-start');
             for (let i = startLine + lineCount; i >= startLine; i--) {
-                self.diffs.lineBorders[0].children[i].classList.add('diff-side');
+                lineBorderEl.children[i].classList.add('diff-side');
             }
-            self.diffs.lineBorders[0].children[startLine + lineCount].classList.add('diff-end');
+            lineBorderEl.children[startLine + lineCount].classList.add('diff-end');
             self.addCommentEl.style.display = null;
 
             // Create a range encapsulating just the code text so we can extract matching lines
@@ -164,7 +165,7 @@ define([
             allCodeRange.selectNodeContents(self.codeEl);
             allCodeRange.setStartAfter(self.diffs.el);
             
-            const topOffset = self.diffs.lineBorders[0].children[startLine].getBoundingClientRect().top -
+            const topOffset = lineBorderEl.children[startLine].getBoundingClientRect().top -
                 self.diffs.el.getBoundingClientRect().top;
             const code = allCodeRange.toString().split('\n').slice(startLine, startLine + lineCount + 1).join('\n');
             self.setSelection({

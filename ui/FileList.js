@@ -23,7 +23,9 @@ define([
                     const splitPath = path.split('/');
                     const name = splitPath[splitPath.length - 1];
                     const diffStatus = App.getEntryStatus(path);
-                    return `<li class="file-entry ${diffStatus}" title="${path}" data-path="${path}">${name}</li>`;
+                    const commentSummaries = App.review.getFileMeta(path).getCommentSummaries();
+                    const innerHtml = commentSummaries.length > 0 ? `<ul><li>${commentSummaries.join('</li><li>')}</li></ul>` : '';
+                    return `<li class="file-entry ${diffStatus}" title="${path}" data-path="${path}">${name}${innerHtml}</li>`;
                 }).join('');
             self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul><div class="filler"> </div>`;
 

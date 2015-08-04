@@ -1,13 +1,14 @@
 // Tracks global metadata for a file in the review, not tied to any iteration
 define([
     'om/User',
+    'om/CommentLocation',
     'om/Comment'
-], function (User, Comment) {
+], function (User, CommentLocation, Comment) {
     'use strict';
     
     const proto = {
         path: null,             // Display path of this file
-        commentLocations: null, // Maps comment locations to sorted arrays of comments
+        commentLocations: null, // Maps comment location strings to sorted arrays of comments
         comments: null,         // Maps comment IDs to their instances
 
         // Adds the given comment at the specified CommentLocation
@@ -66,6 +67,17 @@ define([
                 .map(this.getCommentsAtLocation.bind(this));
             
             return Array.prototype.concat.apply([], commentArrays);
+        },
+        
+        // Returns brief text summarizing this comment
+        getCommentSummary: function (location) {
+            const comments = this.getCommentsAtLocation(location);
+            const summary = comments.length > 1 || !comments[0].note.trim() ? `${comments.length} comment(s)` : comments[0].note;
+            return `${location.lineStart}:${location.lineCount} - ${summary}`;
+        },
+
+        getCommentSummaries: function () {
+            return this.getCommentLocations().map(this.getCommentSummary.bind(this));
         },
         
         

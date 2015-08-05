@@ -135,14 +135,18 @@ body {
     padding: 3px 10px 4px 24px;
     cursor: pointer;
 }
+
 .file-list li {
+    position: relative;
+}
+
+.file-list li > div {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 
 .file-list > li.selected {
-    position: relative;
     margin-right: 5px;
     padding-right: 5px;
     background:
@@ -173,12 +177,13 @@ body {
 }
 
 .file-list > li:before {
-    font-family: "FontAwesome";
-    display: inline-block;
-    width: 16px;
-    margin-left: -16px;
-    box-sizing: border-box;
-    font-size: 11px;
+    font-size: 17px;
+    font-weight: bold;
+    width: 13px;
+    position: absolute;
+    top: 0;
+    left: 6px;
+    text-align: center;
 }
 
 .file-list > li.added {
@@ -186,7 +191,7 @@ body {
 }
 
 .file-list > li.added:before {
-    content: "\f067";
+    content: "+";
 }
 
 .file-list > li.removed {
@@ -194,7 +199,7 @@ body {
 }
 
 .file-list > li.removed:before {
-    content: "\f068";
+    content: "-";
 }
 
 .file-list > li.unchanged {
@@ -203,12 +208,6 @@ body {
 
 .file-list > li.unchanged:before {
     content: "=";
-    font-family: inherit;
-    font-size: 17px;
-    line-height: 11px;
-    font-weight: bold;
-    width: 18px;
-    margin-left: -18px;
 }
 
 .file-list > li > ul {
@@ -218,7 +217,7 @@ body {
     line-height: 20px;
     padding-left: 0;
     margin-right: -5px;
-    margin-left: -3px;
+    margin-left: -4px;
 }
 
 .file-list > li > ul > li {
@@ -235,17 +234,15 @@ body {
 
 .file-list > li > ul > li.seen {
     color: #aaa;
-    padding-left: 0;
 }
 
 .file-list > li > ul > li.seen:before {
     font-family: "FontAwesome";
     content: "\f00c";
-    display: inline-block;
-    width: 18px; 
-    margin-left: 4px;
-    line-height: normal;
-    box-sizing: border-box;
+    position: absolute;
+    width: 20px; 
+    top: 0;
+    left: 5px;
 }
 
 .code-pane {

@@ -26,9 +26,9 @@ define([
                     const fileMeta = App.review.getFileMeta(path);
                     const commentLocations = fileMeta.getCommentLocations();
                     const innerHtml = commentLocations.length > 0 ? `<ul>${commentLocations.map(function (l) {
-                        return `<li class="comment-link" data-loc="${l}">${fileMeta.getCommentSummary(l)}</li>`;
+                        return `<li class="comment-link" data-loc="${l}"><div>${fileMeta.getCommentSummary(l)}</div></li>`;
                     }).join('')}</ul>` : '';
-                    return `<li class="file-entry ${App.getEntryStatus(path)}" title="${path}" data-path="${path}">${name}${innerHtml}</li>`;
+                    return `<li class="file-entry ${App.getEntryStatus(path)}" title="${path}" data-path="${path}"><div>${name}</div>${innerHtml}</li>`;
                 }).join('');
             self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul><div class="filler"> </div>`;
 

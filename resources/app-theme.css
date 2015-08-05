@@ -216,12 +216,36 @@ body {
     color: #ddd;
     font-size: 13px;
     line-height: 20px;
-    padding-left: 10px;
+    padding-left: 0;
     margin-right: -5px;
+    margin-left: -3px;
 }
 
 .file-list > li > ul > li {
     background: transparent;
+    padding-left: 22px;
+}
+
+.file-list > li > ul > li:hover {
+    color: white;
+}
+.file-list > li > ul > li.seen:hover {
+    color: #ccc;
+}
+
+.file-list > li > ul > li.seen {
+    color: #aaa;
+    padding-left: 0;
+}
+
+.file-list > li > ul > li.seen:before {
+    font-family: "FontAwesome";
+    content: "\f00c";
+    display: inline-block;
+    width: 18px; 
+    margin-left: 4px;
+    line-height: normal;
+    box-sizing: border-box;
 }
 
 .code-pane {

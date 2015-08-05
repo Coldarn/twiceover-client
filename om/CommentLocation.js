@@ -36,7 +36,7 @@ define([], function () {
         if (typeof leftIt === 'string') {
             const parts = leftIt.split(',');
             if (parts.length !== 5) {
-                throw new Error(`CommentLocation hash could not be parsed: ${leftIt}`);
+                throw new Error(`CommentLocation hash could not be parsed: '${leftIt}'`);
             }
             
             obj.leftIteration = Number(parts[2]);

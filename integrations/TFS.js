@@ -103,13 +103,15 @@ define([
                     resolve(parseChanges(sampleOutput));
                 }, 500);
             } else {
-                child_process.execFile(tfPath, ['status', `/workspace:${workspaceName}`], function (err, stdout, stderr) {
-                    if (err || stderr) {
-                        reject(err || stderr);
-                    } else {
-                        resolve(parseChanges(stdout));
-                    }
-                });
+                child_process.execFile(tfPath, ['status', `/workspace:${workspaceName}`],
+                    { maxBuffer: 20*1024*1024 },
+                    function (err, stdout, stderr) {
+                        if (err || stderr) {
+                            reject(err || stderr);
+                        } else {
+                            resolve(parseChanges(stdout));
+                        }
+                    });
             }
         });
     }

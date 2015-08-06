@@ -6,10 +6,10 @@ define([
     'om/CommentLocation'
 ], function (Util, EventBus, Component, App, CommentLocation) {
     'use strict';
-    
+
     var self = {
         __proto__: Component.prototype,
-        
+
         initComponent: function () {
             self.listEl = self.el.querySelector('content');
             self.queryAll('footer > button').on('mousedown', function () {
@@ -41,15 +41,15 @@ define([
                 } else {
                     EventBus.fire('comment_link_clicked', CommentLocation(this.dataset.loc));
                 }
-            });
+            }, true);
         },
-        
-        
+
+
 
         handleActiveReviewChanged: function (review) {
             self.query('header')[0].innerText = review.title;
         },
-        
+
         handleActiveIterationsChanged: function() {
             self.populate();
         },
@@ -61,26 +61,26 @@ define([
             }
             document.querySelector(`.file-entry[data-path="${path}"]`).classList.add('selected');
         },
-        
+
         handleCommentLinkClicked: function (commentLocation) {
             const linkEl = self.query(`.comment-link[data-loc="${commentLocation}"]`);
             linkEl[0].classList.add('seen');
         },
-        
+
         handleDiffModeChanged: function (diffMode) {
             self.queryAll('footer > button').forEach(function (el) {
                 el.classList.toggle('selected', el.dataset.diffmode === diffMode);
             });
         }
     };
-    
+
     EventBus.on('active_review_changed', self.handleActiveReviewChanged, self);
     EventBus.on('active_iterations_changed', self.handleActiveIterationsChanged, self);
     EventBus.on('active_entry_changed', self.handleActiveEntryChanged, self);
     EventBus.on('comment_link_clicked', self.handleCommentLinkClicked, self);
     EventBus.on('diff_mode_changed', self.handleDiffModeChanged, self);
-    
+
     self.setEl(document.querySelector('.file-pane'));
-    
+
     return self;
 });

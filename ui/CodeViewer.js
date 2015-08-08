@@ -95,6 +95,7 @@ define([
                 self.codeEl.insertBefore(self.highlights.el, self.codeEl.firstChild);
                 
                 self.diffs.el.style.minWidth = (self.codeEl.lastChild.offsetWidth + 2) + 'px';
+                self.highlights.el.style.minWidth = (self.codeEl.lastChild.offsetWidth + 2) + 'px';
             }
         },
         

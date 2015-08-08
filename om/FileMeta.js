@@ -89,7 +89,6 @@ define([
                     if (event.data.path !== this.path.toLowerCase()) {
                         break;
                     }
-                    let commentArray = this.commentLocations[event.data.location];
                     const comment = Comment(
                         User.parse(event.user),
                         event.data.code,
@@ -98,6 +97,7 @@ define([
                         event.data.id
                     );
 
+                    let commentArray = this.commentLocations[event.data.location];
                     if (!commentArray) {
                         this.commentLocations[event.data.location] = commentArray = [];
                     }

@@ -41,6 +41,7 @@ define([
         handleEvent: function (event) {
             switch (event.type) {
                 case 'newReview': {
+                    this.id = event.data.id;
                     this.owningUser = User.parse(event.user);
                     this.title = event.data.title;
                     this.description = event.data.description;
@@ -67,6 +68,7 @@ define([
         const eventLog = EventLog(user).add({
             type: 'newReview',
             data: {
+                id: Util.randomID(),
                 title: title,
                 description: description
             }

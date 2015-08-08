@@ -1,10 +1,12 @@
 define([
     'util/Util',
     'util/EventBus',
+    'util/EventLog',
+    'util/ReviewStatus',
     'om/Review',
     'om/Iteration',
     'om/FileEntry'
-], function (Util, EventBus, Review, Iteration, FileEntry) {
+], function (Util, EventBus, EventLog, ReviewStatus, Review, Iteration, FileEntry) {
     'use strict';
     
     var App = {
@@ -17,12 +19,24 @@ define([
         rightIteration: null,   // Active right iteration
         leftEntry: null,        // Active left file entry being viewed
         rightEntry: null,       // Active right file entry being viewed
+        fileMeta: null,         // Active FileMeta for the selected entrys
         
         diffMode: 'line',       // Current difference display setting
+        
+        loadReview: function (logEvents) {
+            const review = Review.load(EventLog.load(logEvents));
+
+            review.eventLog.subscribe(handleReviewEvent);
+            App.setActiveReview(review);
+            App.setActiveIterations(0, review.iterations.length - 1);
+        },
 
         setActiveReview: function (review) {
             App.review = review;
-            EventBus.fire('active_review_changed', review);
+            App.status = ReviewStatus(review.id);
+            setTimeout(function () {
+                EventBus.fire('active_review_changed', review);
+            });
         },
 
         setActiveIterations: function (left, right) {
@@ -35,7 +49,9 @@ define([
             
             App.leftIteration = newLeft;
             App.rightIteration = newRight;
-            EventBus.fire('active_iterations_changed', App.leftIteration, App.rightIteration);
+            setTimeout(function () {
+                EventBus.fire('active_iterations_changed', App.leftIteration, App.rightIteration);
+            });
 
             const lastPath = (App.leftEntry && App.leftEntry.path) || (App.rightEntry && App.rightEntry.path);
             const availablePaths = App.getActiveEntryPaths();
@@ -53,7 +69,9 @@ define([
             App.rightEntry = rightEntry;
             App.fileMeta = App.review.getFileMeta(displayPath);
 
-            EventBus.fire('active_entry_changed', displayPath, App.leftEntry, App.rightEntry);
+            setTimeout(function () {
+                EventBus.fire('active_entry_changed', displayPath, App.leftEntry, App.rightEntry);
+            });
         },
         
         setDiffMode: function (mode) {
@@ -112,6 +130,14 @@ define([
             }
         }
     };
+    
+    function handleReviewEvent(event) {
+        switch (event.type) {
+            case 'addComment':
+                EventBus.fire('review_comment_added', event);
+                break;
+        }
+    }
     
     return App;
 });

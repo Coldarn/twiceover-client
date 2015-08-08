@@ -34,11 +34,7 @@ requirejs([
     
     if (App.TEST_MODE) {
         App.user = User('John Doe', 'john.doe@example.com');
-        const events = JSON.parse(require('fs').readFileSync('test/log-1.json'));
-        const review = Review.load(EventLog.load(events));
-        
-        App.setActiveReview(review);
-        App.setActiveIterations(0, 1);
+        App.loadReview(JSON.parse(require('fs').readFileSync('test/log-1.json')));
     } else {
         EmailChecker.getCurrentUser().then(function (user) {
             App.user = user;

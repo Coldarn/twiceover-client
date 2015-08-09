@@ -31,7 +31,10 @@ define([
             this.setActiveComment(this.comments[1]);
 
             this.el.style.top = this.topOffset + 'px';
-            this.codeEditor.focus();
+            
+            this.whenLoaded(function (me) {
+                me.noteEditor.focus();
+            });
         },
         
         buildIterations: function () {

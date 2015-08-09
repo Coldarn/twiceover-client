@@ -16,9 +16,14 @@ define([
                 .on('blur', this.handleCodeEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
             
-            this.noteEditor = this.query('note')
+            this.footer = this.query('footer');
+            
+            this.noteEditor = this.footer.query('note')
                 .on('blur', this.handleNoteEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
+            
+            this.deleteButton = this.footer.query('.delete')
+                .on('click', this.handleDeleteCommentClick.bind(this));
             
             this.iterations = this.query('iterations');
             this.buildIterations();
@@ -31,8 +36,11 @@ define([
         
         buildIterations: function () {
             this.iterations[0].innerHTML = this.comments.map(function (c, index) {
-                return `<button data-index="${index}">${index}</button>`;
-            }).join('') + `<button>+</button>`;
+                const content = c.user
+                    ? `<img src="http://www.gravatar.com/avatar/${SparkMD5.hash(c.user.email)}?s=28" />`
+                    : '0';
+                return `<button title="${c.user || 'Original Code'}" data-index="${index}">${content}</button>`;
+            }).join('') + `<button title="Add Comment">+</button>`;
             this.iterations.queryAll('button')
                 .on('click', this.handleIterationClick.bind(this));
         },
@@ -45,13 +53,17 @@ define([
             this.syntaxHighlightCode();
 
             this.noteEditor.innerText = this.comment.note;
-            this.noteEditor.style.display = commentIndex === 0 ? 'none' : null;
+            this.footer.setVisible(commentIndex !== 0);
             
-            this.codeEditor.contentEditable = commentIndex !== 0 && App.user.is(comment.user) || false;
-            this.noteEditor.contentEditable = App.user.is(comment.user) || false;
+            const isEditable = commentIndex !== 0 && App.user.is(comment.user) || false;
+            this.codeEditor.contentEditable = isEditable;
+            this.noteEditor.contentEditable = isEditable;
+            this.deleteButton.setVisible(isEditable);
 
             this.iterations.queryAll().setClass('selected', false);
-            this.iterations.query(`[data-index="${commentIndex}"]`).setClass('selected', true);
+            this.iterations.query(`[data-index="${commentIndex}"]`)
+                .setClass('selected', true)
+                .setClass('editable', isEditable);
         },
         
         hasCodeChanged: function () {
@@ -85,6 +97,10 @@ define([
             hljs.highlightBlock(this.codeEditor);
         },
         
+        dispose: function () {
+            EventBus.off('review_comment_removed', this.handleDeleteComment, this);
+        },
+        
         close: function () {
             this.destroy();
         },
@@ -93,14 +109,30 @@ define([
         
         
         handleIterationClick: function (event) {
-            const commentIndex = event.target.dataset.index;
+            const commentIndex = event.currentTarget.dataset.index;
             if (commentIndex) {
                 this.setActiveComment(this.comments[Number(commentIndex)]);
             } else {
                 this.comments.push(Comment(App.user, this.originalCode));
                 this.buildIterations();
                 this.setActiveComment(this.comments[this.comments.length - 1]);
+                this.codeEditor.focus();
             }
+        },
+
+        handleDeleteCommentClick: function (event) {
+            if (this.fileMeta.getComment(this.comment.id)) {
+                this.fileMeta.removeComment(this.comment.id);
+            } else {
+                this.handleDeleteComment({ data: { id: this.comment.id } });
+            }
+        },
+        
+        handleDeleteComment: function (event) {
+            const commentIndex = Util.findIndex(this.comments, function (c) { return c.id === event.data.id; });
+            this.comments.splice(commentIndex, 1);
+            this.buildIterations();
+            this.setActiveComment(this.comments[commentIndex - 1]);
         },
         
         handleCodeEdited: function () {
@@ -141,6 +173,8 @@ define([
         
         obj.comment = obj.comments[0];
         obj.comments.unshift(Comment(null, origCode));
+        
+        EventBus.on('review_comment_removed', obj.handleDeleteComment, obj);
         
         obj.setHtml('text!partials/CodeComment.html');
         return obj;

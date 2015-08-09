@@ -379,13 +379,32 @@ comment > code.hljs {
     background: none;
     padding: 0;
     padding-bottom: 2px;
+    z-index: 2;
 }
 
-comment > note {
+comment > footer {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid #555;
+}
+comment > footer > .delete {
+    border: none;
+    border-right: 2px solid #555;
+    line-height: normal;
+    font-size: 18px;
+    color: #d42;
+}
+comment > footer > .delete::after {
+    font-family: "FontAwesome";
+    font-style: normal;
+    content: "\f00d";
+}
+comment > footer > note {
+    flex: 1;
+    order: 1;
     display: block;
     background: #444;
     border: 0;
-    border-top: 1px solid #555;
     resize: none;
     color: #bbb;
     font-family: 'Segoe UI', sans-serif;
@@ -402,7 +421,8 @@ comment > iterations {
     flex-direction: row;
 }
 
-comment > iterations > * {
+comment button {
+    padding: 0;
     color: #ccc;
     width: 30px;
     background: #444;
@@ -416,8 +436,9 @@ comment > iterations > * {
 }
 comment > iterations > *.selected {
     background: #666;
-    border: 1px solid #777;
-    z-index: 10;
+    border: 1px solid #bbb;
+    z-index: 1;
+    box-shadow: 0 0 5px black;
 }
 
 

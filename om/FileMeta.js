@@ -1,9 +1,10 @@
 // Tracks global metadata for a file in the review, not tied to any iteration
 define([
+    'util/Util',
     'om/User',
     'om/CommentLocation',
     'om/Comment'
-], function (User, CommentLocation, Comment) {
+], function (Util, User, CommentLocation, Comment) {
     'use strict';
     
     const proto = {
@@ -44,6 +45,21 @@ define([
             });
         },
         
+        removeComment: function (commentID) {
+            if (!this.comments[commentID]) {
+                throw new Error(`No comment on this file with ID: ${commentID}`);
+            }
+            const locInfo = this.findComment(commentID);
+            this.eventLog.add({
+                type: 'removeComment',
+                data: {
+                    path: this.path.toLowerCase(),
+                    location: locInfo.location.toString(),
+                    id: commentID,
+                }
+            });
+        },
+        
         // Returns the comment with the given ID or null if unknown
         getComment: function (commentID) {
             return this.comments[commentID] || null;
@@ -69,6 +85,21 @@ define([
             return Array.prototype.concat.apply([], commentArrays);
         },
         
+        findComment: function (commentID) {
+            for (let loc in this.commentLocations) {
+                const comments = this.commentLocations[loc];
+                const index = Util.findIndex(comments, function (c) { return c.id === commentID; });
+                if (index >= 0) {
+                    return {
+                        location: CommentLocation(loc),
+                        comment: comments[index],
+                        index: index
+                    };
+                }
+            }
+            return null;
+        },
+        
         // Returns brief text summarizing this comment
         getCommentSummary: function (location) {
             const comments = this.getCommentsAtLocation(location);
@@ -84,6 +115,8 @@ define([
         
         
         handleEvent: function (event) {
+            const me = this;
+            
             switch (event.type) {
                 case 'addComment': {
                     if (event.data.path !== this.path.toLowerCase()) {
@@ -110,6 +143,23 @@ define([
                     const comment = this.comments[event.data.id];
                     if (comment) {
                         comment[event.data.edited] = event.data.value;
+                    }
+                    break;
+                }
+                case 'removeComment': {
+                    const comment = this.comments[event.data.id];
+                    if (!comment) {
+                        break;
+                    }
+                    
+                    delete this.comments[event.data.id];
+
+                    const locInfo = this.findComment(event.data.id);
+                    const comments = me.commentLocations[locInfo.location];
+                    if (comments.length > 1) {
+                        comments.splice(locInfo.index, 1);
+                    } else {
+                        delete me.commentLocations[locInfo.location];
                     }
                     break;
                 }

@@ -1,4 +1,6 @@
-define(function () {
+define([
+    'util/Util'
+], function (Util) {
     'use strict';
     
     var self = {

@@ -26,6 +26,7 @@ define([
             this.forEach(function (el) {
                 el.classList.toggle(name, add);
             });
+            return this;
         },
 
         setAttribute: function (name, value) {
@@ -36,6 +37,7 @@ define([
                     el.setAttribute(name, value);
                 }
             });
+            return this;
         },
 
         remove: function () {

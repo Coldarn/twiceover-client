@@ -109,6 +109,9 @@ define([
         
         destroy: function () {
             if (this.el) {
+                if (this.dispose) {
+                    this.dispose();
+                }
                 this.el.remove();
             }
         }

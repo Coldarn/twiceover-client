@@ -238,6 +238,9 @@ define([
             
             self.activeComment = CodeComment(selection.topOffset, App.fileMeta, selection.location, selection.code);
             self.activeComment.appendTo(self.diffs);
+            self.activeComment.whenLoaded(function (comp) {
+                comp.el.scrollIntoViewIfNeeded();
+            });
         },
 
         handleActiveEntryChanged: function(path, leftEntry, rightEntry) {

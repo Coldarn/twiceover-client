@@ -87,14 +87,12 @@ define([
         },
         
         handleCommentAddedOrRemoved: function (event) {
-            const entryEl = self.query(`.file-entry[data-path="${event.data.path}"]`)[0];
+            const path = event.data.path || App.review.findComment(event.data.id).fileMeta.path.toLowerCase();
+            const entryEl = self.query(`.file-entry[data-path="${path}"]`)[0];
             if (!entryEl) {
                 return;
             }
-            if (entryEl.querySelector(`.comment-link[data-loc="${event.data.location}"]`) && event.type === 'addComment') {
-                return;
-            }
-            entryEl.innerHTML = self.buildEntryHtml(event.data.path);
+            entryEl.innerHTML = self.buildEntryHtml(path);
             self.attachLinkHandlers(ElementProxy(entryEl));
         },
 
@@ -111,6 +109,7 @@ define([
     EventBus.on('comment_link_clicked', self.handleCommentLinkClicked, self);
     EventBus.on('review_comment_added', self.handleCommentAddedOrRemoved, self);
     EventBus.on('review_comment_removed', self.handleCommentAddedOrRemoved, self);
+    EventBus.on('review_comment_edited', self.handleCommentAddedOrRemoved, self);
     EventBus.on('diff_mode_changed', self.handleDiffModeChanged, self);
 
     self.setEl(document.querySelector('.file-pane'));

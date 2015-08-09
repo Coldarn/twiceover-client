@@ -34,6 +34,18 @@ define([
         getFileMeta: function (path) {
             return this.fileMetas[path.toLowerCase()];
         },
+        
+        findComment: function (commentID) {
+            for (let path in this.fileMetas) {
+                let fileMeta = this.fileMetas[path];
+                const info = fileMeta.findComment(commentID);
+                if (info) {
+                    info.fileMeta = fileMeta;
+                    return info;
+                }
+            }
+            return null;
+        },
 
 
 

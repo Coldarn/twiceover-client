@@ -136,6 +136,9 @@ define([
             case 'addComment':
                 EventBus.fire('review_comment_added', event);
                 break;
+            case 'editComment':
+                EventBus.fire('review_comment_edited', event);
+                break;
             case 'removeComment':
                 EventBus.fire('review_comment_removed', event);
                 break;

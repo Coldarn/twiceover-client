@@ -110,18 +110,20 @@ define([
         
         refreshCommentRegions: function () {
             self.comments.queryAll('div').setAttribute('class', null);
-            App.fileMeta.getCommentLocations().map(function (location) {
-                const topOffset = self.getLineTopOffset(location.lineStart) - 1;
-                
-                self.refreshBorders(self.comments.el, location.lineStart, location.lineCount, function () {
-                    self.setSelection({
-                        topOffset: topOffset,
-                        location: location,
-                        code: self.getCode(location.lineStart, location.lineCount),
+            App.fileMeta.getCommentLocations()
+                .filter(function (loc) { return loc.diffMode === App.diffMode; })
+                .map(function (location) {
+                    const topOffset = self.getLineTopOffset(location.lineStart) - 1;
+
+                    self.refreshBorders(self.comments.el, location.lineStart, location.lineCount, function () {
+                        self.setSelection({
+                            topOffset: topOffset,
+                            location: location,
+                            code: self.getCode(location.lineStart, location.lineCount),
+                        });
+                        self.handleAddComment();
                     });
-                    self.handleAddComment();
                 });
-            });
         },
         
         refreshBorders: function (parentEl, startLine, lineCount, clickFn) {

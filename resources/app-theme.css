@@ -325,7 +325,6 @@ code.lines .diff-side {
     border-left: 1px solid gray;
     margin-left: -1px;
     border-right: 1px solid gray;
-    margin-right: -1px;
 }
 code.lines .diff-end {
     border-bottom: 1px solid gray;
@@ -360,6 +359,9 @@ code.lines.comments .clickable:hover {
     background: #06a;
 }
 
+
+
+
 comment {
     position: absolute;
     left: 0;
@@ -391,6 +393,32 @@ comment > note {
     padding: 2px 4px 3px 4px;
 }
 
+comment > iterations {
+    position: absolute;
+    top: -31px;
+    left: 10px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+comment > iterations > * {
+    color: #ccc;
+    width: 30px;
+    background: #444;
+    border: 1px solid #555;
+    margin-right: -1px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 22px;
+    font-family: 'Averia Sans Libre', sans-serif;
+    font-style: italic;
+}
+comment > iterations > *.selected {
+    background: #666;
+    border: 1px solid #777;
+    z-index: 10;
+}
 
 
 

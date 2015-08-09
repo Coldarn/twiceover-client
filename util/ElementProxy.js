@@ -56,7 +56,7 @@ define([
 
         queryAll: function (selector) {
             this.throwIfNotSingleElement();
-            return ElementProxy(this[0].querySelectorAll(selector));
+            return ElementProxy(this[0].querySelectorAll(selector || '*'));
         },
 
 

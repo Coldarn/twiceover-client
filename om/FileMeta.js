@@ -58,7 +58,7 @@ define([
         
         // Returns the sorted set of comments at the given location
         getCommentsAtLocation: function (location) {
-            return this.commentLocations[location.toString()];
+            return (this.commentLocations[location.toString()] || []).slice();
         },
         
         // Returns all comments for this file ordered by iteration and line numbers

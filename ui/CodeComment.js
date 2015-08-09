@@ -15,16 +15,43 @@ define([
             this.codeEditor = this.query('code')
                 .on('blur', this.handleCodeEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
-            this.codeEditor.innerHTML = Util.escapeHtml(this.comment.code);
-            this.syntaxHighlightCode();
             
             this.noteEditor = this.query('note')
                 .on('blur', this.handleNoteEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
-            this.noteEditor.innerText = this.comment.note;
+            
+            this.iterations = this.query('iterations');
+            this.buildIterations();
+            
+            this.setActiveComment(this.comments[1]);
 
             this.el.style.top = this.topOffset + 'px';
             this.codeEditor.focus();
+        },
+        
+        buildIterations: function () {
+            this.iterations[0].innerHTML = this.comments.map(function (c, index) {
+                return `<button data-index="${index}">${index}</button>`;
+            }).join('') + `<button>+</button>`;
+            this.iterations.queryAll('button')
+                .on('click', this.handleIterationClick.bind(this));
+        },
+        
+        setActiveComment: function (comment) {
+            const commentIndex = this.comments.indexOf(comment);
+            this.comment = comment;
+            
+            this.codeEditor.innerHTML = Util.escapeHtml(this.comment.code);
+            this.syntaxHighlightCode();
+
+            this.noteEditor.innerText = this.comment.note;
+            this.noteEditor.style.display = commentIndex === 0 ? 'none' : null;
+            
+            this.codeEditor.contentEditable = commentIndex !== 0 && App.user.is(comment.user) || false;
+            this.noteEditor.contentEditable = App.user.is(comment.user) || false;
+
+            this.iterations.queryAll().setClass('selected', false);
+            this.iterations.query(`[data-index="${commentIndex}"]`).setClass('selected', true);
         },
         
         hasCodeChanged: function () {
@@ -62,6 +89,20 @@ define([
             this.destroy();
         },
         
+        
+        
+        
+        handleIterationClick: function (event) {
+            const commentIndex = event.target.dataset.index;
+            if (commentIndex) {
+                this.setActiveComment(this.comments[Number(commentIndex)]);
+            } else {
+                this.comments.push(Comment(App.user, this.originalCode));
+                this.buildIterations();
+                this.setActiveComment(this.comments[this.comments.length - 1]);
+            }
+        },
+        
         handleCodeEdited: function () {
             if (this.hasCodeChanged()) {
                 this.syntaxHighlightCode();
@@ -86,11 +127,21 @@ define([
         }
     };
     
-    return function CodeCommend(topOffset, location, comment) {
+    return function CodeComment(topOffset, fileMeta, location, origCode) {
         var obj = Object.create(proto);
         obj.topOffset = topOffset;
+        obj.originalCode = origCode;
+        obj.fileMeta = fileMeta;
         obj.location = location;
-        obj.comment = comment;
+        obj.comments = obj.fileMeta.getCommentsAtLocation(location);
+        
+        if (obj.comments.length < 1) {
+            obj.comments.push(Comment(App.user, origCode));
+        }
+        
+        obj.comment = obj.comments[0];
+        obj.comments.unshift(Comment(null, origCode));
+        
         obj.setHtml('text!partials/CodeComment.html');
         return obj;
     };

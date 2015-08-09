@@ -117,7 +117,7 @@ define([
                     self.setSelection({
                         topOffset: topOffset,
                         location: location,
-                        comment: App.fileMeta.getCommentsAtLocation(location)[0],
+                        code: self.getCode(location.lineStart, location.lineCount),
                     });
                     self.handleAddComment();
                 });
@@ -140,6 +140,13 @@ define([
         getLineTopOffset: function (lineIndex) {
             return self.diffs.lineBorders[0].children[lineIndex].getBoundingClientRect().top -
                 self.diffs.el.getBoundingClientRect().top;  
+        },
+        
+        getCode: function (startLine, lineCount) {
+            const allCodeRange = new Range();
+            allCodeRange.selectNodeContents(self.codeEl);
+            allCodeRange.setStartAfter(self.diffs.el);
+            return allCodeRange.toString().split('\n').slice(startLine, startLine + lineCount + 1).join('\n');
         },
         
         setSelection: function (selection) {
@@ -201,15 +208,10 @@ define([
             self.addCommentEl.style.display = null;
 
             // Create a range encapsulating just the code text so we can extract matching lines
-            const allCodeRange = new Range();
-            allCodeRange.selectNodeContents(self.codeEl);
-            allCodeRange.setStartAfter(self.diffs.el);
-            
-            const code = allCodeRange.toString().split('\n').slice(startLine, startLine + lineCount + 1).join('\n');
             self.setSelection({
                 topOffset: self.getLineTopOffset(startLine),
                 location: commentLoc,
-                comment: Comment(App.user, code),
+                code: self.getCode(startLine, lineCount),
             });
         },
         
@@ -221,7 +223,7 @@ define([
             const selection = self.selection;
             self.clearSelection();
             
-            self.activeComment = CodeComment(selection.topOffset, selection.location, selection.comment);
+            self.activeComment = CodeComment(selection.topOffset, App.fileMeta, selection.location, selection.code);
             self.activeComment.appendTo(self.diffs);
         },
 
@@ -252,7 +254,9 @@ define([
         },
         
         handleCommentAdded: function (event) {
-            self.refreshCommentRegions();
+            if (App.fileMeta === App.review.getFileMeta(event.data.path)) {
+                self.refreshCommentRegions();
+            }
         }
     };
 

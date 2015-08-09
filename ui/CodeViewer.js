@@ -26,6 +26,7 @@ define([
         
         selection: null,        // Active code block selection
         activeComment: null,    // Currently-active comment component
+        postLoadActions: [],    // Array of actions to run after the next loadActiveEntry
         
         
         initComponent: function () {
@@ -105,13 +106,22 @@ define([
                 self.comments.el.style.minWidth = contentWidth;
                 
                 self.refreshCommentRegions();
+                
+                self.postLoadActions.forEach(function (action) {
+                    action();
+                });
+                self.postLoadActions = [];
             }
         },
         
         refreshCommentRegions: function () {
             self.comments.queryAll('div').setAttribute('class', null);
             App.fileMeta.getCommentLocations()
-                .filter(function (loc) { return loc.diffMode === App.diffMode; })
+                .filter(function (loc) {
+                    return loc.diffMode === App.diffMode
+                        && App.leftIteration.index === loc.leftIteration
+                        && App.rightIteration.index === loc.rightIteration;
+                })
                 .map(function (location) {
                     self.refreshBorders(self.comments.el, location.lineStart, location.lineCount,
                         self.showComment.bind(self, location));
@@ -263,9 +273,9 @@ define([
         },
         
         handleCommentLinkClicked: function (path, location) {
-            setTimeout(function () {
+            self.postLoadActions.push(function () {
                 self.showComment(location);
-            }, 10);
+            });
         }
     };
 

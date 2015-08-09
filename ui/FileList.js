@@ -58,6 +58,7 @@ define([
                 } else {
                     const location = CommentLocation(this.dataset.loc);
                     App.setDiffMode(location.diffMode);
+                    App.setActiveIterations(location.leftIteration, location.rightIteration);
                     EventBus.fire('comment_link_clicked', path, location);
                 }
             }, true);

@@ -56,7 +56,9 @@ define([
                     this.classList.remove('seen');
                     App.status.setCommentSeen(path, this.dataset.loc, false);
                 } else {
-                    EventBus.fire('comment_link_clicked', path, CommentLocation(this.dataset.loc));
+                    const location = CommentLocation(this.dataset.loc);
+                    App.setDiffMode(location.diffMode);
+                    EventBus.fire('comment_link_clicked', path, location);
                 }
             }, true);
         },

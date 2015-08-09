@@ -73,7 +73,7 @@ define([
         getCommentSummary: function (location) {
             const comments = this.getCommentsAtLocation(location);
             const summary = comments.length > 1 || !comments[0].note.trim() ? `${comments.length} comment(s)` : comments[0].note;
-            return `${location.lineStart}:${location.lineCount} - ${summary}`;
+            return `${location.lineStart + 1}:${location.lineCount + 1} - ${summary}`;
         },
 
         getCommentSummaries: function () {

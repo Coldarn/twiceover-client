@@ -310,23 +310,36 @@ code.lines.highlights {
     );
 }
 code.lines.diffs {
+    z-index: 2;
+    pointer-events: none;
+}
+code.lines.comments {
     z-index: 1;
     pointer-events: none;
 }
-code.lines.diffs .diff-start {
+code.lines .diff-start {
     border-top: 1px solid gray;
     margin-top: -1px;
 }
-code.lines.diffs .diff-side {
+code.lines .diff-side {
     border-left: 1px solid gray;
     margin-left: -1px;
     border-right: 1px solid gray;
     margin-right: -1px;
 }
-code.lines.diffs .diff-end {
+code.lines .diff-end {
     border-bottom: 1px solid gray;
     margin-bottom: -1px;
 }
+code.lines.comments .clickable {
+    pointer-events: auto;
+    cursor: pointer;
+}
+/*
+code.lines.comments .clickable:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+*/
 
 .diff-added {
     background: #040;

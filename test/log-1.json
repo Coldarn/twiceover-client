@@ -165,7 +165,7 @@
     "type": "addComment",
     "data": {
         "path": "$/testproject/dev/2015/testproject.csproj",
-        "location": "001,00005,000,00002,line",
+        "location": "001,00005,000,99997,line",
         "id": "cQjMMK8RreRMzDQrah8E7yo",
         "code": "  private PrintDocument[] _documents;\n  private int _docIndex;\n  private PrintEventArgs _args; ",
         "note": ""
@@ -194,7 +194,7 @@
     "type": "addComment",
     "data": {
         "path": "$/testproject/dev/2015/testproject.csproj",
-        "location": "001,00010,000,00003,line",
+        "location": "001,00010,000,99996,line",
         "id": "EvbpEfT6qL2TE4pzq6xVAbU",
         "code": "  public MultiPrintDocument(PrintDocument document1, PrintDocument document2)\n  {\n    _documents = new PrintDocument[] { document1, document2 };\n  } ",
         "note": ""

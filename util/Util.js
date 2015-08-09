@@ -88,6 +88,14 @@ define(function () {
             return count;
         },
         
+        zpad: function (num, digits) {
+            const numStr = String(num);
+            if (numStr.length >= digits) {
+                return numStr;
+            }
+            return ('0'.repeat(digits - 1) + numStr).slice(-digits);
+        },
+        
         escapeHtml: function (html) {
             textEscapeEl.nodeValue = html;
             return htmlEscapeEl.innerHTML;

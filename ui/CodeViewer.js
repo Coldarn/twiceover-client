@@ -22,6 +22,7 @@ define([
         
         diffs: null,            // Component containing foreground elements to display diffs and selections
         highlights: null,       // Component containing background line highlights to help draw attention to diffs
+        comments: null,         // Component containing foreground comment boxes for user selection
         
         selection: null,        // Active code block selection
         activeComment: null,    // Currently-active comment component
@@ -46,9 +47,9 @@ define([
             self.headerTextEl.innerText = path;
 
             if (task && task.diff) {
-                const highlightBlocks = [LineHighlight()],
-                    diffBlocks = ['<div>\n</div>'],
-                    highlightLines = App.diffMode === 'char';
+                const highlightBlocks = [LineHighlight()];
+                const diffBlocks = ['<div>\n</div>'];
+                const highlightLines = App.diffMode === 'char';
                 
                 const codeHtml = task.diff
                     .filter(function (part) {
@@ -89,14 +90,56 @@ define([
                 self.diffs = Component(`<code class="lines diffs"><div class="line-borders">${diffBlocks.join('')}</div></code>`);
                 self.diffs.lineBorders = self.diffs.query('.line-borders');
                 self.codeEl.insertBefore(self.diffs.el, self.codeEl.firstChild);
+
+                // Setup the inner, foregorund comment region HTML (used for outlining comment blocks)
+                self.comments = Component(`<code class="lines comments">${diffBlocks.join('')}</code>`);
+                self.codeEl.insertBefore(self.comments.el, self.codeEl.firstChild);
                 
                 // Setup the inner, background element's HTML (used for line highlights in 'char' diff mode)
                 self.highlights = Component(`<code class="lines highlights">${highlightBlocks.join('')}</code>`);
                 self.codeEl.insertBefore(self.highlights.el, self.codeEl.firstChild);
                 
-                self.diffs.el.style.minWidth = (self.codeEl.lastChild.offsetWidth + 2) + 'px';
-                self.highlights.el.style.minWidth = (self.codeEl.lastChild.offsetWidth + 2) + 'px';
+                const contentWidth = (self.codeEl.lastChild.offsetWidth + 2) + 'px';
+                self.highlights.el.style.minWidth = contentWidth;
+                self.diffs.el.style.minWidth = contentWidth;
+                self.comments.el.style.minWidth = contentWidth;
+                
+                self.refreshCommentRegions();
             }
+        },
+        
+        refreshCommentRegions: function () {
+            self.comments.queryAll('div').setAttribute('class', null);
+            App.fileMeta.getCommentLocations().map(function (location) {
+                const topOffset = self.getLineTopOffset(location.lineStart) - 1;
+                
+                self.refreshBorders(self.comments.el, location.lineStart, location.lineCount, function () {
+                    self.setSelection({
+                        topOffset: topOffset,
+                        location: location,
+                        comment: App.fileMeta.getCommentsAtLocation(location)[0],
+                    });
+                    self.handleAddComment();
+                });
+            });
+        },
+        
+        refreshBorders: function (parentEl, startLine, lineCount, clickFn) {
+            parentEl.children[startLine].classList.add('diff-start');
+            for (let i = startLine + lineCount; i >= startLine; i--) {
+                const rowEl = parentEl.children[i];
+                rowEl.classList.add('diff-side');
+                if (clickFn) {
+                    rowEl.classList.add('clickable');
+                    rowEl.onclick = clickFn;    // Only keep the most recent handler
+                }
+            }
+            parentEl.children[startLine + lineCount].classList.add('diff-end');
+        },
+        
+        getLineTopOffset: function (lineIndex) {
+            return self.diffs.lineBorders[0].children[lineIndex].getBoundingClientRect().top -
+                self.diffs.el.getBoundingClientRect().top;  
         },
         
         setSelection: function (selection) {
@@ -154,11 +197,7 @@ define([
             self.clearSelection();
             
             const lineBorderEl = self.diffs.lineBorders[0];
-            lineBorderEl.children[startLine].classList.add('diff-start');
-            for (let i = startLine + lineCount; i >= startLine; i--) {
-                lineBorderEl.children[i].classList.add('diff-side');
-            }
-            lineBorderEl.children[startLine + lineCount].classList.add('diff-end');
+            self.refreshBorders(lineBorderEl, startLine, lineCount);
             self.addCommentEl.style.display = null;
 
             // Create a range encapsulating just the code text so we can extract matching lines
@@ -166,11 +205,9 @@ define([
             allCodeRange.selectNodeContents(self.codeEl);
             allCodeRange.setStartAfter(self.diffs.el);
             
-            const topOffset = lineBorderEl.children[startLine].getBoundingClientRect().top -
-                self.diffs.el.getBoundingClientRect().top;
             const code = allCodeRange.toString().split('\n').slice(startLine, startLine + lineCount + 1).join('\n');
             self.setSelection({
-                topOffset: topOffset,
+                topOffset: self.getLineTopOffset(startLine),
                 location: commentLoc,
                 comment: Comment(App.user, code),
             });
@@ -212,6 +249,10 @@ define([
             if (DiffWorkQueue.getTaskName(path, diffMode) === self.activeTaskName) {
                 self.loadActiveEntry();
             }
+        },
+        
+        handleCommentAdded: function (event) {
+            self.refreshCommentRegions();
         }
     };
 
@@ -219,6 +260,7 @@ define([
     EventBus.on('diff_mode_changed', self.handleDiffModeChanged, self);
     EventBus.on('active_iterations_changed', self.handleIterationsChanged, self);
     EventBus.on('diff_completed', self.handleDiffCompleted, self);
+    EventBus.on('review_comment_added', self.handleCommentAdded, self);
     
     self.setEl(document.querySelector('.code-pane'));
     

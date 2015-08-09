@@ -1,6 +1,10 @@
 // Identifies a location of a block of code under comment in a review
-define([], function () {
+define([
+    'util/Util'
+], function (Util) {
     'use strict';
+    
+    const MaxLineCount = 99999;
     
     const proto = {
         leftIteration: null,    // Index of the left iteration of the source under comment
@@ -17,11 +21,11 @@ define([], function () {
         
         toString: function () {
             return [
-                ('00' + this.rightIteration).slice(-3), // Pad with zeroes for lex sorting, right iteration first
-                ('0000' + this.lineStart).slice(-5),    // Then by line next
-                ('00' + this.leftIteration).slice(-3),  // Then by left iteration
-                ('0000' + this.lineCount).slice(-5),    // Then by number of lines
-                this.diffMode                           // Finally by diff mode, though this should never come up
+                Util.zpad(this.rightIteration, 3),          // Pad with zeroes for lex sorting, right iteration first
+                Util.zpad(this.lineStart, 5),               // Then by line next
+                Util.zpad(this.leftIteration, 3),           // Then by left iteration
+                Util.zpad(MaxLineCount - this.lineCount, 5),// Then by number of lines, descending
+                this.diffMode                               // Finally by diff mode, though this should never come up
             ].join(',');
         },
         
@@ -43,7 +47,7 @@ define([], function () {
             obj.rightIteration = Number(parts[0]);
             obj.diffMode = parts[4];
             obj.lineStart = Number(parts[1]);
-            obj.lineCount = Number(parts[3]);
+            obj.lineCount = MaxLineCount - Number(parts[3]);
         } else {
             obj.leftIteration = leftIt;
             obj.rightIteration = rightIt;

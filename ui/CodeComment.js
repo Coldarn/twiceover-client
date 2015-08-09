@@ -20,7 +20,8 @@ define([
             
             this.noteEditor = this.footer.query('note')
                 .on('blur', this.handleNoteEdited.bind(this))
-                .on('paste', this.pastePlainText)[0];
+                .on('paste', this.pastePlainText)
+                .on('keyup', this.handleNoteKeyUp.bind(this))[0];
             
             this.deleteButton = this.footer.query('.delete')
                 .on('click', this.handleDeleteCommentClick.bind(this));
@@ -119,7 +120,7 @@ define([
                 this.comments.push(Comment(App.user, this.originalCode));
                 this.buildIterations();
                 this.setActiveComment(this.comments[this.comments.length - 1]);
-                this.codeEditor.focus();
+                this.noteEditor.focus();
             }
         },
 
@@ -158,6 +159,12 @@ define([
                 } else {
                     App.fileMeta.editComment(this.comment.id, 'note', this.comment.note);
                 }
+            }
+        },
+        
+        handleNoteKeyUp: function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                this.noteEditor.blur();
             }
         }
     };

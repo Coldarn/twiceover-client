@@ -51,11 +51,12 @@ define([
         
         attachLinkHandlers: function (el) {
             (el || self).queryAll('.comment-link').on('click', function (event) {
+                const path = this.parentNode.parentNode.dataset.path;
                 if (this.classList.contains('seen') && event.x <= this.getBoundingClientRect().left + 25) {
                     this.classList.remove('seen');
-                    App.status.setCommentSeen(App.fileMeta.path, this.dataset.loc, false);
+                    App.status.setCommentSeen(path, this.dataset.loc, false);
                 } else {
-                    EventBus.fire('comment_link_clicked', CommentLocation(this.dataset.loc));
+                    EventBus.fire('comment_link_clicked', path, CommentLocation(this.dataset.loc));
                 }
             }, true);
         },
@@ -78,10 +79,11 @@ define([
             document.querySelector(`.file-entry[data-path="${path.toLowerCase()}"]`).classList.add('selected');
         },
 
-        handleCommentLinkClicked: function (commentLocation) {
-            const linkEl = self.query(`.comment-link[data-loc="${commentLocation}"]`);
+        handleCommentLinkClicked: function (path, location) {
+            const fileEl = this.query(`.file-entry[data-path="${path}"]`);
+            const linkEl = fileEl.query(`.comment-link[data-loc="${location}"]`);
             linkEl[0].classList.add('seen');
-            App.status.setCommentSeen(App.fileMeta.path, commentLocation, true);
+            App.status.setCommentSeen(path, location, true);
         },
         
         handleCommentAddedOrRemoved: function (event) {

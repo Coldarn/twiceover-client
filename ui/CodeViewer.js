@@ -113,16 +113,8 @@ define([
             App.fileMeta.getCommentLocations()
                 .filter(function (loc) { return loc.diffMode === App.diffMode; })
                 .map(function (location) {
-                    const topOffset = self.getLineTopOffset(location.lineStart) - 1;
-
-                    self.refreshBorders(self.comments.el, location.lineStart, location.lineCount, function () {
-                        self.setSelection({
-                            topOffset: topOffset,
-                            location: location,
-                            code: self.getCode(location.lineStart, location.lineCount),
-                        });
-                        self.handleAddComment();
-                    });
+                    self.refreshBorders(self.comments.el, location.lineStart, location.lineCount,
+                        self.showComment.bind(self, location));
                 });
         },
         
@@ -165,6 +157,15 @@ define([
             self.diffs.lineBorders.queryAll('div').setAttribute('class', null);
             self.addCommentEl.style.display = 'none';
             self.setSelection(null);
+        },
+            
+        showComment: function (location) {
+            self.setSelection({
+                topOffset: self.getLineTopOffset(location.lineStart) - 1,
+                location: location,
+                code: self.getCode(location.lineStart, location.lineCount),
+            });
+            self.handleAddComment();
         },
         
         isTargetInternal: function (event) {
@@ -255,10 +256,16 @@ define([
             }
         },
         
-        handleCommentAdded: function (event) {
+        handleCommentAddedOrRemoved: function (event) {
             if (App.fileMeta === App.review.getFileMeta(event.data.path)) {
                 self.refreshCommentRegions();
             }
+        },
+        
+        handleCommentLinkClicked: function (path, location) {
+            setTimeout(function () {
+                self.showComment(location);
+            }, 10);
         }
     };
 
@@ -266,8 +273,10 @@ define([
     EventBus.on('diff_mode_changed', self.handleDiffModeChanged, self);
     EventBus.on('active_iterations_changed', self.handleIterationsChanged, self);
     EventBus.on('diff_completed', self.handleDiffCompleted, self);
-    EventBus.on('review_comment_added', self.handleCommentAdded, self);
-    
+    EventBus.on('review_comment_added', self.handleCommentAddedOrRemoved, self);
+    EventBus.on('review_comment_removed', self.handleCommentAddedOrRemoved, self);
+    EventBus.on('comment_link_clicked', self.handleCommentLinkClicked, self);
+
     self.setEl(document.querySelector('.code-pane'));
     
     

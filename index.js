@@ -20,7 +20,8 @@ requirejs([
         tabReplace: '    ', // 4 spaces
     });
     
-    var gui = require('nw.gui');
+    const gui = require('nw.gui');
+    const fs = require('fs');
     
     ElementProxy(document.body).on('keydown', function (event) {
         if (event.keyCode === 120) {        // F9
@@ -30,11 +31,12 @@ requirejs([
         }
     });
 
+    App.SERVER_INFO = JSON.parse(fs.readFileSync('server.json'));
     const importDialog = ImportDialog().appendTo(document.body)
     
     if (App.TEST_MODE) {
         App.user = User('John Doe', 'john.doe@example.com');
-        App.loadReview(JSON.parse(require('fs').readFileSync('test/log-1.json')));
+        App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
     } else {
         EmailChecker.getCurrentUser().then(function (user) {
             App.user = user;

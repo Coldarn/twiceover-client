@@ -3,15 +3,17 @@ define([
     'util/EventBus',
     'util/EventLog',
     'util/ReviewStatus',
+    'util/Remote',
     'om/Review',
     'om/Iteration',
     'om/FileEntry'
-], function (Util, EventBus, EventLog, ReviewStatus, Review, Iteration, FileEntry) {
+], function (Util, EventBus, EventLog, ReviewStatus, Remote, Review, Iteration, FileEntry) {
     'use strict';
     
     var App = {
     
         TEST_MODE: true,        // Provides pre-canned differences for quick testing
+        SERVER_INFO: null,      // Information about the review server
 
         user: null,             // Filled in on startup by querying the local system
         review: null,           // Active review
@@ -23,12 +25,16 @@ define([
         
         diffMode: 'line',       // Current difference display setting
         
+        status: null,           // Manages local persistence of review status UI state
+        remote: null,           // Manages server communication of review state
+        
         loadReview: function (logEvents) {
             const review = Review.load(EventLog.load(logEvents));
 
             review.eventLog.subscribe(handleReviewEvent);
             App.setActiveReview(review);
             App.setActiveIterations(0, review.iterations.length - 1);
+            App.remote = Remote(App.SERVER_INFO);
         },
 
         setActiveReview: function (review) {

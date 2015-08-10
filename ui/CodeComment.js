@@ -46,7 +46,8 @@ define([
                 return `<button title="${c.user || 'Original Code'}" data-index="${index}">${content}</button>`;
             }).join('') + `<button title="Add Comment">+</button>`;
             this.iterations.queryAll('button')
-                .on('click', this.handleIterationClick.bind(this));
+                .on('click', this.handleIterationClick.bind(this))
+                .on('keydown', this.handleIterationKeyDown.bind(this));
         },
         
         setActiveComment: function (comment) {
@@ -66,8 +67,7 @@ define([
 
             this.iterations.queryAll().setClass('selected', false);
             this.iterations.query(`[data-index="${commentIndex}"]`)
-                .setClass('selected', true)
-                .setClass('editable', isEditable);
+                .setClass('selected', true);
         },
         
         hasCodeChanged: function () {
@@ -121,6 +121,38 @@ define([
                 this.buildIterations();
                 this.setActiveComment(this.comments[this.comments.length - 1]);
                 this.noteEditor.focus();
+            }
+        },
+        
+        handleIterationKeyDown: function (event) {
+            const me = this;
+            const commentIndex = Number(event.currentTarget.dataset.index);
+            let newIndex;
+            
+            switch (event.keyCode) {
+                case 37:    // Left
+                    newIndex = commentIndex === 0 ? null
+                        : Number.isNaN(commentIndex) ? this.comments.length - 1
+                        : commentIndex - 1;
+                    break;
+                case 39:    // Right
+                    newIndex = commentIndex === this.comments.length - 1 ? null
+                        : Number.isNaN(commentIndex) ? 0
+                        : commentIndex + 1;
+                    break;
+            }
+            
+            if (newIndex !== undefined) {
+                if (typeof newIndex === 'number') {
+                    this.setActiveComment(this.comments[newIndex]);
+                    setTimeout(function () {
+                        me.query(`button[data-index="${newIndex}"]`)[0].focus();
+                    });
+                } else {
+                    setTimeout(function () {
+                        me.query(`button:not([data-index])`)[0].focus();
+                    });
+                }
             }
         },
 

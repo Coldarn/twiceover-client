@@ -41,7 +41,7 @@ define([
         buildIterations: function () {
             this.iterations[0].innerHTML = this.comments.map(function (c, index) {
                 const content = c.user
-                    ? `<img src="http://www.gravatar.com/avatar/${SparkMD5.hash(c.user.email)}?s=28" />`
+                    ? `<img src="http://www.gravatar.com/avatar/${SparkMD5.hash(c.user.email)}?s=28&d=retro" />`
                     : '0';
                 return `<button title="${c.user || 'Original Code'}" data-index="${index}">${content}</button>`;
             }).join('') + `<button title="Add Comment">+</button>`;

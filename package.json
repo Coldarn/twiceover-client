@@ -1,6 +1,8 @@
 {
     "name": "Twice-Over",
+    "version": "0.1.0",
     "main": "index.html",
+    "single-instance": false,
     "window": {
         "toolbar": false,
         "width": 1024,

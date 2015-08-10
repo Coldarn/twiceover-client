@@ -24,10 +24,12 @@ nw.js-based thick client to support code review creation from changes on the loc
 - code file differencing via [jsdiff](https://github.com/kpdecker/jsdiff)
 - code syntax highlighting via [Highlight.js](https://github.com/isagalaev/highlight.js)
 - adding new iterations and diffing between any pair of them
+- inline commenting
 
 **To Do:**
-- inline commenting
 - server communication for persisting and loading reviews
+- review-level comments
+- adding/removing reviewers after creation
 
 ### twiceover-server
 node.js-based web server to support persisting and hosting reviews along with sending out emails.

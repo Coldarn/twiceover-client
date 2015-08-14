@@ -196,14 +196,16 @@ define([
     }
     
     // Returns change information for the given workspace
-    function getFileFromTfs(workspaceName, tfsPath) {
+    function getFileFromTfs(workspaceName, tfsPath, secondTry) {
         return new Promise(function (resolve, reject) {
             child_process.execFile(tfPath, ['view', `${tfsPath};W${workspaceName}`, '/console'],
                 { maxBuffer: 1024*1024 },
                 function (err, stdout, stderr) {
                     if (err || stderr) {
-                        if (stderr.indexOf(': No file matches.') > -1) {
+                        if (stderr.indexOf(': No file matches.') >= 0 || stderr.indexOf('Specified argument was out of the range of valid values.') >= 0) {
                             resolve(null);
+						} else if (!secondTry && stderr.indexOf('Unable to determine the source control server.') >= 0) {
+							resolve(getFileFromTfs(workspaceName, tfsPath, true));
                         } else if (err.message === "stdout maxBuffer exceeded.") {
                             resolve('*** File too large to display! ***');
                         } else {

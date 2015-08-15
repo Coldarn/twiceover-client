@@ -9,11 +9,12 @@ requirejs([
     'integrations/EmailChecker',
     'util/ElementProxy',
     'util/EventLog',
+    'util/Remote',
     'ui/MenuBar',
     'ui/FileList',
     'ui/CodeViewer',
     'ui/ImportDialog'
-], function (App, Review, User, EmailChecker, ElementProxy, EventLog, MenuBar, FileList, CodeViewer, ImportDialog) {
+], function (App, Review, User, EmailChecker, ElementProxy, EventLog, Remote, MenuBar, FileList, CodeViewer, ImportDialog) {
     'use strict';
 
     hljs.configure({
@@ -31,7 +32,8 @@ requirejs([
         }
     });
 
-    App.SERVER_INFO = JSON.parse(fs.readFileSync('server.json'));
+    App.remote = Remote(JSON.parse(fs.readFileSync('server.json')));
+
     const importDialog = ImportDialog().appendTo(document.body)
     
     if (App.TEST_MODE) {

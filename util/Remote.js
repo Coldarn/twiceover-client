@@ -3,11 +3,19 @@ define([
 ], function (Util) {
     'use strict';
     
+    let App = null;
+    
     const proto = {
         connected: false,           // WebSocket is connected
         webSocket: null,            // WebSocket for communication
         review: null,               // Active review
+        
         handlingRemoteEvent: false, // True when handling a remote event
+        waitingForReview: false,    // True when we're waiting to download a review
+        
+        loadReview: function (reviewID) {
+            this.waitingForReview = reviewID;
+        },
         
         setReview: function (review) {
             if (this.review) {
@@ -18,20 +26,30 @@ define([
         },
         
         syncServer: function () {
-            if (!this.review || !this.connected) {
+            if (!this.connected) {
                 return;
             }
             
-            this.review.eventLog.subscribe(this.handleLocalEvent, this);
+            if (this.waitingForReview) {
+                if (typeof this.waitingForReview === 'string') {
+                    this.webSocket.send(JSON.stringify({
+                        protocol: 'loadReview',
+                        reviewID: this.waitingForReview
+                    }));
+                    this.waitingForReview = true;
+                }
+            } else if (this.review) {
+                this.review.eventLog.subscribe(this.handleLocalEvent, this);
 
-            this.webSocket.send(JSON.stringify({
-                protocol: 'syncReview',
-                reviewID: this.review.id,
-                title: this.review.title,
-                description: this.review.description,
-                owner: this.review.owningUser.toString(),
-                log: this.review.eventLog.log
-            }));
+                this.webSocket.send(JSON.stringify({
+                    protocol: 'syncReview',
+                    reviewID: this.review.id,
+                    title: this.review.title,
+                    description: this.review.description,
+                    owner: this.review.owningUser.toString(),
+                    log: this.review.eventLog.log
+                }));
+            }
         },
         
         
@@ -48,9 +66,17 @@ define([
             me.handlingRemoteEvent = true;
             try {
                 if (Array.isArray(event)) {
-                    event.forEach(function (evt) {
-                        me.review.eventLog.add(evt, true);
-                    });
+                    if (me.waitingForReview) {
+                        App.loadReview(event);
+                        me.review.eventLog.subscribe(this.handleLocalEvent, this);
+                        me.waitingForReview = false;
+                    } else {
+                        event.forEach(function (evt) {
+                            me.review.eventLog.add(evt, true);
+                        });
+                    }
+                } else if (event.error) {
+                    document.body.innerText = event.error;
                 } else {
                     me.review.eventLog.add(event, true);
                 }
@@ -60,7 +86,9 @@ define([
         }
     };
     
-    return function Remote(serverInfo) {
+    return function Remote(app, serverInfo) {
+        App = app;
+        
         const obj = Object.create(proto);
         obj.webSocket = new ReconnectingWebSocket('ws://' + serverInfo.url);
         obj.webSocket.onopen = function (event) {

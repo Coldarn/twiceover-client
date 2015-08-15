@@ -32,7 +32,7 @@ requirejs([
         }
     });
 
-    App.remote = Remote(JSON.parse(fs.readFileSync('server.json')));
+    App.remote = Remote(App, JSON.parse(fs.readFileSync('server.json')));
 
     const importDialog = ImportDialog().appendTo(document.body)
     

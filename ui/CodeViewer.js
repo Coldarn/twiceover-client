@@ -115,6 +115,9 @@ define([
         },
         
         refreshCommentRegions: function () {
+            if (!self.comments) {
+                return;
+            }
             self.comments.queryAll('div').setAttribute('class', null);
             App.fileMeta.getCommentLocations()
                 .filter(function (loc) {

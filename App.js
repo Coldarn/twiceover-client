@@ -137,17 +137,22 @@ define([
     };
     
     function handleReviewEvent(event) {
-        switch (event.type) {
-            case 'addComment':
-                EventBus.fire('review_comment_added', event);
-                break;
-            case 'editComment':
-                EventBus.fire('review_comment_edited', event);
-                break;
-            case 'removeComment':
-                EventBus.fire('review_comment_removed', event);
-                break;
-        }
+        setTimeout(function () {
+            switch (event.type) {
+                case 'newIteration':
+                    EventBus.fire('review_iteration_added', event);
+                    break;
+                case 'addComment':
+                    EventBus.fire('review_comment_added', event);
+                    break;
+                case 'editComment':
+                    EventBus.fire('review_comment_edited', event);
+                    break;
+                case 'removeComment':
+                    EventBus.fire('review_comment_removed', event);
+                    break;
+            }
+        });
     }
     
     return App;

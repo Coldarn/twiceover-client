@@ -38,6 +38,16 @@ define([
             });
         },
         
+        cacheComments: function () {
+            this.comments = this.fileMeta.getCommentsAtLocation(this.location);
+
+            if (this.comments.length < 1) {
+                this.comments.push(Comment(App.user, this.originalCode));
+            }
+
+            this.comments.unshift(Comment(null, this.originalCode));
+        },
+        
         buildIterations: function () {
             this.iterations[0].innerHTML = this.comments.map(function (c, index) {
                 const content = c.user
@@ -48,6 +58,14 @@ define([
             this.iterations.queryAll('button')
                 .on('click', this.handleIterationClick.bind(this))
                 .on('keydown', this.handleIterationKeyDown.bind(this));
+        },
+        
+        restoreActiveComment: function (fallbackIndex) {
+            if (this.comment) {
+                const currentCommentID = this.comment.id;
+                const commentIndex = Util.findIndex(this.comments, function (c) { return c.id === currentCommentID; });
+                this.setActiveComment(this.comments[commentIndex >= 0 ? commentIndex : fallbackIndex]);
+            }
         },
         
         setActiveComment: function (comment) {
@@ -164,13 +182,6 @@ define([
             }
         },
         
-        handleDeleteComment: function (event) {
-            const commentIndex = Util.findIndex(this.comments, function (c) { return c.id === event.data.id; });
-            this.comments.splice(commentIndex, 1);
-            this.buildIterations();
-            this.setActiveComment(this.comments[commentIndex - 1]);
-        },
-        
         handleCodeEdited: function () {
             if (this.hasCodeChanged()) {
                 this.syntaxHighlightCode();
@@ -198,7 +209,24 @@ define([
             if (event.keyCode === 13 && event.ctrlKey) {
                 this.noteEditor.blur();
             }
-        }
+        },
+
+        handleAddComment: function (event) {
+            this.cacheComments();
+            this.buildIterations();
+            this.restoreActiveComment();
+        },
+
+        handleEditComment: function (event) {
+            this.restoreActiveComment();
+        },
+
+        handleDeleteComment: function (event) {
+            const commentIndex = Util.findIndex(this.comments, function (c) { return c.id === event.data.id; });
+            this.comments.splice(commentIndex, 1);
+            this.buildIterations();
+            this.restoreActiveComment(commentIndex - 1);
+        },
     };
     
     return function CodeComment(topOffset, fileMeta, location, origCode) {
@@ -207,15 +235,11 @@ define([
         obj.originalCode = origCode;
         obj.fileMeta = fileMeta;
         obj.location = location;
-        obj.comments = obj.fileMeta.getCommentsAtLocation(location);
-        
-        if (obj.comments.length < 1) {
-            obj.comments.push(Comment(App.user, origCode));
-        }
-        
-        obj.comment = obj.comments[0];
-        obj.comments.unshift(Comment(null, origCode));
-        
+        obj.cacheComments();
+        obj.comment = obj.comments[1];
+
+        EventBus.on('review_comment_added', obj.handleAddComment, obj);
+        EventBus.on('review_comment_edited', obj.handleEditComment, obj);
         EventBus.on('review_comment_removed', obj.handleDeleteComment, obj);
         
         obj.setHtml('text!partials/CodeComment.html');

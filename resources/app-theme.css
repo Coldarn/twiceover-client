@@ -88,6 +88,7 @@ body {
 }
 
 .file-pane {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 200px;
@@ -123,6 +124,26 @@ body {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+}
+
+.file-pane footer {
+    display: flex;
+    padding-right: 5px;
+}
+
+.file-pane footer > button {
+    flex: 1 1 auto;
+    font-size: 14px;
+    font-family: Segoe UI, sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    background: #666;
+    color: #bbb;
+}
+
+.file-pane footer > button.selected {
+    background: #484;
+    color: #ddd;
 }
 
 .file-list {
@@ -487,26 +508,6 @@ label {
 .dialog footer button {
     font-size: 20px;
     padding: 5px 10px;
-}
-
-.file-pane footer {
-    display: flex;
-    padding-right: 5px;
-}
-
-.file-pane footer > button {
-    flex: 1 1 auto;
-    font-size: 14px;
-    font-family: Segoe UI, sans-serif;
-    font-weight: normal;
-    font-style: normal;
-    background: #666;
-    color: #bbb;
-}
-
-.file-pane footer > button.selected {
-    background: #484;
-    color: #ddd;
 }
 
 .row-group, .toolbar {

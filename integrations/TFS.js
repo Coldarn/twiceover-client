@@ -196,7 +196,9 @@ define([
 			const loadTask = getFileQueue.shift();
 			activeFileLoads += 1;
 			Promise.all([
-				loadTask.tfsPath ? getFileFromTfs(loadTask.workspaceName, loadTask.tfsPath) : undefined,
+				loadTask.tfsPath
+                    ? App.TEST_MODE ? getLocalFile(loadTask.tfsPath) : getFileFromTfs(loadTask.workspaceName, loadTask.tfsPath)
+                    : undefined,
 				getLocalFile(loadTask.localPath)
 			]).then(function (fileContents) {
 				loadTask.resolve(fileContents);

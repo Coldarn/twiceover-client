@@ -53,7 +53,7 @@ define([
                 const content = c.user
                     ? `<img src="http://www.gravatar.com/avatar/${SparkMD5.hash(c.user.email)}?s=28&d=retro" />`
                     : '0';
-                return `<button title="${c.user || 'Original Code'}" data-index="${index}">${content}</button>`;
+                return `<button title="${c.user || 'Base Code'}" data-index="${index}">${content}</button>`;
             }).join('') + `<button title="Add Comment">+</button>`;
             this.iterations.queryAll('button')
                 .on('click', this.handleIterationClick.bind(this))

@@ -116,7 +116,8 @@ define([
                 } else {
                     const title = this.el.querySelector('#review-title').value;
                     const description = this.el.querySelector('#review-description').value;
-                    const review = Review(App.user, title, description);
+                    const reviewers = this.emailControl.getEntries();
+                    const review = Review(App.user, title, description, reviewers);
                     const leftIteration = Iteration();
                     const rightIteration = Iteration();
 

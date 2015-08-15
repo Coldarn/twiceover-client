@@ -10,7 +10,7 @@ define([], function () {
         },
         
         toString: function () {
-            return `${this.name} <${this.email}>`;
+            return `${this.name} <${this.email}>`.trim();
         }
     };
     

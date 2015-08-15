@@ -31,6 +31,12 @@ define([
                 .on('keyup', me.handleEmailTextEntry.bind(me));
 		},
         
+        getEntries: function () {
+            return this.queryAll('.email > span:first-child').map(function (el) {
+                return el.innerText.trim();
+            });
+        },
+        
         loadSuggestions: function () {
             const me = this,
                 checkValue = me.entryEl.value;

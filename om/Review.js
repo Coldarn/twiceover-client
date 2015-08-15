@@ -9,6 +9,18 @@ define([
     'use strict';
     
     var proto = {
+        eventLog: null,         // EventLog driving this review
+        iterations: null,       // Ordered array of Iterations
+        fileMetas: null,        // Object mapping lowercase file paths to FileMetas
+        
+        
+        id: null,               // Unique ID for this review
+        owningUser: null,       // User that created this review
+        title: null,            // Review's title
+        description: null,      // Review's description
+        reviewers: null,        // Array of reviewers
+        
+        
         // Creates, adds, and returns a new iteration to this review
         addIteration: function (iteration) {
             this.eventLog.mergeIn(iteration.eventLog);
@@ -35,6 +47,8 @@ define([
             return this.fileMetas[path.toLowerCase()];
         },
         
+        // Searches through all FileMetas to find the comment with the given ID and
+        // returns an object describing its location or null if not found
         findComment: function (commentID) {
             for (let path in this.fileMetas) {
                 let fileMeta = this.fileMetas[path];
@@ -57,6 +71,7 @@ define([
                     this.owningUser = User.parse(event.user);
                     this.title = event.data.title;
                     this.description = event.data.description;
+                    this.reviewers = event.data.reviewers;
                     break;
                 }
                 case 'newIteration': {
@@ -76,13 +91,14 @@ define([
         },
     };
 
-    function Review(user, title, description) {
+    function Review(user, title, description, reviewers) {
         const eventLog = EventLog(user).add({
             type: 'newReview',
             data: {
                 id: Util.randomID(),
                 title: title,
-                description: description
+                description: description,
+                reviewers: reviewers.map(function (u) { return u.toString(); })
             }
         });
         return Review.load(eventLog);
@@ -92,8 +108,8 @@ define([
         var obj = Object.create(proto);
 
         obj.eventLog = eventLog;
-        obj.iterations = [];          // Array of Iterations
-        obj.fileMetas = {};           // Map of file paths to metadata for all files in the review
+        obj.iterations = [];
+        obj.fileMetas = {};
         
         eventLog.subscribe(obj.handleEvent, obj);
         eventLog.processEventsSince(0);

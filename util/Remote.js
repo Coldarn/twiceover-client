@@ -64,7 +64,7 @@ define([
         const obj = Object.create(proto);
         obj.webSocket = new ReconnectingWebSocket('ws://' + serverInfo.url);
         obj.webSocket.onopen = function (event) {
-            console.log('Server connected.');
+            console.warn('Server connected.');
             obj.connected = true;
             obj.syncServer();
         };
@@ -73,7 +73,7 @@ define([
             obj.handleRemoteEvent(message);
         };
         obj.webSocket.onclose = function (event) {
-            console.log('Connection lost.');
+            console.warn('Connection lost.');
             obj.connected = false;
         };
         return obj;

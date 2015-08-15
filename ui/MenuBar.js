@@ -55,6 +55,7 @@ define([
     };
     
     EventBus.on('active_iterations_changed', self.handleActiveIterationsChanged, self);
+    EventBus.on('review_iteration_added', self.handleActiveIterationsChanged, self);
     
     self.setEl(document.querySelector('.menu-bar'));
     

@@ -25,17 +25,17 @@ nw.js-based thick client to support code review creation from changes on the loc
 - code syntax highlighting via [Highlight.js](https://github.com/isagalaev/highlight.js)
 - adding new iterations and diffing between any pair of them
 - inline commenting
+- server communication for persisting and loading reviews
 
 **To Do:**
-- server communication for persisting and loading reviews
-- review-level comments
-- adding/removing reviewers after creation
+- feature enhancements are now tracked on the [issues page](/../../issues)
 
 ### [twiceover-server](https://github.com/Coldarn/twiceover-server)
 node.js-based web server to support persisting and hosting reviews along with sending out emails.
 
-**To Do:**
+**Done:**
 - review creation/persistence
 - adding comments and iterations to an existing review
-- browsing outstanding reviews
-- sending emails for review invites and updates
+
+**To Do:**
+- feature enhancements are now tracked on the [twiceover-server issues page](https://github.com/Coldarn/twiceover-server/issues)

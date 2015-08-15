@@ -6,7 +6,9 @@ define([
     var path = require('path'),
         child_process = require('child_process'),
         fs = require('fs'),
-        tfPath = getTfPath();
+        tfPath = getTfPath(),
+		activeFileLoads = 0,
+		getFileQueue = [];
     
     var self = {
         getWorkspace: function () {
@@ -26,15 +28,15 @@ define([
         getChangeFiles: function (workspaceName, changeRecord, localFilesOnly) {
             if (App.TEST_MODE) {
                 const choices = ['test/left.js', 'test/right.js', 'test/csharp1.cs', 'test/csharp2.cs', ''];
-                return Promise.all([
-                    localFilesOnly ? undefined : getLocalFile(choices[(choices.length * Math.random()) | 0]),
-                    getLocalFile(choices[(choices.length * Math.random()) | 0])
-                ]);
+                return getFiles(workspaceName,
+                    localFilesOnly ? undefined : choices[(choices.length * Math.random()) | 0],
+                    choices[(choices.length * Math.random()) | 0]
+                );
             }
-            return Promise.all([
-                localFilesOnly ? undefined : getFileFromTfs(workspaceName, changeRecord.basePath),
-                getLocalFile(changeRecord.iterationPath)
-            ]);
+            return getFiles(workspaceName,
+                localFilesOnly ? undefined : changeRecord.basePath,
+                changeRecord.iterationPath
+            );
         }
     };
     
@@ -168,6 +170,45 @@ define([
         
         return changes.reduce(flatten, []);
     }
+	
+	function getFiles(workspaceName, tfsPath, localPath) {
+		const loadTask = {
+			resolve: null,
+			reject: null,
+			workspaceName: workspaceName,
+			tfsPath: tfsPath,
+			localPath: localPath
+		};
+
+		const promise = new Promise(function (resolve, reject) {
+			loadTask.resolve = resolve;
+			loadTask.reject = reject;
+		});
+		
+		getFileQueue.push(loadTask);
+		processFileLoadQueue();
+		
+		return promise;
+	}
+	
+	function processFileLoadQueue() {
+		while (activeFileLoads < 10 && getFileQueue.length) {
+			const loadTask = getFileQueue.shift();
+			activeFileLoads += 1;
+			Promise.all([
+				loadTask.tfsPath ? getFileFromTfs(loadTask.workspaceName, loadTask.tfsPath) : undefined,
+				getLocalFile(loadTask.localPath)
+			]).then(function (fileContents) {
+				loadTask.resolve(fileContents);
+				activeFileLoads -= 1;
+				processFileLoadQueue();
+			}, function (err) {
+				loadTask.reject(err);
+				activeFileLoads -= 1;
+				processFileLoadQueue();
+			});
+		}
+	}
     
     function getLocalFile(localPath) {
         return new Promise(function (resolve, reject) {
@@ -196,7 +237,7 @@ define([
     }
     
     // Returns change information for the given workspace
-    function getFileFromTfs(workspaceName, tfsPath, secondTry) {
+    function getFileFromTfs(workspaceName, tfsPath, tryCount) {
         return new Promise(function (resolve, reject) {
             child_process.execFile(tfPath, ['view', `${tfsPath};W${workspaceName}`, '/console'],
                 { maxBuffer: 1024*1024 },
@@ -204,8 +245,8 @@ define([
                     if (err || stderr) {
                         if (stderr.indexOf(': No file matches.') >= 0 || stderr.indexOf('Specified argument was out of the range of valid values.') >= 0) {
                             resolve(null);
-						} else if (!secondTry && stderr.indexOf('Unable to determine the source control server.') >= 0) {
-							resolve(getFileFromTfs(workspaceName, tfsPath, true));
+						} else if (!tryCount || tryCount < 3 && stderr.indexOf('Unable to determine the source control server.') >= 0) {
+							resolve(getFileFromTfs(workspaceName, tfsPath, (tryCount || 0) + 1));
                         } else if (err.message === "stdout maxBuffer exceeded.") {
                             resolve('*** File too large to display! ***');
                         } else {

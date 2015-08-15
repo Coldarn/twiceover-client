@@ -90,7 +90,17 @@ define([
         },
         
         handleCommentAddedOrRemoved: function (event) {
-            const path = event.data.path || App.review.findComment(event.data.id).fileMeta.path.toLowerCase();
+            let path = event.data.path;
+            if (!path) {
+                const loc = App.review.findComment(event.data.id);
+                if (loc) {
+                    path = loc.fileMeta.path.toLowerCase();
+                }
+            }
+            if (!path) {
+                return;
+            }
+            
             const entryEl = self.query(`.file-entry[data-path="${path}"]`)[0];
             if (!entryEl) {
                 return;

@@ -1,6 +1,7 @@
 define([
+    'App',
     'util/EventBus'
-], function (EventBus) {
+], function (App, EventBus) {
     'use strict';
     
     function DiffTask(path, diffMode, leftContent, rightContent) {
@@ -28,7 +29,7 @@ define([
                 self.tasks[task.name] = task;
                 self.queue.push(task.name);
                 
-                if (self.workers.length < 4) {
+                if (self.workers.length < (App.TEST_MODE ? 1 : 4)) {
                     const worker = new Worker('util/BackgroundDiffer.js');
                     worker.onmessage = self.handleWorkerMessage.bind(self, worker);
                     self.workers.push(worker);

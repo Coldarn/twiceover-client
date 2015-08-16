@@ -23,15 +23,19 @@ requirejs([
     
     const fs = require('fs');
 
-    App.remote = Remote(App, JSON.parse(fs.readFileSync('server.json')));
+    try {
+        var serverInfo = JSON.parse(fs.readFileSync('server.json'));
+    } catch (err) { }
 
+    App.remote = Remote(App, serverInfo);
+    
     const importDialog = ImportDialog().appendTo(document.body)
     
     if (App.TEST_MODE) {
         App.user = User('Collin Arnold', 'collin@collinarnold.net');
 //        App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
-//        importDialog.whenLoaded(function (comp) { comp.show(); });
-        App.remote.loadReview('rVPjZ6qv1TYcRkhGYRqy1yB');
+        importDialog.whenLoaded(function (comp) { comp.show(); });
+//        App.remote.loadReview('rVPjZ6qv1TYcRkhGYRqy1yB');
     } else {
         EmailChecker.getCurrentUser().then(function (user) {
             App.user = user;

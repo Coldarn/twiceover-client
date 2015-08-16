@@ -91,20 +91,22 @@ define([
         App = app;
         
         const obj = Object.create(proto);
-        obj.webSocket = new ReconnectingWebSocket('ws://' + serverInfo.url);
-        obj.webSocket.onopen = function (event) {
-            console.warn('Server connected.');
-            obj.connected = true;
-            obj.syncServer();
-        };
-        obj.webSocket.onmessage = function (evt) {
-            const message = JSON.parse(evt.data);
-            obj.handleRemoteEvent(message);
-        };
-        obj.webSocket.onclose = function (event) {
-            console.warn('Connection lost.');
-            obj.connected = false;
-        };
+        if (serverInfo) {
+            obj.webSocket = new ReconnectingWebSocket('ws://' + serverInfo.url);
+            obj.webSocket.onopen = function (event) {
+                console.warn('Server connected.');
+                obj.connected = true;
+                obj.syncServer();
+            };
+            obj.webSocket.onmessage = function (evt) {
+                const message = JSON.parse(evt.data);
+                obj.handleRemoteEvent(message);
+            };
+            obj.webSocket.onclose = function (event) {
+                console.warn('Connection lost.');
+                obj.connected = false;
+            };
+        }
         return obj;
     };
 });

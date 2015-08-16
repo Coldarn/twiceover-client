@@ -13,8 +13,6 @@ switch (process.argv[1]) {
 
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 
-const fs = require('fs');
-
 // Report crashes to our server.
 require('crash-reporter').start();
 

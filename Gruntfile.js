@@ -41,6 +41,7 @@ module.exports = function(grunt) {
             x64: {
                 appDirectory: 'build',
                 outputDirectory: 'install/64',
+                setupIcon: 'media/favicon.ico',
                 exe: 'TwiceOver.exe'
             }
         }
@@ -50,7 +51,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-electron-installer');
+    
+    grunt.registerTask('icon', 'Replaces the electron icon with the Twice-Over icon', function () {
+        require('child_process').execFileSync('node_modules/rcedit/bin/rcedit.exe', ['build/TwiceOver.exe', '--set-icon', 'media/favicon.ico']);
+    });
 
     // Default task(s).
-    grunt.registerTask('default', ['clean', 'copy', 'create-windows-installer']);
+    grunt.registerTask('default', ['clean', 'copy', 'icon', 'create-windows-installer']);
 };

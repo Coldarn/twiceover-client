@@ -1,2 +1,4 @@
 media/Thumbs.db
 node_modules/
+build/
+install/

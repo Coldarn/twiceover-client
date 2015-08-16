@@ -1,4 +1,16 @@
 var app = require('app');  // Module to control application life.
+
+switch (process.argv[1]) {
+    case '--squirrel-install':
+    case '--squirrel-updated':
+        app.quit();
+        return true;
+    case '--squirrel-uninstall':
+    case '--squirrel-obsolete':
+        app.quit();
+        return;
+}
+
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 
 const fs = require('fs');

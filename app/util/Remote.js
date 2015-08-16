@@ -1,6 +1,7 @@
 define([
-    'util/Util'
-], function (Util) {
+    'util/Util',
+    'lib/reconnecting-websocket.min.js'
+], function (Util, ReconnectingWebSocket) {
     'use strict';
     
     let App = null;

@@ -1,11 +1,11 @@
 {
-    "name": "Twice-Over",
-    "version": "0.1.0",
-    "main": "index.html",
-    "single-instance": false,
-    "window": {
-        "toolbar": false,
-        "width": 1024,
-        "height": 700
-    }
+  "name": "twiceover-client",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node_modules/.bin/electron ."
+  },
+  "dependencies": {
+    "electron-prebuilt": "^0.30.4"
+  }
 }

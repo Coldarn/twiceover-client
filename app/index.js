@@ -22,6 +22,12 @@ requirejs([
     });
     
     const fs = require('fs');
+    
+    try {
+        // Make sure we're in the correct directory
+        fs.statSync('TwiceOver.exe');
+        process.chdir('resources/app');
+    } catch (err) { }
 
     try {
         var serverInfo = JSON.parse(fs.readFileSync('server.json'));

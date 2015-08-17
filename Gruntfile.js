@@ -27,13 +27,12 @@ module.exports = function(grunt) {
                     src: [
                         'main.js',
                         'package.json',
+                        'server.json',
+                        'bin/**',
+                        'test/**',
                         'app/**'
                     ],
                     dest: 'build/resources/app'
-                }, {
-                    expand: true,
-                    src: ['server-url.dat'],
-                    dest: 'build/'
                 }]
             }
         },
@@ -52,10 +51,20 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-electron-installer');
     
-    grunt.registerTask('icon', 'Replaces the electron icon with the Twice-Over icon', function () {
-        require('child_process').execFileSync('node_modules/rcedit/bin/rcedit.exe', ['build/TwiceOver.exe', '--set-icon', 'media/favicon.ico']);
+    grunt.registerTask('exemeta', 'Replace electron.exe metadata', function () {
+        var version = grunt.file.readJSON('package.json').version;
+        require('child_process').execFileSync('node_modules/rcedit/bin/rcedit.exe', [
+            'build/TwiceOver.exe',
+            '--set-icon', 'media/favicon.ico',
+            '--set-file-version', version,
+            '--set-product-version', version,
+            '--set-version-string', 'FileDescription', 'Twice-Over',
+            '--set-version-string', 'OriginalFilename', 'TwiceOver.exe',
+            '--set-version-string', 'ProductName', 'Twice-Over Client',
+            '--set-version-string', 'LegalCopyright', 'Copyright (C) 2015 Collin Arnold. All rights reserved.'
+        ]);
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['clean', 'copy', 'icon', 'create-windows-installer']);
+    grunt.registerTask('default', ['clean', 'copy', 'exemeta', 'create-windows-installer']);
 };

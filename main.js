@@ -1,6 +1,7 @@
 var app = require('app');  // Module to control application life.
 
-switch (process.argv[1]) {
+const arg = process.argv[1];
+switch (arg) {
     case '--squirrel-install':
     case '--squirrel-updated':
         app.quit();
@@ -15,6 +16,17 @@ var BrowserWindow = require('browser-window');  // Module to create native brows
 
 // Report crashes to our server.
 require('crash-reporter').start();
+
+const ipc = require('ipc');
+ipc.on('get-review', function (event) {
+    event.returnValue = arg && arg.toLowerCase().startsWith('twiceover://') ? arg : null;
+});
+ipc.on('reload-window', function (event) {
+    event.sender.reloadIgnoringCache();
+});
+ipc.on('show-dev-tools', function (event) {
+    event.sender.openDevTools({ detach: true });
+});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
@@ -49,12 +61,4 @@ app.on('ready', function() {
         // when you should delete the corresponding element.
         mainWindow = null;
     });
-});
-
-const ipc = require('ipc');
-ipc.on('reload-window', function (event, arg) {
-    event.sender.reloadIgnoringCache();
-});
-ipc.on('show-dev-tools', function (event, arg) {
-    event.sender.openDevTools({ detach: true });
 });

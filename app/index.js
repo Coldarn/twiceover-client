@@ -22,25 +22,19 @@ requirejs([
     });
     
     const fs = require('fs');
-    
+    const ipc = require('ipc');
+
     try {
         // Make sure we're in the correct directory
         fs.statSync('TwiceOver.exe');
         process.chdir('resources/app');
     } catch (err) { }
-
-    try {
-        var serverInfo = JSON.parse(fs.readFileSync('server.json'));
-    } catch (err) { }
-
-    App.remote = Remote(App, serverInfo);
     
     const importDialog = ImportDialog().appendTo(document.body)
     
     if (App.TEST_MODE) {
         App.user = User('Collin Arnold', 'collin@collinarnold.net');
 //        App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
-        importDialog.whenLoaded(function (comp) { comp.show(); });
 //        App.remote.loadReview('rVPjZ6qv1TYcRkhGYRqy1yB');
     } else {
         EmailChecker.getCurrentUser().then(function (user) {
@@ -48,10 +42,21 @@ requirejs([
         }, function (error) {
             document.body.innerText = error.toString();
         });
+    }
+
+    const reviewToLoad = ipc.sendSync('get-review');
+    let serverInfo = reviewToLoad;
+    if (!serverInfo) {
+        try {
+            serverInfo = JSON.parse(fs.readFileSync('server.json'));
+        } catch (err) { }
+    }
+
+    App.remote = Remote(App, serverInfo);
+    
+    if (!reviewToLoad) {
         importDialog.whenLoaded(function (comp) { comp.show(); });
     }
-    
-    const ipc = require('ipc');
     
     ElementProxy(document.body).on('keydown', function (event) {
         if (event.keyCode === 120) {        // F9

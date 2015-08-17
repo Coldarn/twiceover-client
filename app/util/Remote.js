@@ -92,6 +92,12 @@ define([
         
         const obj = Object.create(proto);
         if (serverInfo) {
+            if (typeof serverInfo === 'string') {
+                const urlParts = serverInfo.split('/');
+                serverInfo = { url: urlParts[2] };
+                obj.loadReview(urlParts[urlParts.length - 1]);
+            }
+            
             obj.webSocket = new ReconnectingWebSocket('ws://' + serverInfo.url);
             obj.webSocket.onopen = function (event) {
                 console.warn('Server connected.');

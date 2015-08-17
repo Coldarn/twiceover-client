@@ -50,4 +50,14 @@ requirejs([
         });
         importDialog.whenLoaded(function (comp) { comp.show(); });
     }
+    
+    const ipc = require('ipc');
+    
+    ElementProxy(document.body).on('keydown', function (event) {
+        if (event.keyCode === 120) {        // F9
+            ipc.send('reload-window');
+        } else if (event.keyCode === 123) { // F12
+            ipc.send('show-dev-tools');
+        }
+    });
 });

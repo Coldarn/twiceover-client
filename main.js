@@ -50,3 +50,11 @@ app.on('ready', function() {
         mainWindow = null;
     });
 });
+
+const ipc = require('ipc');
+ipc.on('reload-window', function (event, arg) {
+    event.sender.reloadIgnoringCache();
+});
+ipc.on('show-dev-tools', function (event, arg) {
+    event.sender.openDevTools({ detach: true });
+});

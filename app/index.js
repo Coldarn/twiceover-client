@@ -33,7 +33,7 @@ requirejs([
     const importDialog = ImportDialog().appendTo(document.body)
     
     if (App.TEST_MODE) {
-        App.user = User('Collin Arnold', 'collin@collinarnold.net');
+        App.user = User('John Doe', 'johndoe@example.com');
 //        App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
 //        App.remote.loadReview('rVPjZ6qv1TYcRkhGYRqy1yB');
     } else {

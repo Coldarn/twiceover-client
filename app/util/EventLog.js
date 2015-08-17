@@ -60,17 +60,20 @@ define([
     };
 
     function EventLog(currentUser) {
+        if (!currentUser) {
+            throw new Error('Must provide current user!');;
+        }
+        
         const obj = Object.create(proto);
         obj.listeners = [];
         obj.log = [];
-        obj.currentUser = currentUser || '';
+        obj.currentUser = currentUser.toString();
         return obj;
     }
     
-    EventLog.load = function (events) {
-        const obj = EventLog();
+    EventLog.load = function (currentUser, events) {
+        const obj = EventLog(currentUser);
         obj.log = events;
-        obj.currentUser = events[0].user;
         return obj;
     };
     

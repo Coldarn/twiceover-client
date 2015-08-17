@@ -28,7 +28,7 @@ define([
         remote: null,           // Manages server communication of review state
         
         loadReview: function (logEvents) {
-            const review = Review.load(EventLog.load(logEvents));
+            const review = Review.load(EventLog.load(App.user, logEvents));
             
             review.eventLog.subscribe(handleReviewEvent);
             App.setActiveReview(review);

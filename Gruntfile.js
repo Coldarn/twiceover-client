@@ -64,7 +64,7 @@ module.exports = function(grunt) {
             '--set-version-string', 'LegalCopyright', 'Copyright (C) 2015 Collin Arnold. All rights reserved.'
         ]);
     });
-
-    // Default task(s).
-    grunt.registerTask('default', ['clean', 'copy', 'exemeta', 'create-windows-installer']);
+    
+    grunt.registerTask('build', ['clean', 'copy', 'exemeta']);
+    grunt.registerTask('default', ['build', 'create-windows-installer']);
 };

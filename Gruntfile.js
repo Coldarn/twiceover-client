@@ -42,7 +42,7 @@ module.exports = function(grunt) {
             x64: {
                 appDirectory: 'build',
                 outputDirectory: 'install/64',
-                iconUrl: 'https://raw.githubusercontent.com/Coldarn/twiceover-client/master/media/favicon.ico',
+                iconUrl: 'file://' + __dirname + '/media/favicon.ico',
                 setupIcon: 'media/favicon.ico',
                 exe: 'TwiceOver.exe'
             }

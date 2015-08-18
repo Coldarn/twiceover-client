@@ -8,7 +8,7 @@ if (process.argv.indexOf('--squirrel-install') >= 0 || process.argv.indexOf( '--
     const regPath = path.join(__dirname, 'install.reg');
     const fs = require('fs');
     const escapedExePath = process.argv[0].replace(/\\/g, '\\\\');
-    fs.writeFileSync(regPath, fs.readFileSync(regPath).toString().replace('##REPLACEME##', escapedExePath));
+    fs.writeFileSync(regPath, fs.readFileSync(regPath).toString().replace(/##REPLACEME##/g, escapedExePath));
     require('child_process').execSync(`regedit.exe -s "${regPath}"`);
     app.quit();
 } else if (process.argv.indexOf('--squirrel-uninstall') >= 0 || process.argv.indexOf( '--squirrel-obsolete') >= 0) {

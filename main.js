@@ -4,16 +4,28 @@ const app = require('app');
 const path = require('path');
 
 if (process.argv.indexOf('--squirrel-install') >= 0 || process.argv.indexOf( '--squirrel-updated') >= 0) {
+    const child_process = require('child_process');
+    const fs = require('fs');
+
+    // Create shortcuts so the user can find us again
+    const updatePath = path.join(path.dirname(process.execPath), '..', 'Update.exe');
+    child_process.exec(`"${updatePath}" --createShortcut "${process.execPath}"`);
+    
     // Register the twiceover:// protocol with Windows
     const regPath = path.join(__dirname, 'install.reg');
-    const fs = require('fs');
-    const escapedExePath = process.argv[0].replace(/\\/g, '\\\\');
+    const escapedExePath = process.execPath.replace(/\\/g, '\\\\');
     fs.writeFileSync(regPath, fs.readFileSync(regPath).toString().replace(/##REPLACEME##/g, escapedExePath));
-    require('child_process').execSync(`regedit.exe -s "${regPath}"`);
+    child_process.execSync(`regedit.exe -s "${regPath}"`);
     app.quit();
 } else if (process.argv.indexOf('--squirrel-uninstall') >= 0 || process.argv.indexOf( '--squirrel-obsolete') >= 0) {
+    const child_process = require('child_process');
+    
+    // Remove the shortcuts
+    const updatePath = path.join(path.dirname(process.execPath), '..', 'Update.exe');
+    child_process.exec(`"${updatePath}" --removeShortcut "${process.execPath}"`);
+    
     // Remove protocol registration
-    require('child_process').execSync(`regedit.exe -s "${path.join(__dirname, 'uninstall.reg')}"`);
+    child_process.execSync(`regedit.exe -s "${path.join(__dirname, 'uninstall.reg')}"`);
     app.quit();
 }
 

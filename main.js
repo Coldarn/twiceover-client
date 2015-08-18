@@ -1,16 +1,22 @@
-var app = require('app');  // Module to control application life.
+'use strict';
 
-const arg = process.argv[1];
-switch (arg) {
-    case '--squirrel-install':
-    case '--squirrel-updated':
-        app.quit();
-        return true;
-    case '--squirrel-uninstall':
-    case '--squirrel-obsolete':
-        app.quit();
-        return;
+const app = require('app');
+const path = require('path');
+
+if (process.argv.indexOf('--squirrel-install') >= 0 || process.argv.indexOf( '--squirrel-updated') >= 0) {
+    // Register the twiceover:// protocol with Windows
+    const regPath = path.join(__dirname, 'install.reg');
+    const fs = require('fs');
+    const escapedExePath = process.argv[0].replace(/\\/g, '\\\\');
+    fs.writeFileSync(regPath, fs.readFileSync(regPath).toString().replace('##REPLACEME##', escapedExePath));
+    require('child_process').execSync(`regedit.exe -s "${regPath}"`);
+    app.quit();
+} else if (process.argv.indexOf('--squirrel-uninstall') >= 0 || process.argv.indexOf( '--squirrel-obsolete') >= 0) {
+    // Remove protocol registration
+    require('child_process').execSync(`regedit.exe -s "${path.join(__dirname, 'uninstall.reg')}"`);
+    app.quit();
 }
+
 
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 
@@ -19,7 +25,8 @@ require('crash-reporter').start();
 
 const ipc = require('ipc');
 ipc.on('get-review', function (event) {
-    event.returnValue = arg && arg.toLowerCase().startsWith('twiceover://') ? arg : null;
+    const lastArg = process.argv[process.argv.length - 1];
+    event.returnValue = lastArg && lastArg.toLowerCase().startsWith('twiceover://') ? lastArg : null;
 });
 ipc.on('reload-window', function (event) {
     event.sender.reloadIgnoringCache();

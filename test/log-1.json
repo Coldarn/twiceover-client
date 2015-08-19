@@ -3,7 +3,8 @@
     "data": {
         "id": "d1UN8kcCH9G2ZvMTPUdu1jZ",
         "title": "Test Review",
-        "description": "Just an example description here."
+        "description": "Just an example description here.",
+        "reviewers": ["john.doe@example.com", "collin@collinarnold.net", "john.smith@example.com"]
     },
     "id": 1438456772247.288,
     "user": "John Doe <john.doe@example.com>"

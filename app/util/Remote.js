@@ -45,9 +45,6 @@ define([
                 this.webSocket.send(JSON.stringify({
                     protocol: 'syncReview',
                     reviewID: this.review.id,
-                    title: this.review.title,
-                    description: this.review.description,
-                    owner: this.review.owningUser.toString(),
                     log: this.review.eventLog.log
                 }));
             }

@@ -106,7 +106,7 @@ define([
             if (this.loadingChanges && !this.createError) {
                 if (this.inIterationMode) {
                     const leftIteration = App.review.iterations[0];
-                    const rightIteration = Iteration();
+                    const rightIteration = Iteration(App.user);
                     
                     this.changeRecords.forEach(function (change) {
                         if (!App.review.getFileMeta(change.displayPath)) {
@@ -122,8 +122,8 @@ define([
                     const description = this.el.querySelector('#review-description').value;
                     const reviewers = this.emailControl.getEntries();
                     const review = Review(App.user, title, description, reviewers);
-                    const leftIteration = Iteration();
-                    const rightIteration = Iteration();
+                    const leftIteration = Iteration(App.user);
+                    const rightIteration = Iteration(App.user);
 
                     this.changeRecords.forEach(function (change) {
                         leftIteration.addEntry(FileEntry(change.baseContent, change.iterationPath, change.displayPath));

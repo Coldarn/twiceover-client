@@ -74,6 +74,10 @@ define([
         handleCreate: function () {
             var me = this;
             
+            if (!me.validateAll()) {
+                return;
+            }
+            
             me.showCreate(true);
             
             me.changeRecords = me.changesControl.getChanges();

@@ -138,8 +138,12 @@ define([
                         children: []
                     });
                 } else {
-                    if (line.startsWith('File name') || line.startsWith('Detected Changes:') || /\d+ change\(s\),/.test(line)) {
+                    if (line.startsWith('File name') || /\d+ change\(s\),/.test(line)) {
                         continue;
+                    }
+                    
+                    if (line.startsWith('Detected Changes:')) {
+                        break;
                     }
                     
                     const name = line.substring(0, nameEndIndex).trim(),

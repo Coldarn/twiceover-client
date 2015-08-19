@@ -278,7 +278,7 @@ body {
 }
 
 .code-pane > header {
-    flex: 0 1 auto;
+	flex: none;
     height: 30px;
     margin-bottom: -4px;
     z-index: 2;

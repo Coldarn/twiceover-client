@@ -16,6 +16,7 @@ define([
         
         loadReview: function (reviewID) {
             this.waitingForReview = reviewID;
+            this.syncServer();
         },
         
         setReview: function (review) {
@@ -32,7 +33,7 @@ define([
             }
             
             if (this.waitingForReview) {
-                if (typeof this.waitingForReview === 'string') {
+                if (typeof this.waitingForReview !== 'boolean') {
                     this.webSocket.send(JSON.stringify({
                         protocol: 'loadReview',
                         reviewID: this.waitingForReview
@@ -84,18 +85,12 @@ define([
         }
     };
     
-    return function Remote(app, serverInfo) {
+    return function Remote(app) {
         App = app;
         
         const obj = Object.create(proto);
-        if (serverInfo) {
-            if (typeof serverInfo === 'string') {
-                const urlParts = serverInfo.split('/');
-                serverInfo = { url: urlParts[2] };
-                obj.loadReview(urlParts[urlParts.length - 1]);
-            }
-            
-            obj.webSocket = new ReconnectingWebSocket('ws://' + serverInfo.url);
+        if (App.serverUrl) {
+            obj.webSocket = new ReconnectingWebSocket('ws://' + App.serverUrl);
             obj.webSocket.onopen = function (event) {
                 console.warn('Server connected.');
                 obj.connected = true;

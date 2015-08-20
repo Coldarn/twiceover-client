@@ -696,7 +696,7 @@ select {
     flex-direction: column;
 }
 
-.import-content > .column {
+.dialog content > .column {
     flex: 1;
     padding: 10px;
 }
@@ -711,3 +711,35 @@ select {
     font-size: 16px;
     padding: 5px 8px;
 }
+
+.dialog.home content {
+    display: flex;
+    flex-direction: row;
+}
+
+#newReviewButton {
+    margin: 15px 0 10px 0;
+    height: 35px;
+}
+
+.review-link {
+    padding-left: 26px;
+    position: relative;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.review-link.status-active:before {
+    position: absolute;
+    content: "\f096";
+    left: 3px;
+    top: 4px;
+    font-family: "FontAwesome";
+}
+
+.review-link > .review-time {
+    padding-left: 6px;
+    font-size: 12px;
+}
+
+

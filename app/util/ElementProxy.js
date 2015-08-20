@@ -28,6 +28,13 @@ define([
             });
             return this;
         },
+        
+        setHtml: function (html) {
+            this.forEach(function (el) {
+                el.innerHTML = html;
+            });
+            return this;
+        },
 
         setAttribute: function (name, value) {
             this.forEach(function (el) {

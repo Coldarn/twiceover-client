@@ -39,14 +39,13 @@ define([
             this.query('title')[0].innerText = this.inIterationMode ? 'New Iteration' : 'New Review';
             this.query('.new-review-right').setVisible(!this.inIterationMode);
             this.query('.import-content button.save')[0].innerText = this.inIterationMode ? 'Create Iteration' : 'Create Review';
-            this.query('.import-content button.close').setVisible(this.inIterationMode);
             this.changesControl.loadChanges();
             
             this.setVisible(true);
         },
         
         hide: function () {
-            this.setVisible(false);
+            this.destroy();
         },
 
         validateControl: function (selector, minLength) {

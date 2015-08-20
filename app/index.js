@@ -13,8 +13,8 @@ requirejs([
     'ui/MenuBar',
     'ui/FileList',
     'ui/CodeViewer',
-    'ui/ImportDialog'
-], function (App, Review, User, EmailChecker, ElementProxy, EventLog, Remote, MenuBar, FileList, CodeViewer, ImportDialog) {
+    'ui/Home'
+], function (App, Review, User, EmailChecker, ElementProxy, EventLog, Remote, MenuBar, FileList, CodeViewer, Home) {
     'use strict';
 
     hljs.configure({
@@ -30,12 +30,8 @@ requirejs([
         process.chdir('resources/app');
     } catch (err) { }
     
-    const importDialog = ImportDialog().appendTo(document.body)
-    
     if (App.TEST_MODE) {
-        App.user = User('John Doe', 'johndoe@example.com');
-//        App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
-//        App.remote.loadReview('rVPjZ6qv1TYcRkhGYRqy1yB');
+        App.user = User('John Doe', 'john.doe@example.com');
     } else {
         EmailChecker.getCurrentUser().then(function (user) {
             App.user = user;
@@ -44,18 +40,26 @@ requirejs([
         });
     }
 
-    const reviewToLoad = ipc.sendSync('get-review');
-    let serverInfo = reviewToLoad;
-    if (!serverInfo) {
+    let reviewToLoad = ipc.sendSync('get-review');
+    if (reviewToLoad) {
+        const urlParts = serverInfo.split('/');
+        App.serverUrl = urlParts[2];
+        fs.writeFile('server.json', JSON.stringify({ url: App.serverUrl }, null, 4));
+        reviewToLoad = Number(urlParts[urlParts.length - 1]);
+    } else {
         try {
-            serverInfo = JSON.parse(fs.readFileSync('server.json'));
+            App.serverUrl = JSON.parse(fs.readFileSync('server.json')).url;
         } catch (err) { }
     }
-
-    App.remote = Remote(App, serverInfo);
     
-    if (!reviewToLoad) {
-        importDialog.whenLoaded(function (comp) { comp.show(); });
+    App.remote = Remote(App);
+
+//    App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
+
+    if (reviewToLoad) {
+        App.remote.loadReview(reviewToLoad);
+    } else {
+        Home().appendTo(document.body);
     }
     
     ElementProxy(document.body).on('keydown', function (event) {

@@ -28,7 +28,7 @@ define([
                 });
                 const myReviewsEl = me.query('#myReviews').setHtml(myReviews.map(function (review) {
                     return `<div class="review-link status-${review.status}" data-review-index="${review.ix}">
-                        ${Util.escapeHtml(review.title)}
+                        <span>${Util.escapeHtml(review.title)}</span>
                         <span class="review-time">${moment(review.created).calendar()}<span>
                     </div>`;
                 }).join(''));
@@ -40,7 +40,7 @@ define([
         
 
         handleReviewClick: function (event) {
-            App.remote.loadReview(Number(event.target.dataset.reviewIndex));
+            App.remote.loadReview(Number(event.currentTarget.dataset.reviewIndex));
             this.destroy();
         },
         

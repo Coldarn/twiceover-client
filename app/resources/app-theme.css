@@ -725,7 +725,6 @@ select {
 .review-link {
     padding-left: 26px;
     position: relative;
-    text-decoration: underline;
     cursor: pointer;
 }
 
@@ -737,9 +736,15 @@ select {
     font-family: "FontAwesome";
 }
 
+.review-link > span:first-child {
+    text-decoration: underline;
+}
+
 .review-link > .review-time {
     padding-left: 6px;
     font-size: 12px;
+    font-style: italic;
+    color: #aaa;
 }
 
 

@@ -53,8 +53,8 @@ define([
         }
     };
 
-    function Iteration() {
-        const eventLog = EventLog();
+    function Iteration(user) {
+        const eventLog = EventLog(user);
         eventLog.add({
             type: 'newIteration',
             data: {

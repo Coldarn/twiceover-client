@@ -386,7 +386,7 @@ code.lines.comments .clickable:hover {
 comment {
     position: absolute;
     left: 0;
-    right: 0;
+    right: 1px;
     display: flex;
     flex-direction: column;
     background: #333;

@@ -14,7 +14,7 @@ define([
         initComponent: function () {
             var me = this;
             
-            me.query('footer').setVisible(me.canClose).on('click', me.handleCloseClick.bind(me));
+            me.query('footer > .close').setVisible(me.canClose).on('click', me.handleCloseClick.bind(me));
             me.query('#newReviewButton').on('click', me.handleNewReviewClick.bind(me));
             
             Request.get(`http://${App.serverUrl}/api/user/${App.user.email}`).then(function (reviews) {

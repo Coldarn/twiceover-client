@@ -35,7 +35,7 @@ define([
             this.showCreate(false);
             
             this.inIterationMode = !!newIteration;
-            this.query('title')[0].innerText = this.inIterationMode ? 'New Iteration' : 'New Review';
+            this.query('header > div:last-child')[0].innerText = this.inIterationMode ? 'New Iteration' : 'New Review';
             this.query('.new-review-right').setVisible(!this.inIterationMode);
             this.query('.import-content button.save')[0].innerText = this.inIterationMode ? 'Create Iteration' : 'Create Review';
             this.changesControl.loadChanges();

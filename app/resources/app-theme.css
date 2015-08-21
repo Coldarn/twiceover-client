@@ -45,7 +45,7 @@ body {
     -ms-user-select: none;
 }
 
-.menu-bar, .dialog title {
+.menu-bar, .dialog header {
     display: block;
     height: 40px;
     background: #484;
@@ -64,6 +64,10 @@ body {
     cursor: pointer;
 }
 
+.menu-bar > .iteration {
+    cursor: pointer;
+}
+
 .iteration {
     display: inline-block;
     background:  linear-gradient(105deg,
@@ -73,7 +77,6 @@ body {
         #484 16px,
         #484 100%);
     padding: 0 8px 0 20px;
-    cursor: pointer;
     box-sizing: border-box;
 }
 
@@ -719,11 +722,6 @@ select {
 .dialog.home content {
     display: flex;
     flex-direction: row;
-}
-
-#newReviewButton {
-    margin: 15px 0 10px 0;
-    height: 35px;
 }
 
 .review-link {

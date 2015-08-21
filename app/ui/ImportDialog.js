@@ -29,7 +29,6 @@ define([
             EventBus.on('change_node_selected', me.validateAll, me);
 			EventBus.on('reviewer_add_remove', me.validateAll, me);
             EventBus.on('change_picker_ui_loaded', me.validateAll, me);
-            EventBus.on('show_add_iteration_ui', me.show.bind(me, true));
         },
         
         show: function (newIteration) {

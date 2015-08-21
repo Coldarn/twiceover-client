@@ -26,7 +26,7 @@ define([
             e.preventDefault();
             
             if (this.classList.contains('new-iteration')) {
-                EventBus.fire('show_add_iteration_ui');
+                ImportDialog().appendTo(document.body).whenLoaded(function (comp) { comp.show(true); });
             } else {
                 const clickedIndex = Number(this.dataset.index);
                 let leftIndex = App.leftIteration.index,

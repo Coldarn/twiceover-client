@@ -32,7 +32,7 @@ define([
                         <span class="review-time">${moment(review.created).calendar()}<span>
                     </div>`;
                 }).join(''));
-                myReviewsEl.queryAll('.review-link').on('click', me.handleReviewClick.bind(me));
+                myReviewsEl.queryAll('.review-link').on('click', me.handleReviewClick.bind(me), true);
             }, function (err) {
             });
         },

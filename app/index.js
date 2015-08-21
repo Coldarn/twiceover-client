@@ -32,35 +32,39 @@ requirejs([
     
     if (App.TEST_MODE) {
         App.user = User('John Doe', 'john.doe@example.com');
+		finishInit();
     } else {
         EmailChecker.getCurrentUser().then(function (user) {
             App.user = user;
+			finishInit();
         }, function (error) {
             document.body.innerText = error.toString();
         });
     }
 
-    let reviewToLoad = ipc.sendSync('get-review');
-    if (reviewToLoad) {
-        const urlParts = serverInfo.split('/');
-        App.serverUrl = urlParts[2];
-        fs.writeFile('server.json', JSON.stringify({ url: App.serverUrl }, null, 4));
-        reviewToLoad = Number(urlParts[urlParts.length - 1]);
-    } else {
-        try {
-            App.serverUrl = JSON.parse(fs.readFileSync('server.json')).url;
-        } catch (err) { }
-    }
-    
-    App.remote = Remote(App);
+	function finishInit() {
+		let reviewToLoad = ipc.sendSync('get-review');
+		if (reviewToLoad) {
+			const urlParts = serverInfo.split('/');
+			App.serverUrl = urlParts[2];
+			fs.writeFile('server.json', JSON.stringify({ url: App.serverUrl }, null, 4));
+			reviewToLoad = Number(urlParts[urlParts.length - 1]);
+		} else {
+			try {
+				App.serverUrl = JSON.parse(fs.readFileSync('server.json')).url;
+			} catch (err) { }
+		}
 
-//    App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
+		App.remote = Remote(App);
 
-    if (reviewToLoad) {
-        App.remote.loadReview(reviewToLoad);
-    } else {
-        Home().appendTo(document.body);
-    }
+	//    App.loadReview(JSON.parse(fs.readFileSync('test/log-1.json')));
+
+		if (reviewToLoad) {
+			App.remote.loadReview(reviewToLoad);
+		} else {
+			Home().appendTo(document.body);
+		}
+	}
     
     ElementProxy(document.body).on('keydown', function (event) {
         if (event.keyCode === 120) {        // F9

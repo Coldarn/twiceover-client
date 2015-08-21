@@ -2,8 +2,9 @@ define([
     'ui/Component',
     'util/EventBus',
     'App',
+    'ui/Home',
     'ui/ImportDialog'
-], function (Component, EventBus, App, ImportDialog) {
+], function (Component, EventBus, App, Home, ImportDialog) {
     'use strict';
     
     var self = {
@@ -15,11 +16,16 @@ define([
                 return `<div class="iteration ${isActive ? 'active' : ''}" data-index="${index}">${index}</div>`;
             }).join('');
 
-            this.el.innerHTML = `Twice-Over ${iterationHtml}<div class="iteration new-iteration">+</div>`;
+            this.el.innerHTML = `<span class="home-button">Twice-Over</span> ${iterationHtml}<div class="iteration new-iteration">+</div>`;
             
+            this.query('.home-button').on('click', this.handleHomeClick);
             this.queryAll('.iteration')
                 .on('click', this.handleIterationClick)
                 .on('contextmenu', this.handleIterationClick);
+        },
+        
+        handleHomeClick: function (e) {
+            Home(true).appendTo(document.body);
         },
         
         handleIterationClick: function (e) {

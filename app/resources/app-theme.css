@@ -60,6 +60,10 @@ body {
     text-shadow: 0 0 2px #333;
 }
 
+.home-button {
+    cursor: pointer;
+}
+
 .iteration {
     display: inline-block;
     background:  linear-gradient(105deg,

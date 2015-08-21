@@ -14,6 +14,7 @@ define([
         initComponent: function () {
             var me = this;
             
+            me.query('footer').setVisible(me.canClose).on('click', me.handleCloseClick.bind(me));
             me.query('#newReviewButton').on('click', me.handleNewReviewClick.bind(me));
             
             Request.get(`http://${App.serverUrl}/api/user/${App.user.email}`).then(function (reviews) {
@@ -26,19 +27,29 @@ define([
                         reviewRequests.push(review);
                     }
                 });
-                const myReviewsEl = me.query('#myReviews').setHtml(myReviews.map(function (review) {
-                    return `<div class="review-link status-${review.status}" data-review-index="${review.ix}">
-                        <span>${Util.escapeHtml(review.title)}</span>
-                        <span class="review-time">${moment(review.created).calendar()}<span>
-                    </div>`;
-                }).join(''));
-                myReviewsEl.queryAll('.review-link').on('click', me.handleReviewClick.bind(me), true);
+                me.query('#myReviews').setHtml(me.buildReviewList(myReviews));
+                me.query('#reviewRequests').setHtml(me.buildReviewList(reviewRequests));
+                
+                me.queryAll('.review-link').on('click', me.handleReviewClick.bind(me), true);
             }, function (err) {
             });
         },
         
+        buildReviewList: function (reviews) {
+            return reviews.map(function (review) {
+                return `<div class="review-link status-${review.status}" data-review-index="${review.ix}">
+                    <span>${Util.escapeHtml(review.title)}</span>
+                    <span class="review-time">${moment(review.created).calendar()}<span>
+                </div>`;
+            }).join('');
+        },
+        
         
 
+        handleCloseClick: function (event) {
+            this.destroy();
+        },
+        
         handleReviewClick: function (event) {
             App.remote.loadReview(Number(event.currentTarget.dataset.reviewIndex));
             this.destroy();
@@ -49,8 +60,9 @@ define([
         }
     };
     
-    return function Home() {
+    return function Home(canClose) {
         const obj = Object.create(proto);
+        obj.canClose = canClose;
         obj.setHtml('text!partials/Home.html');
         return obj;
     };

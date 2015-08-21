@@ -751,4 +751,6 @@ select {
     color: #aaa;
 }
 
-
+div > .review-link:last-child {
+    padding-bottom: 12px;
+}

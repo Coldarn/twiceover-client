@@ -136,6 +136,10 @@ define([
                     App.setActiveIterations(leftIteration, rightIteration);
                 }
                 
+				const homeEl = document.querySelector('.dialog.home');
+				if (homeEl) {
+					homeEl.component.destroy();
+				}
                 this.hide();
             }
         },

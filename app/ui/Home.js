@@ -32,7 +32,8 @@ define([
                 
                 me.queryAll('.review-link').on('click', me.handleReviewClick.bind(me), true);
             }, function (err) {
-                me.query('#myReviews').setHtml('<div class="error">Failed to load</div>');
+                me.query('#myReviews').setHtml('<div class="error">Could not connect to server</div>');
+                me.query('#reviewRequests').setHtml('<div class="error">Could not connect to server</div>');
             });
         },
         

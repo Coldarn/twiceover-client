@@ -17,10 +17,13 @@ define([
             me.query('footer > .close').setVisible(me.canClose).on('click', me.handleCloseClick.bind(me));
             me.query('#newReviewButton').on('click', me.handleNewReviewClick.bind(me));
             
-            Request.get(`http://${App.serverUrl}/api/user/${App.user.email}`).then(function (reviews) {
+            Promise.all([
+                Request.get(`http://${App.serverUrl}/api/reviewsIncluding/${App.user.email}`),
+                Request.get(`http://${App.serverUrl}/api/reviewsExcluding/${App.user.email}`)
+            ]).then(function (data) {
                 const myReviews = [];
                 const reviewRequests = [];
-                reviews.forEach(function (review) {
+                data[0].forEach(function (review) {
                     if (User.parse(review.owner).is(App.user)) {
                         myReviews.push(review);
                     } else {
@@ -29,11 +32,13 @@ define([
                 });
                 me.query('#myReviews').setHtml(me.buildReviewList(myReviews));
                 me.query('#reviewRequests').setHtml(me.buildReviewList(reviewRequests));
+                me.query('#otherActiveReviews').setHtml(me.buildReviewList(data[1]));
                 
                 me.queryAll('.review-link').on('click', me.handleReviewClick.bind(me), true);
             }, function (err) {
                 me.query('#myReviews').setHtml('<div class="error">Could not connect to server</div>');
                 me.query('#reviewRequests').setHtml('<div class="error">Could not connect to server</div>');
+                me.query('#otherActiveReviews').setHtml('<div class="error">Could not connect to server</div>');
             });
         },
         

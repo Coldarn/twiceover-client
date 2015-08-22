@@ -16,7 +16,10 @@ define([
                 return `<div class="iteration ${isActive ? 'active' : ''}" data-index="${index}">${index}</div>`;
             }).join('');
 
-            this.el.innerHTML = `<span class="home-button">Twice-Over</span> ${iterationHtml}<div class="iteration new-iteration">+</div>`;
+            const addIteration = App.user.is(App.review.owningUser)
+                ? `<div class="iteration new-iteration">+</div>` : '';
+            
+            this.el.innerHTML = `<span class="home-button">Twice-Over</span> ${iterationHtml}${addIteration}`;
             
             this.query('.home-button').on('click', this.handleHomeClick);
             this.queryAll('.iteration')

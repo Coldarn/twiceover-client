@@ -104,7 +104,7 @@ body {
     flex-direction: column;
     width: 200px;
     overflow-x: hidden;
-    color: white;
+    color: #ddd;
     font-weight: 400;
     font-size: 14px;
     margin-right: -5px;
@@ -208,6 +208,10 @@ body {
             transparent 100%);
 }
 
+.file-list > li:hover {
+    color: white;
+}
+
 .file-list > li:before {
     font-size: 17px;
     font-weight: bold;
@@ -222,12 +226,20 @@ body {
     color: #5c5;
 }
 
+.file-list > li.added:hover {
+    color: #7e7;
+}
+
 .file-list > li.added:before {
     content: "+";
 }
 
 .file-list > li.removed {
     color: #e66;
+}
+
+.file-list > li.removed:hover {
+    color: #e88;
 }
 
 .file-list > li.removed:before {
@@ -237,6 +249,11 @@ body {
 .file-list > li.unchanged {
     color: #99f;
 }
+
+.file-list > li.unchanged:hover {
+    color: #aaf;
+}
+
 
 .file-list > li.unchanged:before {
     content: "=";
@@ -734,6 +751,10 @@ select {
     cursor: pointer;
 }
 
+.review-link:hover {
+    color: white;
+}
+
 .review-link.status-active:before {
     position: absolute;
     content: "\f096";
@@ -753,6 +774,6 @@ select {
     color: #aaa;
 }
 
-div > .review-link:last-child {
+.home .column > div {
     padding-bottom: 12px;
 }

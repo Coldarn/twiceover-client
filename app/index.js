@@ -24,11 +24,8 @@ requirejs([
     const fs = require('fs');
     const ipc = require('ipc');
 
-    try {
-        // Make sure we're in the correct directory
-        fs.statSync('TwiceOver.exe');
-        process.chdir('resources/app');
-    } catch (err) { }
+    // Make sure we're in the correct directory
+    process.chdir(__dirname + '/..');
     
     if (App.TEST_MODE) {
         App.user = User('John Doe', 'john.doe@example.com');
@@ -45,7 +42,7 @@ requirejs([
 	function finishInit() {
 		let reviewToLoad = ipc.sendSync('get-review');
 		if (reviewToLoad) {
-			const urlParts = serverInfo.split('/');
+			const urlParts = reviewToLoad.split('/');
 			App.serverUrl = urlParts[2];
 			fs.writeFile('server.json', JSON.stringify({ url: App.serverUrl }, null, 4));
 			reviewToLoad = Number(urlParts[urlParts.length - 1]);

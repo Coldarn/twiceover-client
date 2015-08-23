@@ -37,6 +37,7 @@ define([
 
             self.scrollIndicatorRemoved = self.query('.scroll-indicators > .removed');
             self.scrollIndicatorAdded = self.query('.scroll-indicators > .added');
+            self.scrollIndicatorComments = self.query('.scroll-indicators > .comments');
 
             self.on('mouseup', self.handleMouseUp);
             self.addCommentEl.on('click', self.handleAddComment);
@@ -125,12 +126,7 @@ define([
                 return;
             }
             self.comments.queryAll('div').attr('class', null);
-            App.fileMeta.getCommentLocations()
-                .filter(function (loc) {
-                    return loc.diffMode === App.diffMode
-                        && App.leftIteration.index === loc.leftIteration
-                        && App.rightIteration.index === loc.rightIteration;
-                })
+            self.getActiveCommentRegions()
                 .map(function (location) {
                     self.refreshBorders(self.comments.el, location.lineStart, location.lineCount,
                         self.showComment.bind(self, location));
@@ -153,14 +149,30 @@ define([
         refreshScrollIndicators: function () {
             const lineHeight = self.codeEl.lastChild.offsetHeight / self.highlightBlocks.length;
             const scaleHeight = Math.min(1, self.codeEl.offsetHeight / self.codeEl.scrollHeight);
+            const topOffset = self.codeEl.lastChild.offsetTop;
+
             self.scrollIndicatorRemoved.setHtml(self.highlightBlocks.map(function (b, i) {
                     return !b.removed ? '' : `<rect x="0" y="${i}" width="1" height="1" />`;
                 }).join(''))
-                .attr('transform', `scale(3,${scaleHeight * lineHeight})`);
+                .attr('transform', `scale(3,${scaleHeight * lineHeight})translate(0,${topOffset / lineHeight })`);
             self.scrollIndicatorAdded.setHtml(self.highlightBlocks.map(function (b, i) {
                     return !b.added ? '' : `<rect x="0" y="${i}" width="1" height="1" />`;
                 }).join(''))
-                .attr('transform', `translate(9,0)scale(3,${scaleHeight * lineHeight})`);
+                .attr('transform', `translate(9,0)scale(3,${scaleHeight * lineHeight})translate(0,${topOffset / lineHeight})`);
+            self.scrollIndicatorComments.setHtml(self.getActiveCommentRegions().map(function (r) {
+                    return `<rect x="0" y="${r.lineStart * lineHeight * scaleHeight}"
+                        width="11" height="${(r.lineCount + 1) * lineHeight * scaleHeight}" />`;
+                }).join(''))
+                .attr('transform', `translate(0,${topOffset * scaleHeight})`);
+        },
+
+        getActiveCommentRegions: function () {
+            return App.fileMeta.getCommentLocations()
+                .filter(function (loc) {
+                    return loc.diffMode === App.diffMode
+                        && App.leftIteration.index === loc.leftIteration
+                        && App.rightIteration.index === loc.rightIteration;
+                });
         },
 
         getLineTopOffset: function (lineIndex) {

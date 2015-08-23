@@ -7,37 +7,37 @@ define([
     'App'
 ], function (Util, EventBus, Component, CommentLocation, Comment, App) {
     'use strict';
-    
+
     const proto = {
         __proto__: Component.prototype,
-        
+
         initComponent: function () {
             this.codeEditor = this.query('code')
                 .on('blur', this.handleCodeEdited.bind(this))
                 .on('paste', this.pastePlainText)[0];
-            
+
             this.footer = this.query('footer');
-            
+
             this.noteEditor = this.footer.query('note')
                 .on('blur', this.handleNoteEdited.bind(this))
                 .on('paste', this.pastePlainText)
                 .on('keyup', this.handleNoteKeyUp.bind(this))[0];
-            
+
             this.deleteButton = this.footer.query('.delete')
                 .on('click', this.handleDeleteCommentClick.bind(this));
-            
+
             this.iterations = this.query('iterations');
             this.buildIterations();
-            
+
             this.setActiveComment(this.comments[1]);
 
             this.el.style.top = this.topOffset + 'px';
-            
+
             this.whenLoaded(function (me) {
                 me.noteEditor.focus();
             });
         },
-        
+
         cacheComments: function () {
             this.comments = this.fileMeta.getCommentsAtLocation(this.location);
 
@@ -47,7 +47,7 @@ define([
 
             this.comments.unshift(Comment(null, this.originalCode));
         },
-        
+
         buildIterations: function () {
             this.iterations[0].innerHTML = this.comments.map(function (c, index) {
                 const content = c.user
@@ -59,7 +59,7 @@ define([
                 .on('click', this.handleIterationClick.bind(this))
                 .on('keydown', this.handleIterationKeyDown.bind(this));
         },
-        
+
         restoreActiveComment: function (fallbackIndex) {
             if (this.comment) {
                 const currentCommentID = this.comment.id;
@@ -67,17 +67,17 @@ define([
                 this.setActiveComment(this.comments[commentIndex >= 0 ? commentIndex : fallbackIndex]);
             }
         },
-        
+
         setActiveComment: function (comment) {
             const commentIndex = this.comments.indexOf(comment);
             this.comment = comment;
-            
+
             this.codeEditor.innerHTML = Util.escapeHtml(this.comment.code);
             this.syntaxHighlightCode();
 
             this.noteEditor.innerText = this.comment.note;
             this.footer.setVisible(commentIndex !== 0);
-            
+
             const isEditable = commentIndex !== 0 && App.user.is(comment.user) || false;
             this.codeEditor.contentEditable = isEditable;
             this.noteEditor.contentEditable = isEditable;
@@ -87,7 +87,7 @@ define([
             this.iterations.query(`[data-index="${commentIndex}"]`)
                 .setClass('selected', true);
         },
-        
+
         hasCodeChanged: function () {
             const code = this.codeEditor.innerText;
             return this.comment.code !== code;
@@ -97,11 +97,11 @@ define([
             const code = this.noteEditor.innerText;
             return this.comment.note !== code;
         },
-        
+
         hasCommentBeenSaved: function () {
             return !!App.fileMeta.getComment(this.comment.id);
         },
-        
+
         pastePlainText: function (event) {
             event.preventDefault();
             if (event.clipboardData) {
@@ -118,18 +118,18 @@ define([
             this.codeEditor.setAttribute('class', App.fileMeta.path.substring(App.fileMeta.path.lastIndexOf('.') + 1));
             hljs.highlightBlock(this.codeEditor);
         },
-        
+
         dispose: function () {
             EventBus.off('review_comment_removed', this.handleDeleteComment, this);
         },
-        
+
         close: function () {
             this.destroy();
         },
-        
-        
-        
-        
+
+
+
+
         handleIterationClick: function (event) {
             const commentIndex = event.currentTarget.dataset.index;
             if (commentIndex) {
@@ -141,12 +141,12 @@ define([
                 this.noteEditor.focus();
             }
         },
-        
+
         handleIterationKeyDown: function (event) {
             const me = this;
             const commentIndex = Number(event.currentTarget.dataset.index);
             let newIndex;
-            
+
             switch (event.keyCode) {
                 case 37:    // Left
                     newIndex = commentIndex === 0 ? null
@@ -159,7 +159,7 @@ define([
                         : commentIndex + 1;
                     break;
             }
-            
+
             if (newIndex !== undefined) {
                 if (typeof newIndex === 'number') {
                     this.setActiveComment(this.comments[newIndex]);
@@ -171,6 +171,7 @@ define([
                         me.query(`button:not([data-index])`)[0].focus();
                     });
                 }
+                event.preventDefault();
             }
         },
 
@@ -181,7 +182,7 @@ define([
                 this.handleDeleteComment({ data: { id: this.comment.id } });
             }
         },
-        
+
         handleCodeEdited: function () {
             if (this.hasCodeChanged()) {
                 this.syntaxHighlightCode();
@@ -193,7 +194,7 @@ define([
                 }
             }
         },
-        
+
         handleNoteEdited: function () {
             if (this.hasNoteChanged()) {
                 this.comment.note = this.noteEditor.innerText;
@@ -204,7 +205,7 @@ define([
                 }
             }
         },
-        
+
         handleNoteKeyUp: function (event) {
             if (event.keyCode === 13 && event.ctrlKey) {
                 this.noteEditor.blur();
@@ -228,7 +229,7 @@ define([
             this.restoreActiveComment(commentIndex - 1);
         },
     };
-    
+
     return function CodeComment(topOffset, fileMeta, location, origCode) {
         var obj = Object.create(proto);
         obj.topOffset = topOffset;
@@ -241,7 +242,7 @@ define([
         EventBus.on('review_comment_added', obj.handleAddComment, obj);
         EventBus.on('review_comment_edited', obj.handleEditComment, obj);
         EventBus.on('review_comment_removed', obj.handleDeleteComment, obj);
-        
+
         obj.setHtml('text!partials/CodeComment.html');
         return obj;
     };

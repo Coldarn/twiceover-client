@@ -26,11 +26,9 @@ body {
     height: 12px;
     width: 12px;
 }
-
 ::-webkit-scrollbar-thumb {
     background: #555;
 }
-
 ::-webkit-scrollbar-corner, ::-webkit-scrollbar {
     background: transparent;
 }
@@ -289,7 +287,7 @@ body {
     font-family: "FontAwesome";
     content: "\f00c";
     position: absolute;
-    width: 20px; 
+    width: 20px;
     top: 0;
     left: 5px;
 }
@@ -299,12 +297,13 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 .code-pane > * {
     flex: 1;
     display: flex;
 }
-
+.code-pane > pre {
+    position: relative;
+}
 .code-pane > header {
 	flex: none;
     height: 30px;
@@ -325,6 +324,23 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.code-block::-webkit-scrollbar-thumb {
+    background: #363636;
+}
+.code-pane .scroll-indicators {
+    position: absolute;
+    width: 12px;
+    height: 100%;
+    right: 0;
+    pointer-events: none;
+    shape-rendering: crispEdges;
+}
+.scroll-indicators > .removed {
+    fill: #700;
+}
+.scroll-indicators > .added {
+    fill: #070;
+}
 
 code.code-block {
     flex: 1;
@@ -333,6 +349,7 @@ code.code-block {
     line-height: 1.35em;
     background: transparent;
     overflow: auto;
+    padding-bottom: 100px;
 }
 
 code.lines {

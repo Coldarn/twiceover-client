@@ -28,7 +28,7 @@ define([
             });
             return this;
         },
-        
+
         setHtml: function (html) {
             this.forEach(function (el) {
                 el.innerHTML = html;
@@ -36,7 +36,10 @@ define([
             return this;
         },
 
-        setAttribute: function (name, value) {
+        attr: function (name, value) {
+            if (value === undefined) {
+                return this[0].getAttribute('name');
+            }
             this.forEach(function (el) {
                 if (value === null) {
                     el.removeAttribute(name);

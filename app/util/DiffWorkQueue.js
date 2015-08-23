@@ -3,7 +3,7 @@ define([
     'util/EventBus'
 ], function (App, EventBus) {
     'use strict';
-    
+
     function DiffTask(path, diffMode, leftContent, rightContent) {
         return {
             name: DiffWorkQueue.getTaskName(path, diffMode),
@@ -14,13 +14,13 @@ define([
             diff: null                  // Filled in when the background task completes
         };
     }
-    
+
     function DiffWorkQueue() {
         const self = {
             workers: [],
             tasks: {},
             queue: [],
-            
+
             addTask: function (path, diffMode, leftContent, rightContent) {
                 const task = DiffTask(path, diffMode, leftContent, rightContent);
                 if (self.tasks[task.name]) {
@@ -28,19 +28,19 @@ define([
                 }
                 self.tasks[task.name] = task;
                 self.queue.push(task.name);
-                
-                if (self.workers.length < (App.TEST_MODE ? 1 : 4)) {
+
+                if (self.workers.length < 4) {
                     const worker = new Worker('util/BackgroundDiffer.js');
                     worker.onmessage = self.handleWorkerMessage.bind(self, worker);
                     self.workers.push(worker);
                     self.sendWork(worker);
                 }
             },
-            
+
             getTask: function (name) {
                 return self.tasks[name];
             },
-            
+
             moveToFront: function (name) {
                 const index = self.queue.indexOf(name);
                 if (index >= 0) {
@@ -48,7 +48,7 @@ define([
                     self.queue.unshift(name);
                 }
             },
-            
+
             handleWorkerMessage: function (worker, message) {
                 const task = self.tasks[message.data.name];
                 if (task) {
@@ -59,7 +59,7 @@ define([
                 }
                 self.sendWork(worker);
             },
-            
+
             sendWork: function (worker) {
                 if (self.queue.length) {
                     const taskName = self.queue.shift();
@@ -69,7 +69,7 @@ define([
                     worker.terminate();
                 }
             },
-            
+
             cancelAll: function () {
                 self.workers.forEach(function (worker) {
                     worker.terminate();
@@ -81,10 +81,10 @@ define([
         };
         return self;
     }
-    
+
     DiffWorkQueue.getTaskName = function (path, diffMode) {
         return `${path}+${diffMode === 'char' ? 'char' : 'line'}`;
     };
-    
+
     return DiffWorkQueue;
 });

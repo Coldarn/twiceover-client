@@ -113,7 +113,6 @@ define([
             self.highlightBlocks = highlightBlocks;
 
             self.refreshCommentRegions();
-            self.refreshScrollIndicators();
 
             self.postLoadActions.forEach(function (action) {
                 action();
@@ -131,6 +130,7 @@ define([
                     self.refreshBorders(self.comments.el, location.lineStart, location.lineCount,
                         self.showComment.bind(self, location));
                 });
+            self.refreshScrollIndicators();
         },
 
         refreshBorders: function (parentEl, startLine, lineCount, clickFn) {

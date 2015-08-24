@@ -14,6 +14,14 @@ define([
         'aborted'       // Cancelled or abandoned, usually not checked in
     ];
 
+    const allowedReviewerStatuses = [
+        'active',
+        'looksGood',
+        'needsWork',
+        'hasIssues',
+        'abstain'
+    ];
+
     var proto = {
         eventLog: null,         // EventLog driving this review
         iterations: null,       // Ordered array of Iterations
@@ -24,8 +32,9 @@ define([
         owningUser: null,       // User that created this review
         title: null,            // Review's title
         description: null,      // Review's description
-        reviewers: null,        // Array of reviewers
         status: null,           // Overall status of this review accoridng to the owner
+        reviewers: null,        // Array of reviewers
+        reviewerStatus: null,   // Maps reviers to their statuses
 
 
         // Creates, adds, and returns a new iteration to this review
@@ -80,6 +89,36 @@ define([
             });
         },
 
+        setReviewerStatus: function (reviewer, status) {
+            if (allowedReviewerStatuses.indexOf(status) < 0) {
+                throw new Error('Given review status is not valid: ' + status);
+            }
+            this.reviewerStatus = this.reviewerStatus || {};
+            reviewer = User(reviewer);
+            const reviewerEntry = this.reviewerStatus[reviewer.email];
+            if (!reviewerEntry) {
+                this.eventLog.add({
+                    type: 'reviewerJoined',
+                    data: {
+                        reviewer: reviewer.toString()
+                    }
+                });
+            }
+            if (!reviewerEntry || reviewerEntry.status !== status) {
+                this.eventLog.add({
+                    type: 'reviewerStatusChanged',
+                    data: {
+                        reviewer: reviewer.toString(),
+                        status: status
+                    }
+                });
+            }
+        },
+
+        getReviewerStatus: function (reveiwer) {
+            return this.reviewerStatus && this.reviewerStatus[User(reviewer).email] || null;
+        },
+
 
 
 
@@ -90,8 +129,9 @@ define([
                     this.owningUser = User(event.user);
                     this.title = event.data.title;
                     this.description = event.data.description;
-                    this.reviewers = event.data.reviewers;
                     this.status = event.data.status;
+                    this.reviewers = event.data.reviewers;
+                    this.reviewerStatus = event.data.reviewerStatus;
                     break;
                 }
                 case 'newIteration': {
@@ -111,6 +151,27 @@ define([
                     this.status = event.data.status;
                     break;
                 }
+                case 'reviewerJoined': {
+                    const reviewer = User(event.data.reviewer);
+                    if (!this.reviewers.some(function (r) { return reviewer.is(r); })) {
+                        this.reviewers.push(reviewer.toString());
+                    }
+                    break;
+                }
+                case 'reviewerStatusChanged': {
+                    const reviewer = User(event.data.reviewer);
+                    this.reviewerStatus = this.reviewerStatus || {};
+                    const reviewerEntry = this.reviewerStatus[reviewer.email];
+                    if (!reviewerEntry) {
+                        this.reviewerStatus[reviewer.email] = reviewerEntry = {
+                            user: reviewer,
+                            status: 'active',
+                            label: 'Reviewing'
+                        }
+                    }
+                    reviewerEntry.status = event.data.status;
+                    break;
+                }
             }
         },
     };
@@ -122,8 +183,9 @@ define([
                 id: Util.randomID(),
                 title: title,
                 description: description,
+                status: 'active',
                 reviewers: reviewers.map(function (u) { return u.toString(); }),
-                status: 'active'
+                reviewerStatus: {}
             }
         });
         return Review.load(eventLog);

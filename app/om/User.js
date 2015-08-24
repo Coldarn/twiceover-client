@@ -4,9 +4,11 @@ define([], function () {
 
     const proto = {
         is: function (otherUser) {
-            return otherUser
-                && Object.getPrototypeOf(otherUser) === proto
-                && otherUser.email.toLocaleLowerCase() === this.email.toLocaleLowerCase();
+            if (Object.getPrototypeOf(otherUser) === proto) {
+                return otherUser.email.toLocaleLowerCase() === this.email.toLocaleLowerCase();
+            }
+            const other = User(otherUser);
+            return other.email.toLocaleLowerCase() === this.email.toLocaleLowerCase();
         },
 
         toString: function () {

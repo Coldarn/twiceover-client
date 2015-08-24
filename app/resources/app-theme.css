@@ -19,7 +19,7 @@ body, pre, code, div {
 body {
     font-family: Segoe UI, sans-serif;
     background: #1d1f21;
-    color: white;
+    color: #ddd;
 }
 
 ::-webkit-scrollbar {
@@ -47,6 +47,8 @@ body {
     -ms-user-select: none;
 }
 
+
+
 .menu-bar, .dialog header {
     display: block;
     height: 40px;
@@ -61,34 +63,37 @@ body {
     z-index: 10;
     text-shadow: 0 0 2px #333;
 }
-
 .home-button {
     cursor: pointer;
 }
-
+.menu-bar.complete {
+    background: #777;
+}
+.menu-bar.aborted {
+    background: #933;
+}
 .menu-bar > .iteration {
     cursor: pointer;
 }
-
 .iteration {
     display: inline-block;
-    background:  linear-gradient(105deg,
-        #484 0%,
-        #484 10px,
+    background: linear-gradient(105deg,
+        transparent 0%,
+        transparent 10px,
         rgba(0, 0, 0, 0.35) 11px,
-        #484 16px,
-        #484 100%);
+        transparent 15px,
+        transparent 100%);
     padding: 0 8px 0 20px;
     box-sizing: border-box;
 }
-
 .iteration.new-iteration {
     padding-right: 12px;
 }
-
 .iteration.active {
     text-decoration: underline;
 }
+
+
 
 .container-inner {
     flex: 1;
@@ -108,7 +113,6 @@ body {
     margin-right: -5px;
     z-index: 2;
 }
-.file-pane > header,
 .file-pane > footer,
 .file-pane > content > .filler,
 .file-pane > content li {
@@ -118,28 +122,16 @@ body {
         #111 calc(100% - 5px),
         transparent 100%);
 }
-
-.file-pane > header {
-    line-height: 40px;
-    padding: 0 10px;
-    font-size: 15px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
 .file-pane > content {
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
 }
-
 .file-pane footer {
     display: flex;
     padding-right: 5px;
 }
-
 .file-pane footer > button {
     flex: 1 1 auto;
     font-size: 14px;
@@ -149,7 +141,6 @@ body {
     background: #666;
     color: #bbb;
 }
-
 .file-pane footer > button.selected {
     background: #484;
     color: #ddd;
@@ -160,22 +151,26 @@ body {
     padding: 0;
     list-style-type: none;
 }
-
+.file-list > li.title {
+    line-height: 38px;
+    font-size: 16px;
+    padding: 2px 10px 0 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 .file-list > li {
     padding: 3px 10px 4px 24px;
     cursor: pointer;
 }
-
 .file-list li {
     position: relative;
 }
-
 .file-list li > div {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
-
 .file-list > li.selected {
     margin-right: 5px;
     padding-right: 5px;
@@ -186,7 +181,6 @@ body {
             #1d1f21 calc(100% - 3px),
             #161616 100%);
 }
-
 .file-list > li.selected:after {
     content: " ";
     position: absolute;
@@ -205,11 +199,9 @@ body {
             #1d1f21 0%,
             transparent 100%);
 }
-
 .file-list > li:hover {
     color: white;
 }
-
 .file-list > li:before {
     font-size: 17px;
     font-weight: bold;
@@ -219,44 +211,33 @@ body {
     left: 6px;
     text-align: center;
 }
-
 .file-list > li.added {
     color: #5c5;
 }
-
 .file-list > li.added:hover {
     color: #7e7;
 }
-
 .file-list > li.added:before {
     content: "+";
 }
-
 .file-list > li.removed {
     color: #e66;
 }
-
 .file-list > li.removed:hover {
     color: #e88;
 }
-
 .file-list > li.removed:before {
     content: "-";
 }
-
 .file-list > li.unchanged {
     color: #99f;
 }
-
 .file-list > li.unchanged:hover {
     color: #aaf;
 }
-
-
 .file-list > li.unchanged:before {
     content: "=";
 }
-
 .file-list > li > ul {
     list-style-type: none;
     color: #ddd;
@@ -266,23 +247,19 @@ body {
     margin-right: -5px;
     margin-left: -4px;
 }
-
 .file-list > li > ul > li {
     background: transparent;
     padding-left: 22px;
 }
-
 .file-list > li > ul > li:hover {
     color: white;
 }
 .file-list > li > ul > li.seen:hover {
     color: #ccc;
 }
-
 .file-list > li > ul > li.seen {
     color: #aaa;
 }
-
 .file-list > li > ul > li.seen:before {
     font-family: "FontAwesome";
     content: "\f00c";
@@ -406,12 +383,6 @@ code.lines.comments .clickable {
     pointer-events: auto;
     cursor: pointer;
 }
-/*
-code.lines.comments .clickable:hover {
-    background: rgba(255, 255, 255, 0.12);
-}
-*/
-
 .diff-added {
     background: #040;
     border-bottom: 1px solid #040;
@@ -446,14 +417,12 @@ comment {
     border-top: 1px solid transparent;
     outline: 1px solid #555;
 }
-
 comment > code.hljs {
     background: none;
     padding: 0;
     padding-bottom: 2px;
     z-index: 2;
 }
-
 comment > footer {
     display: flex;
     flex-direction: row;
@@ -483,7 +452,6 @@ comment > footer > note {
     font-size: 12px;
     padding: 2px 4px 3px 4px;
 }
-
 comment > iterations {
     position: absolute;
     top: -31px;
@@ -492,7 +460,6 @@ comment > iterations {
     display: flex;
     flex-direction: row;
 }
-
 comment button {
     padding: 0;
     color: #ccc;
@@ -515,10 +482,26 @@ comment > iterations > *.selected {
 
 
 
+.review-status {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    padding: 0 10px 10px 10px;
+}
+.review-status-left {
+}
+.review-status-right {
+    padding-left: 10px;
+}
+.review-status .review-status-right textarea {
+    background: #10161a;
+    color: #ccc;
+}
 label {
     font-size: 18px;
     line-height: 30px;
     margin-top: 6px;
+    color: #ddd;
 }
 
 .dialog {
@@ -742,16 +725,19 @@ select {
     color: inherit;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
 .column {
     display: flex;
     flex-direction: column;
 }
-
 .dialog content > .column {
     flex: 1;
     padding: 10px;
 }
-
 .column input, .column textarea {
     resize: none;
     background: #1d1f21;

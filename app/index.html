@@ -13,7 +13,6 @@
             </div>
             <div class="container-inner">
                 <div class="file-pane">
-                    <header></header>
                     <content class="filler"></content>
                     <footer>
                         <button data-diffmode="left">left</button>
@@ -36,6 +35,21 @@
                             <g class="comments"></g>
                         </svg>
                     </pre>
+                </div>
+                <div class="review-status" style="display: none">
+                    <div class="review-status-left column filler">
+                        <label>Review Status</label>
+                        <div class="review-status-widget">
+                        </div>
+
+                        <label>Reviewers</label>
+                        <div class="reviewer-widget">
+                        </div>
+                    </div>
+                    <div class="review-status-right column filler">
+                        <label for="review-description-inplace">Description</label>
+                        <textarea id="review-description-inplace" class="filler"></textarea>
+                    </div>
                 </div>
             </div>
         </div>

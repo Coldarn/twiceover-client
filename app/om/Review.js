@@ -7,25 +7,32 @@ define([
     'om/User'
 ], function (Util, EventLog, Iteration, FileMeta, User) {
     'use strict';
-    
+
+    const allowedStatuses = [
+        'active',       // In-progress or ready for review
+        'complete',     // Successfully completed, usually checked in
+        'aborted'       // Cancelled or abandoned, usually not checked in
+    ];
+
     var proto = {
         eventLog: null,         // EventLog driving this review
         iterations: null,       // Ordered array of Iterations
         fileMetas: null,        // Object mapping lowercase file paths to FileMetas
-        
-        
+
+
         id: null,               // Unique ID for this review
         owningUser: null,       // User that created this review
         title: null,            // Review's title
         description: null,      // Review's description
         reviewers: null,        // Array of reviewers
-        
-        
+        status: null,           // Overall status of this review accoridng to the owner
+
+
         // Creates, adds, and returns a new iteration to this review
         addIteration: function (iteration) {
             this.eventLog.mergeIn(iteration.eventLog);
         },
-        
+
         // Returns the Iteration at the given index
         getIteration: function (iteration) {
             if (typeof iteration === 'number') {
@@ -41,12 +48,12 @@ define([
                 return foundIt;
             }
         },
-        
+
         // Returns the metadata class for the given file path
         getFileMeta: function (path) {
             return this.fileMetas[path.toLowerCase()];
         },
-        
+
         // Searches through all FileMetas to find the comment with the given ID and
         // returns an object describing its location or null if not found
         findComment: function (commentID) {
@@ -61,6 +68,18 @@ define([
             return null;
         },
 
+        setStatus: function (status) {
+            if (allowedStatuses.indexOf(status) < 0) {
+                throw new Error("Given status is not valid: " + status);
+            }
+            this.eventLog.add({
+                type: 'reviewStatusChanged',
+                data: {
+                    status: status
+                }
+            });
+        },
+
 
 
 
@@ -72,6 +91,7 @@ define([
                     this.title = event.data.title;
                     this.description = event.data.description;
                     this.reviewers = event.data.reviewers;
+                    this.status = event.data.status;
                     break;
                 }
                 case 'newIteration': {
@@ -87,6 +107,10 @@ define([
                     }
                     break;
                 }
+                case 'reviewStatusChanged': {
+                    this.status = event.data.status;
+                    break;
+                }
             }
         },
     };
@@ -98,24 +122,25 @@ define([
                 id: Util.randomID(),
                 title: title,
                 description: description,
-                reviewers: reviewers.map(function (u) { return u.toString(); })
+                reviewers: reviewers.map(function (u) { return u.toString(); }),
+                status: 'active'
             }
         });
         return Review.load(eventLog);
     };
-    
+
     Review.load = function load(eventLog) {
         var obj = Object.create(proto);
 
         obj.eventLog = eventLog;
         obj.iterations = [];
         obj.fileMetas = {};
-        
+
         eventLog.subscribe(obj.handleEvent, obj);
         eventLog.processEventsSince(0);
 
         return obj;
     };
-    
+
     return Review;
 });

@@ -151,6 +151,11 @@ define([
             const scaleHeight = Math.min(1, self.codeEl.offsetHeight / self.codeEl.scrollHeight);
             const topOffset = self.codeEl.lastChild.offsetTop;
 
+            // Don't refresh if not yet rendered or otherwise in a bad state
+            if (Number.isNaN(scaleHeight)) {
+                return;
+            }
+
             self.scrollIndicatorRemoved.setHtml(self.highlightBlocks.map(function (b, i) {
                     return !b.removed ? '' : `<rect x="0" y="${i}" width="1" height="1" />`;
                 }).join(''))
@@ -278,7 +283,10 @@ define([
         },
 
         handleActiveEntryChanged: function(path, leftEntry, rightEntry) {
-            self.loadActiveEntry();
+            self.setVisible(!!path);
+            if (path) {
+                self.loadActiveEntry();
+            }
         },
 
         handleDiffModeChanged: function (diffMode) {

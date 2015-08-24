@@ -13,20 +13,21 @@ requirejs([
     'ui/MenuBar',
     'ui/FileList',
     'ui/CodeViewer',
+    'ui/ReviewStatus',
     'ui/Home'
-], function (App, Review, User, EmailChecker, ElementProxy, EventLog, Remote, MenuBar, FileList, CodeViewer, Home) {
+], function (App, Review, User, EmailChecker, ElementProxy, EventLog, Remote, MenuBar, FileList, CodeViewer, ReveiwStatus, Home) {
     'use strict';
 
     hljs.configure({
         tabReplace: '    ', // 4 spaces
     });
-    
+
     const fs = require('fs');
     const ipc = require('ipc');
 
     // Make sure we're in the correct directory
     process.chdir(__dirname + '/..');
-    
+
     if (App.TEST_MODE) {
         App.user = User('John Doe', 'john.doe@example.com');
 		finishInit();
@@ -62,7 +63,7 @@ requirejs([
 			Home().appendTo(document.body);
 		}
 	}
-    
+
     ElementProxy(document.body).on('keydown', function (event) {
         if (event.keyCode === 120) {        // F9
             ipc.send('reload-window');

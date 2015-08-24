@@ -26,18 +26,21 @@ define([
                         ${self.buildEntryHtml(path)}
                     </li>`;
                 }).join('');
-            self.listEl.innerHTML = `<ul class="file-list">${fileHtml}</ul><div class="filler"> </div>`;
+            self.listEl.innerHTML = `<ul class="file-list">
+                <li class="file-entry title" title="${App.review.title}">${App.review.title}</li>
+                ${fileHtml}
+            </ul><div class="filler"> </div>`;
 
             self.queryAll('.file-entry').on('click', function () {
-                App.setActiveEntry(this.dataset.path);
+                App.setActiveEntry(this.classList.contains('title') ? null : this.dataset.path);
             });
             self.attachLinkHandlers();
         },
-        
+
         buildEntryHtml: function (path) {
             // Convert path to the canonical, properly-capitalized form
             path = App.review.getFileMeta(path).path;
-            
+
             const splitPath = path.split('/');
             const name = splitPath[splitPath.length - 1];
             const fileMeta = App.review.getFileMeta(path);
@@ -48,7 +51,7 @@ define([
             }).join('')}</ul>` : '';
             return `<div>${name}</div>${innerHtml}`;
         },
-        
+
         attachLinkHandlers: function (el) {
             (el || self).queryAll('.comment-link').on('click', function (event) {
                 const path = this.parentNode.parentNode.dataset.path;
@@ -66,10 +69,6 @@ define([
 
 
 
-        handleActiveReviewChanged: function (review) {
-            self.query('header')[0].innerText = review.title;
-        },
-
         handleActiveIterationsChanged: function() {
             self.populate();
         },
@@ -79,7 +78,11 @@ define([
             if (selFileEl) {
                 selFileEl.classList.remove('selected');
             }
-            document.querySelector(`.file-entry[data-path="${path.toLowerCase()}"]`).classList.add('selected');
+            if (path) {
+                self.query(`.file-entry[data-path="${path.toLowerCase()}"]`).setClass('selected', true);
+            } else {
+                self.query('.title').setClass('selected', true);
+            }
         },
 
         handleCommentLinkClicked: function (path, location) {
@@ -88,7 +91,7 @@ define([
             linkEl[0].classList.add('seen');
             App.status.setCommentSeen(path, location, true);
         },
-        
+
         handleCommentAddedOrRemoved: function (event) {
             let path = event.data.path;
             if (!path) {
@@ -100,7 +103,7 @@ define([
             if (!path) {
                 return;
             }
-            
+
             const entryEl = self.query(`.file-entry[data-path="${path}"]`)[0];
             if (!entryEl) {
                 return;
@@ -116,7 +119,6 @@ define([
         }
     };
 
-    EventBus.on('active_review_changed', self.handleActiveReviewChanged, self);
     EventBus.on('active_iterations_changed', self.handleActiveIterationsChanged, self);
     EventBus.on('active_entry_changed', self.handleActiveEntryChanged, self);
     EventBus.on('comment_link_clicked', self.handleCommentLinkClicked, self);

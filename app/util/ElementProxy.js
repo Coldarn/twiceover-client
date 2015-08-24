@@ -36,6 +36,16 @@ define([
             return this;
         },
 
+        text: function (value) {
+            if (value === undefined) {
+                return this[0].innerText;
+            }
+            this.forEach(function (el) {
+                el.innerText = value;
+            });
+            return this;
+        },
+
         attr: function (name, value) {
             if (value === undefined) {
                 return this[0].getAttribute('name');
@@ -88,10 +98,12 @@ define([
 
     function ElementProxy(nodeList) {
         const obj = Object.create(proto);
-        if (typeof nodeList.length === 'number') {
-            obj.push.apply(obj, nodeList);
-        } else {
-            obj.push(nodeList);
+        if (nodeList) {
+            if (typeof nodeList.length === 'number') {
+                obj.push.apply(obj, nodeList);
+            } else {
+                obj.push(nodeList);
+            }
         }
         return obj;
     };

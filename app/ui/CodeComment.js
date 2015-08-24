@@ -1,11 +1,12 @@
 define([
     'util/Util',
     'util/EventBus',
+    'util/PasteFilter',
     'ui/Component',
     'om/CommentLocation',
     'om/Comment',
     'App'
-], function (Util, EventBus, Component, CommentLocation, Comment, App) {
+], function (Util, EventBus, PasteFilter, Component, CommentLocation, Comment, App) {
     'use strict';
 
     const proto = {
@@ -13,15 +14,16 @@ define([
 
         initComponent: function () {
             this.codeEditor = this.query('code')
-                .on('blur', this.handleCodeEdited.bind(this))
-                .on('paste', this.pastePlainText)[0];
+                .on('blur', this.handleCodeEdited.bind(this))[0];
 
             this.footer = this.query('footer');
 
             this.noteEditor = this.footer.query('note')
                 .on('blur', this.handleNoteEdited.bind(this))
-                .on('paste', this.pastePlainText)
                 .on('keyup', this.handleNoteKeyUp.bind(this))[0];
+
+            PasteFilter(this.codeEditor);
+            PasteFilter(this.noteEditor);
 
             this.deleteButton = this.footer.query('.delete')
                 .on('click', this.handleDeleteCommentClick.bind(this));
@@ -100,16 +102,6 @@ define([
 
         hasCommentBeenSaved: function () {
             return !!App.fileMeta.getComment(this.comment.id);
-        },
-
-        pastePlainText: function (event) {
-            event.preventDefault();
-            if (event.clipboardData) {
-                const text = event.clipboardData.getData('text/plain');
-                if (text) {
-                    document.execCommand('insertText', false, text);
-                }
-            }
         },
 
         syntaxHighlightCode: function () {

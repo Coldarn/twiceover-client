@@ -501,8 +501,16 @@ comment > iterations > *.selected {
     color: #ccc;
 }
 
-.status-widget:not(:last-child) {
+.status-widget.editable {
+    padding: 3px;
+    background: #484
+}
+.status-widget {
     margin-bottom: 10px;
+    padding-left: 3px;
+}
+.status-widget:not(:last-child) {
+    margin-bottom: 8px;
 }
 .status-widget.complete {
     background: #777;
@@ -534,7 +542,7 @@ comment > iterations > *.selected {
 }
 .status-widget.editable .comment-container {
     box-shadow: inset 0 1px 6px black;
-    background: #10161a;
+    background: #1d1f21;
 }
 
 

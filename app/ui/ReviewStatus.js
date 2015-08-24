@@ -30,8 +30,11 @@ define([
 
             me.reviewerWidget.setHtml(null);
             App.review.reviewers.forEach(function (reviewer) {
-                StatusWidget(StatusWidget.IconSets.Reviewer, User(reviewer), 'active', null)
-                    .appendTo(me.reviewerWidget);
+                const user = User(reviewer);
+                if (!App.review.owningUser.is(user)) {
+                    StatusWidget(StatusWidget.IconSets.Reviewer, user, 'active', null)
+                        .appendTo(me.reviewerWidget);
+                }
             });
         },
 

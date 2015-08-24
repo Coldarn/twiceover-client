@@ -20,8 +20,24 @@ define([], function () {
 
     function User(displayName, email) {
         const obj = Object.create(proto);
-        obj.name = displayName.trim();
-        obj.email = email.trim();
+        if (!displayName || typeof displayName !== 'string') {
+            throw new Error('Email address string is required at minimum to construct a user');
+        } else  if (displayName && email) {
+            obj.name = displayName.trim();
+            obj.email = email.trim();
+        } else if (proto.isPrototypeOf(displayName)) {
+            return displayName;
+        } else if (displayName.indexOf('@') >= 0) {
+            const tryParse = User.parse(displayName);
+            if (tryParse.email !== 'EMAIL_MISSING') {
+                return tryParse;
+            } else {
+                obj.name = '';
+                obj.email = displayName.trim();
+            }
+        } else {
+            throw new Error("Cannot parse as user: " + displayName)
+        }
         return obj;
     }
 

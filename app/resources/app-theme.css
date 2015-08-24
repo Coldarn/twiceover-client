@@ -490,6 +490,9 @@ comment > iterations > *.selected {
 }
 .review-status-left {
 }
+.review-status-left {
+    overflow: auto;
+}
 .review-status-right {
     padding-left: 10px;
 }
@@ -497,6 +500,45 @@ comment > iterations > *.selected {
     background: #10161a;
     color: #ccc;
 }
+
+.status-widget:not(:last-child) {
+    margin-bottom: 10px;
+}
+.status-widget.complete {
+    background: #777;
+}
+.status-widget.aborted {
+    background: #933;
+}
+.status-widget .active > :not(:last-child) {
+    margin-right: 10px;
+}
+.status-widget img {
+    height: 44px;
+}
+.status-widget .icon-container > span {
+    font-size: 44px;
+}
+.status-widget.editable .icon-container > span {
+    cursor: pointer;
+}
+.status-widget.editable .icon-container > span:hover {
+    color: white;
+}
+.status-widget .icon-container > span:not(:last-child) {
+    margin-right: 10px;
+}
+.status-widget .comment-container {
+    padding: 2px 5px;
+    font-size: 15px;
+}
+.status-widget.editable .comment-container {
+    box-shadow: inset 0 1px 6px black;
+    background: #10161a;
+}
+
+
+
 label {
     font-size: 18px;
     line-height: 30px;

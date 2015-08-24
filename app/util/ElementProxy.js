@@ -97,6 +97,9 @@ define([
     };
 
     function ElementProxy(nodeList) {
+        if (proto.isPrototypeOf(nodeList)) {
+            return nodeList;
+        }
         const obj = Object.create(proto);
         if (nodeList) {
             if (typeof nodeList.length === 'number') {

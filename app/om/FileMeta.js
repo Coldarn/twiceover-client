@@ -6,7 +6,7 @@ define([
     'om/Comment'
 ], function (Util, User, CommentLocation, Comment) {
     'use strict';
-    
+
     const proto = {
         path: null,             // Display path of this file
         commentLocations: null, // Maps comment location strings to sorted arrays of comments
@@ -28,7 +28,7 @@ define([
                 }
             });
         },
-        
+
         editComment: function (commentID, changedProperty, newValue) {
             if (!this.comments[commentID]) {
                 throw new Error(`No comment on this file with ID: ${commentID}`);
@@ -44,7 +44,7 @@ define([
                 }
             });
         },
-        
+
         removeComment: function (commentID) {
             if (!this.comments[commentID]) {
                 throw new Error(`No comment on this file with ID: ${commentID}`);
@@ -59,32 +59,32 @@ define([
                 }
             });
         },
-        
+
         // Returns the comment with the given ID or null if unknown
         getComment: function (commentID) {
             return this.comments[commentID] || null;
         },
-        
+
         // Returns all comment locations for this file in sorted order
         getCommentLocations: function () {
             return Object.keys(this.commentLocations)
                 .sort()
                 .map(function (locHash) { return CommentLocation(locHash); });
         },
-        
+
         // Returns the sorted set of comments at the given location
         getCommentsAtLocation: function (location) {
             return (this.commentLocations[location.toString()] || []).slice();
         },
-        
+
         // Returns all comments for this file ordered by iteration and line numbers
         getAllComments: function () {
             const commentArrays = this.getCommentLocations()
                 .map(this.getCommentsAtLocation.bind(this));
-            
+
             return Array.prototype.concat.apply([], commentArrays);
         },
-        
+
         findComment: function (commentID) {
             for (let loc in this.commentLocations) {
                 const comments = this.commentLocations[loc];
@@ -99,7 +99,7 @@ define([
             }
             return null;
         },
-        
+
         // Returns brief text summarizing this comment
         getCommentSummary: function (location) {
             const comments = this.getCommentsAtLocation(location);
@@ -110,20 +110,20 @@ define([
         getCommentSummaries: function () {
             return this.getCommentLocations().map(this.getCommentSummary.bind(this));
         },
-        
-        
-        
-        
+
+
+
+
         handleEvent: function (event) {
             const me = this;
-            
+
             switch (event.type) {
                 case 'addComment': {
                     if (event.data.path !== this.path.toLowerCase()) {
                         break;
                     }
                     const comment = Comment(
-                        User.parse(event.user),
+                        User(event.user),
                         event.data.code,
                         event.data.note,
                         event.id,
@@ -151,7 +151,7 @@ define([
                     if (!comment) {
                         break;
                     }
-                    
+
                     delete this.comments[event.data.id];
 
                     const locInfo = this.findComment(event.data.id);
@@ -166,17 +166,17 @@ define([
             }
         }
     };
-    
+
     return function FileMeta(eventLog, displayPath) {
         const obj = Object.create(proto);
-        
+
         obj.path = displayPath;
         obj.commentLocations = {};
         obj.comments = {};
-        
+
         obj.eventLog = eventLog;
         obj.eventLog.subscribe(obj.handleEvent, obj);
-        
+
         return obj;
     };
 });

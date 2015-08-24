@@ -13,10 +13,10 @@ define([
 
         initComponent: function () {
             var me = this;
-            
+
             me.query('footer > .close').setVisible(me.canClose).on('click', me.handleCloseClick.bind(me));
             me.query('#newReviewButton').on('click', me.handleNewReviewClick.bind(me));
-            
+
             Promise.all([
                 Request.get(`http://${App.serverUrl}/api/reviewsIncluding/${App.user.email}`),
                 Request.get(`http://${App.serverUrl}/api/reviewsExcluding/${App.user.email}`)
@@ -24,7 +24,7 @@ define([
                 const myReviews = [];
                 const reviewRequests = [];
                 data[0].forEach(function (review) {
-                    if (User.parse(review.owner).is(App.user)) {
+                    if (User(review.owner).is(App.user)) {
                         myReviews.push(review);
                     } else {
                         reviewRequests.push(review);
@@ -33,7 +33,7 @@ define([
                 me.query('#myReviews').setHtml(me.buildReviewList(myReviews));
                 me.query('#reviewRequests').setHtml(me.buildReviewList(reviewRequests));
                 me.query('#otherActiveReviews').setHtml(me.buildReviewList(data[1]));
-                
+
                 me.queryAll('.review-link').on('click', me.handleReviewClick.bind(me), true);
             }, function (err) {
                 me.query('#myReviews').setHtml('<div class="error">Could not connect to server</div>');
@@ -41,7 +41,7 @@ define([
                 me.query('#otherActiveReviews').setHtml('<div class="error">Could not connect to server</div>');
             });
         },
-        
+
         buildReviewList: function (reviews) {
             return reviews.map(function (review) {
                 return `<div class="review-link status-${review.status}" data-review-index="${review.ix}">
@@ -50,23 +50,23 @@ define([
                 </div>`;
             }).join('');
         },
-        
-        
+
+
 
         handleCloseClick: function (event) {
             this.destroy();
         },
-        
+
         handleReviewClick: function (event) {
             App.remote.loadReview(Number(event.currentTarget.dataset.reviewIndex));
             this.destroy();
         },
-        
+
         handleNewReviewClick: function () {
             ImportDialog().appendTo(document.body).whenLoaded(function (comp) { comp.show(); });
         }
     };
-    
+
     return function Home(canClose) {
         const obj = Object.create(proto);
         obj.canClose = canClose;

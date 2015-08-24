@@ -87,7 +87,7 @@ define([
             switch (event.type) {
                 case 'newReview': {
                     this.id = event.data.id;
-                    this.owningUser = User.parse(event.user);
+                    this.owningUser = User(event.user);
                     this.title = event.data.title;
                     this.description = event.data.description;
                     this.reviewers = event.data.reviewers;

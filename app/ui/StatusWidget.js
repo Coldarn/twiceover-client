@@ -31,7 +31,7 @@ define([
             PasteFilter(this.commentEl);
             this.commentEl.text(Util.escapeHtml(this.comment));
 
-            this.setStatus(this.status, true);
+            this.setStatus(this.status);
         },
 
         setStatus: function (status, reset) {

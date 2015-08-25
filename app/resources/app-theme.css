@@ -518,6 +518,11 @@ comment > iterations > *.selected {
 .status-widget.aborted {
     background: #933;
 }
+.status-widget .inactive > label {
+    line-height: normal;
+    color: #bbb;
+    font-size: 16px;
+}
 .status-widget .active > :not(:last-child) {
     margin-right: 10px;
 }

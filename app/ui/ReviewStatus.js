@@ -50,6 +50,10 @@ define([
 
         handleActiveEntryChanged: function(path, leftEntry, rightEntry) {
             me.setVisible(!path);
+        },
+
+        handleStatusChanged: function (event) {
+            this.buildUI();
         }
     };
 
@@ -57,6 +61,8 @@ define([
 
     EventBus.on('active_review_changed', me.handleActiveReviewChanged, me);
     EventBus.on('active_entry_changed', me.handleActiveEntryChanged, me);
+    EventBus.on('change_review_status', me.handleStatusChanged, me);
+    EventBus.on('change_reviewer_status', me.handleStatusChanged, me);
 
     return me;
 });

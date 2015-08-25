@@ -14,6 +14,10 @@ define([
             return this;
         },
 
+        isVisible: function () {
+            return !el.style.display;
+        },
+
         setVisible: function (visible) {
             this.throwIfNoElements();
             this.forEach(function (el) {

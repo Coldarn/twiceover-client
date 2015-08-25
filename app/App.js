@@ -33,6 +33,12 @@ define([
             review.eventLog.subscribe(handleReviewEvent);
             App.setActiveReview(review);
             App.setActiveIterations(0, review.iterations.length - 1);
+
+            if (!App.user.is(App.review.owningUser) && !App.review.getReviewerStatus(App.user)) {
+                setTimeout(function () {
+                    App.review.setReviewerStatus(App.user, 'active', 'Reviewing');
+                });
+            }
         },
 
         setActiveReview: function (review) {
@@ -152,6 +158,12 @@ define([
                     break;
                 case 'removeComment':
                     EventBus.fire('review_comment_removed', event);
+                    break;
+                case 'changeReviewStatus':
+                    EventBus.fire('change_review_status', event);
+                    break;
+                case 'changeReviewerStatus':
+                    EventBus.fire('change_reviewer_status', event);
                     break;
             }
         });

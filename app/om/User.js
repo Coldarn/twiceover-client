@@ -12,7 +12,7 @@ define([], function () {
 
     const proto = {
         is: function (otherUser) {
-            if (Object.getPrototypeOf(otherUser) === proto) {
+            if (proto.isPrototypeOf(otherUser)) {
                 return otherUser.email.toLocaleLowerCase() === this.email.toLocaleLowerCase();
             }
             const other = User(otherUser);
@@ -28,7 +28,7 @@ define([], function () {
         }
     };
 
-    return function User(displayName, email) {
+    function User(displayName, email) {
         const obj = Object.create(proto);
         if (proto.isPrototypeOf(displayName)) {
             return displayName;
@@ -50,5 +50,7 @@ define([], function () {
             throw new Error("Cannot parse as user: " + displayName)
         }
         return obj;
-    };
+    }
+
+    return User;
 });

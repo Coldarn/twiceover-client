@@ -128,7 +128,7 @@ define([
             }
         },
 
-        getReviewerStatus: function (reveiwer) {
+        getReviewerStatus: function (reviewer) {
             return this.reviewerStatus && this.reviewerStatus[User(reviewer).email] || null;
         },
 
@@ -176,7 +176,7 @@ define([
                 case 'changeReviewerStatus': {
                     const reviewer = User(event.data.reviewer);
                     this.reviewerStatus = this.reviewerStatus || {};
-                    const reviewerEntry = this.reviewerStatus[reviewer.email];
+                    let reviewerEntry = this.reviewerStatus[reviewer.email];
                     if (!reviewerEntry) {
                         this.reviewerStatus[reviewer.email] = reviewerEntry = {
                             user: reviewer,

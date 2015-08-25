@@ -18,6 +18,7 @@ define([
         user: null,         // User whose status is tracked by this widget
         status: null,       // Status of this User
         comment: null,      // User's status comment
+        setStatusFn: null,  // Callback function to save status changes
 
         initComponent: function () {
             this.query('img').attr('src', this.user.getAvatarUrl(44)).attr('title', this.user.toString());
@@ -25,8 +26,10 @@ define([
 
             this.iconEl = this.query('.icon-container');
             this.commentEl = this.query('.comment-container')
-                .attr('contenteditable', App.user.is(this.user));
+                .attr('contenteditable', App.user.is(this.user))
+                .on('blur', this.handleCommentBlur.bind(this));
             PasteFilter(this.commentEl);
+            this.commentEl.text(Util.escapeHtml(this.comment));
 
             this.setStatus(this.status, true);
         },
@@ -55,6 +58,7 @@ define([
                     }
                     if (this.status !== status) {
                         this.status = status;
+                        this.setStatusFn(status, this.comment);
                     }
                     this.commentEl.setVisible(true);
                     if (App.user.is(this.user)) {
@@ -82,15 +86,22 @@ define([
 
         handleStatusClick: function (event) {
             this.setStatus(event.target.dataset.status);
+        },
+
+        handleCommentBlur: function (event) {
+            const comment = this.commentEl.text();
+            this.comment = comment;
+            this.setStatusFn(this.status, comment);
         }
     };
 
-    function StatusWidget(iconSet, user, status, comment) {
+    function StatusWidget(iconSet, statusObj, setStatusFn) {
         const obj = Object.create(proto);
         obj.iconSet = iconSet;
-        obj.user = user;
-        obj.status = status;
-        obj.comment = comment;
+        obj.user = statusObj.user;
+        obj.status = statusObj.status;
+        obj.comment = statusObj.label || '';
+        obj.setStatusFn = setStatusFn;
 
         obj.setHtml('text!partials/StatusWidget.html');
         return obj;
@@ -99,7 +110,7 @@ define([
     StatusWidget.IconSets = {
         ReviewOwner: [
             { name: 'active',       icon: 'fa-square-o',        label: 'Active',        cls: 'none' },
-            { name: 'closed',       icon: 'fa-check-square',    label: 'Complete',      cls: 'gray' },
+            { name: 'complete',     icon: 'fa-check-square',    label: 'Complete',      cls: 'gray' },
             { name: 'aborted',      icon: 'fa-minus-square',    label: 'Aborted',       cls: 'red' }
         ],
         Reviewer: [

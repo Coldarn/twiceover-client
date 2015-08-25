@@ -18,24 +18,34 @@ define([
             me.reviewerWidget = me.query('.reviewer-widget');
         },
 
+        buildUI: function () {
+            const visible = me.isVisible();
+            me.setVisible(false);
 
-        handleActiveReviewChanged: function () {
             const descriptionEl = me.query('#review-description-inplace')[0];
             descriptionEl.value = App.review.description;
             descriptionEl.readOnly = !App.user.is(App.review.owningUser);
 
             me.reviewStatusWidget.setHtml(null);
-            StatusWidget(StatusWidget.IconSets.ReviewOwner, App.review.owningUser, App.review.status, null)
+            StatusWidget(StatusWidget.IconSets.ReviewOwner, App.review.getStatus(), App.review.setStatus.bind(App.review))
                 .appendTo(me.reviewStatusWidget);
 
             me.reviewerWidget.setHtml(null);
             App.review.reviewers.forEach(function (reviewer) {
                 const user = User(reviewer);
                 if (!App.review.owningUser.is(user)) {
-                    StatusWidget(StatusWidget.IconSets.Reviewer, user, 'active', null)
+                    const status = App.review.getReviewerStatus(user) || { user: User(user) };
+                    StatusWidget(StatusWidget.IconSets.Reviewer, status, App.review.setReviewerStatus.bind(App.review, user))
                         .appendTo(me.reviewerWidget);
                 }
             });
+
+            me.setVisible(visible);
+        },
+
+
+        handleActiveReviewChanged: function () {
+            this.buildUI();
         },
 
         handleActiveEntryChanged: function(path, leftEntry, rightEntry) {

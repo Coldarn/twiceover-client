@@ -2,6 +2,14 @@
 define([], function () {
     'use strict';
 
+    function tryParse(str) {
+        const parts = /\s*([^<]*?)\s*<(([^@]+).+)>\s*$/.exec(str);
+        const name = parts && (parts[1] || parts[3]) || '';
+        const email = parts && parts[2] || '';
+
+        return email ? { name: name.trim(), email: email.trim() } : null;
+    }
+
     const proto = {
         is: function (otherUser) {
             if (Object.getPrototypeOf(otherUser) === proto) {
@@ -12,7 +20,7 @@ define([], function () {
         },
 
         toString: function () {
-            return `${this.name} <${this.email}>`.trim();
+            return this.name ? `${this.name} <${this.email}>` : this.email;
         },
 
         getAvatarUrl: function (size) {
@@ -20,7 +28,7 @@ define([], function () {
         }
     };
 
-    function User(displayName, email) {
+    return function User(displayName, email) {
         const obj = Object.create(proto);
         if (proto.isPrototypeOf(displayName)) {
             return displayName;
@@ -30,9 +38,10 @@ define([], function () {
             obj.name = displayName.trim();
             obj.email = email.trim();
         } else if (displayName.indexOf('@') >= 0) {
-            const tryParse = User.parse(displayName);
-            if (tryParse.email !== 'EMAIL_MISSING') {
-                return tryParse;
+            const parsed = tryParse(displayName);
+            if (parsed) {
+                obj.name = parsed.name;
+                obj.email = parsed.email;
             } else {
                 obj.name = '';
                 obj.email = displayName.trim();
@@ -41,15 +50,5 @@ define([], function () {
             throw new Error("Cannot parse as user: " + displayName)
         }
         return obj;
-    }
-
-    User.parse = function (str) {
-        const parts = /\s*([^<]*?)\s*<(([^@]+).+)>\s*$/.exec(str);
-        const name = parts && (parts[1] || parts[3]) || 'NAME_MISSING';
-        const email = parts && parts[2] || 'EMAIL_MISSING';
-
-        return User(name.trim(), email.trim());
     };
-
-    return User;
 });

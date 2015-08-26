@@ -1,6 +1,6 @@
 define([
-	'ui/Component',
-	'util/ElementProxy',
+	'ui/util/Component',
+	'ui/util/ElementProxy',
 	'util/EventBus',
     'integrations/EmailChecker'
 ], function (Component, ElementProxy, EventBus, EmailChecker) {

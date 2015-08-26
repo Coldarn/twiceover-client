@@ -1,5 +1,5 @@
 define([
-    'ui/Component',
+    'ui/util/Component',
     'util/EventBus',
     'App',
     'ui/Home',

@@ -2,8 +2,8 @@ define([
     'util/Util',
     'util/EventBus',
     'util/DiffWorkQueue',
-    'ui/Component',
-    'ui/CodeComment',
+    'ui/util/Component',
+    'ui/widgets/CodeComment',
     'om/CommentLocation',
     'om/Comment',
     'App'

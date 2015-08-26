@@ -2,8 +2,8 @@ define([
     'App',
     'util/Util',
     'util/EventBus',
-    'ui/Component',
-    'ui/StatusWidget',
+    'ui/util/Component',
+    'ui/widgets/StatusWidget',
     'om/User'
 ], function (App, Util, EventBus, Component, StatusWidget, User) {
     'use strict';
@@ -26,17 +26,28 @@ define([
             descriptionEl.value = App.review.description;
             descriptionEl.readOnly = !App.user.is(App.review.owningUser);
 
-            me.reviewStatusWidget.setHtml(null);
             StatusWidget(StatusWidget.IconSets.ReviewOwner, App.review.getStatus(), App.review.setStatus.bind(App.review))
-                .appendTo(me.reviewStatusWidget);
+                .whenLoaded(function (comp) {
+                    me.reviewStatusWidget.setHtml(null);
+                    comp.appendTo(me.reviewStatusWidget)
+                });
 
-            me.reviewerWidget.setHtml(null);
+            // Don't empty out the parent element until the widgets have loaded to prevent a double-add race condition
+            // when a new reviewer joins a review for the first time.
+            let needToEmptyParent = true;
+
             App.review.reviewers.forEach(function (reviewer) {
                 const user = User(reviewer);
                 if (!App.review.owningUser.is(user)) {
                     const status = App.review.getReviewerStatus(user) || { user: User(user) };
                     StatusWidget(StatusWidget.IconSets.Reviewer, status, App.review.setReviewerStatus.bind(App.review, user))
-                        .appendTo(me.reviewerWidget);
+                        .whenLoaded(function (comp) {
+                            if (needToEmptyParent) {
+                                me.reviewerWidget.setHtml(null);
+                                needToEmptyParent = false;
+                            }
+                            comp.appendTo(me.reviewerWidget)
+                        });
                 }
             });
 

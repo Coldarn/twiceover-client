@@ -7,7 +7,7 @@ requirejs([
     'om/Review',
     'om/User',
     'integrations/EmailChecker',
-    'util/ElementProxy',
+    'ui/util/ElementProxy',
     'util/EventLog',
     'util/Remote',
     'ui/MenuBar',

@@ -1,8 +1,8 @@
 define([
     'util/Util',
     'util/EventBus',
-    'util/ElementProxy',
-    'ui/Component',
+    'ui/util/ElementProxy',
+    'ui/util/Component',
     'App',
     'om/CommentLocation'
 ], function (Util, EventBus, ElementProxy, Component, App, CommentLocation) {

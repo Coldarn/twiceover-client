@@ -1,7 +1,7 @@
 define([
     'util/Util',
     'util/EventBus',
-    'ui/Component',
+    'ui/util/Component',
     'integrations/TFS'
 ], function (Util, EventBus, Component, TFS) {
     'use strict';

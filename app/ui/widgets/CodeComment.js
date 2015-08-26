@@ -2,7 +2,7 @@ define([
     'util/Util',
     'util/EventBus',
     'util/PasteFilter',
-    'ui/Component',
+    'ui/util/Component',
     'om/CommentLocation',
     'om/Comment',
     'App'

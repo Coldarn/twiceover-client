@@ -1,6 +1,6 @@
 define([
     'util/Util',
-    'util/ElementProxy'
+    'ui/util/ElementProxy'
 ], function (Util, ElementProxy) {
     'use strict';
 

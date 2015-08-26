@@ -2,7 +2,7 @@ define([
     'App',
     'util/Util',
     'util/Request',
-    'ui/Component',
+    'ui/util/Component',
     'ui/ImportDialog',
     'om/User'
 ], function (App, Util, Request, Component, ImportDialog, User) {

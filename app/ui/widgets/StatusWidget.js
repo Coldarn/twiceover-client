@@ -2,7 +2,7 @@ define([
     'App',
     'util/Util',
     'util/PasteFilter',
-    'ui/Component',
+    'ui/util/Component',
     'om/User'
 ], function (App, Util, PasteFilter, Component, User) {
     'use strict';

@@ -151,8 +151,8 @@ define([
             const scaleHeight = Math.min(1, self.codeEl.offsetHeight / self.codeEl.scrollHeight);
             const topOffset = self.codeEl.lastChild.offsetTop;
 
-            // Don't refresh if not yet rendered or otherwise in a bad state
-            if (Number.isNaN(scaleHeight)) {
+            // Don't refresh if no review or file entry is loaded
+            if (Number.isNaN(lineHeight) || Number.isNaN(scaleHeight)) {
                 return;
             }
 

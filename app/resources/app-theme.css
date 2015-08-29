@@ -676,8 +676,6 @@ select {
 
 #reviewer-container {
     margin-bottom: 6px;
-    -webkit-column-count: 2;
-    column-count: 2;
 }
 
 #reviewer-container > *, #change-container {

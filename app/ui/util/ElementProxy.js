@@ -42,6 +42,7 @@ define([
 
         text: function (value) {
             if (value === undefined) {
+                this.throwIfNotSingleElement();
                 return this[0].innerText;
             }
             this.forEach(function (el) {
@@ -52,6 +53,7 @@ define([
 
         attr: function (name, value) {
             if (value === undefined) {
+                this.throwIfNotSingleElement();
                 return this[0].getAttribute('name');
             }
             this.forEach(function (el) {

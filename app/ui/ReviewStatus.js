@@ -4,8 +4,9 @@ define([
     'util/EventBus',
     'ui/util/Component',
     'ui/widgets/StatusWidget',
+    'ui/widgets/EmailEntry',
     'om/User'
-], function (App, Util, EventBus, Component, StatusWidget, User) {
+], function (App, Util, EventBus, Component, StatusWidget, EmailEntry, User) {
     'use strict';
 
     var me = {
@@ -16,6 +17,7 @@ define([
             // me.emailControl.prependTo(me.query('.review-status-right'));
             me.reviewStatusWidget = me.query('.review-status-widget');
             me.reviewerWidget = me.query('.reviewer-widget');
+            me.emailEntry.insertBefore(me.reviewerWidget);
         },
 
         buildUI: function () {
@@ -68,6 +70,7 @@ define([
         }
     };
 
+    me.emailEntry = EmailEntry();
     me.setEl(document.querySelector('.review-status'));
 
     EventBus.on('active_review_changed', me.handleActiveReviewChanged, me);

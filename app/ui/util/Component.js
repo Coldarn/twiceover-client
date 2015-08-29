@@ -89,6 +89,26 @@ define([
             return this;
         },
 
+        insertAfter: function (previousSibling) {
+            previousSibling = previousSibling.el || previousSibling[0] || previousSibling;
+            if (this.el) {
+                previousSibling.parentNode.insertBefore(this.el, previousSibling.nextSibling);
+            } else {
+                this.whenLoaded(function (me) { previousSibling.parentNode.insertBefore(me.el, previousSibling.nextSibling); });
+            }
+            return this;
+        },
+
+        insertBefore: function (nextSibling) {
+            nextSibling = nextSibling.el || nextSibling[0] || nextSibling;
+            if (this.el) {
+                nextSibling.parentNode.insertBefore(this.el, nextSibling);
+            } else {
+                this.whenLoaded(function (me) { nextSibling.parentNode.insertBefore(me.el, nextSibling); });
+            }
+            return this;
+        },
+
         append: function (childEls) {
             const me = this;
 

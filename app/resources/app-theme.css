@@ -500,6 +500,12 @@ comment > iterations > *.selected {
     background: #10161a;
     color: #ccc;
 }
+.review-status .email-entry {
+    margin-bottom: 10px;
+}
+.review-status .email-entry input {
+    background: #10161a;
+}
 
 .status-widget.editable {
     padding: 3px;
@@ -523,9 +529,6 @@ comment > iterations > *.selected {
     color: #bbb;
     font-size: 16px;
 }
-.status-widget .active > :not(:last-child) {
-    margin-right: 10px;
-}
 .status-widget img {
     height: 44px;
 }
@@ -538,6 +541,7 @@ comment > iterations > *.selected {
 .status-widget.editable .icon-container > span:hover {
     color: white;
 }
+.status-widget .active > :not(:last-child),
 .status-widget .icon-container > span:not(:last-child) {
     margin-right: 10px;
 }
@@ -674,11 +678,11 @@ select {
     position: relative;
 }
 
-#reviewer-container {
+.reviewer-container {
     margin-bottom: 6px;
 }
 
-#reviewer-container > *, #change-container {
+.reviewer-container > *, #change-container {
     font-size: 14px;
 }
 

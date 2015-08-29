@@ -24,7 +24,7 @@ define([
             me.query('#review-title').on('keyup', me.validateAll.bind(me));
 
             me.changesControl.appendTo(me.el.querySelector('#change-container'));
-            me.emailControl.prependTo(me.el.querySelector('.new-review-right'));
+            me.emailControl.insertAfter(me.el.querySelector('.new-review-right > label'));
 
             EventBus.on('change_node_selected', me.validateAll, me);
 			EventBus.on('reviewer_add_remove', me.validateAll, me);
@@ -54,7 +54,7 @@ define([
 
         validateAll: function () {
             var isValid = this.changesControl.getChanges().length > 0 && (this.inIterationMode
-                  || (this.validateControl('#review-title', 4) && this.validateControl('#reviewer-container', 1)));
+                  || (this.validateControl('#review-title', 4) && this.validateControl('.reviewer-container', 1)));
 
             this.el.querySelector('button.save').classList.toggle('disabled', !isValid);
             return isValid;

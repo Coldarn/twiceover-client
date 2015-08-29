@@ -118,6 +118,7 @@ define([
         },
 
         handleEmailTextEntry: function (event) {
+			this.checkInputValid();
             if (this.entryEl.value.length > 1) {
                 this.loadSuggestions();
             } else {
@@ -127,7 +128,7 @@ define([
 
         handleAddReviewer: function() {
             const me = this,
-                reviewerListEl = this.el.querySelector('#reviewer-container');
+                reviewerListEl = this.el.querySelector('.reviewer-container');
 
             if (me.entryEl.value.length < 2 || !me.checkInputValid()) {
                 return;

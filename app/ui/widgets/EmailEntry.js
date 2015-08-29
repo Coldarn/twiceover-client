@@ -138,18 +138,25 @@ define([
             itemEl.appendTo(reviewerListEl);
             itemEl.query('.fa').on('click', function () { itemEl.destroy(); });
 
+			if (me.addCallback) {
+				me.addCallback(me.entryEl.value.trim());
+			}
+
             reviewerListEl.style.display = null;
             me.entryEl.value = '';
             me.clearSuggestions();
             me.checkInputValid();
             me.entryEl.focus();
 
-			EventBus.fire('reviewer_add_remove');
+			if (!me.addCallback) {
+				EventBus.fire('reviewer_add_remove');
+			}
         }
     };
 
-	return function EmailEntry() {
+	return function EmailEntry(addCallback) {
 		var obj = Object.create(proto);
+		obj.addCallback = addCallback;
         obj.setHtml('text!partials/EmailEntry.html');
 		return obj;
 	};

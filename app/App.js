@@ -165,6 +165,9 @@ define([
                 case 'changeReviewerStatus':
                     EventBus.fire('change_reviewer_status', event);
                     break;
+                case 'addReviewer':
+                    EventBus.fire('add_reviewer', event);
+                    break;
             }
         });
     }

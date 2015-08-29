@@ -101,6 +101,18 @@ define([
             };
         },
 
+        addReviewer: function (reviewer) {
+            reviewer = User(reviewer);
+            if (!this.reviewers.some(function (r) { return reviewer.is(r); })) {
+                this.eventLog.add({
+                    type: 'addReviewer',
+                    data: {
+                        reviewer: reviewer.toString()
+                    }
+                })
+            }
+        },
+
         setReviewerStatus: function (reviewer, status, label) {
             if (allowedReviewerStatuses.indexOf(status) < 0) {
                 throw new Error('Given review status is not valid: ' + status);
@@ -166,6 +178,7 @@ define([
                     this.statusLabel = event.data.label;
                     break;
                 }
+                case 'addReviewer':
                 case 'reviewerJoined': {
                     const reviewer = User(event.data.reviewer);
                     if (!this.reviewers.some(function (r) { return reviewer.is(r); })) {

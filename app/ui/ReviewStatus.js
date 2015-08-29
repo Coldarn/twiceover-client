@@ -58,7 +58,7 @@ define([
 
 
         handleActiveReviewChanged: function () {
-            this.buildUI();
+            me.buildUI();
         },
 
         handleActiveEntryChanged: function(path, leftEntry, rightEntry) {
@@ -66,17 +66,22 @@ define([
         },
 
         handleStatusChanged: function (event) {
-            this.buildUI();
+            me.buildUI();
+        },
+
+        handleAddReviewer: function (reviewer) {
+            App.review.addReviewer(reviewer);
         }
     };
 
-    me.emailEntry = EmailEntry();
+    me.emailEntry = EmailEntry(me.handleAddReviewer);
     me.setEl(document.querySelector('.review-status'));
 
     EventBus.on('active_review_changed', me.handleActiveReviewChanged, me);
     EventBus.on('active_entry_changed', me.handleActiveEntryChanged, me);
     EventBus.on('change_review_status', me.handleStatusChanged, me);
     EventBus.on('change_reviewer_status', me.handleStatusChanged, me);
+    EventBus.on('add_reviewer', me.handleStatusChanged, me);
 
     return me;
 });

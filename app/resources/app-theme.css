@@ -506,6 +506,9 @@ comment > iterations > *.selected {
 .review-status .email-entry input {
     background: #10161a;
 }
+.review-status .email-entry .reviewer-container {
+    display: none;
+}
 
 .status-widget.editable {
     padding: 3px;
@@ -681,22 +684,18 @@ select {
 .reviewer-container {
     margin-bottom: 6px;
 }
-
 .reviewer-container > *, #change-container {
     font-size: 14px;
 }
-
 .email > span {
     line-height: 20px;
 }
-
 .email > .fa {
     display: inline-block;
     color: #c00;
     padding: 0 8px;
     cursor: pointer;
 }
-
 .email-suggestions {
     position: absolute;
     left: 0;
@@ -704,12 +703,10 @@ select {
     background: #666;
     box-shadow: 0 1px 6px black;
 }
-
 .email-suggestions > div {
     padding: 2px 6px;
     cursor: pointer;
 }
-
 .email-suggestions > div:hover, .email-suggestions > div.focus {
     background: #484;
 }
@@ -717,7 +714,6 @@ select {
 #change-container {
     margin-top: 1px;
 }
-
 #change-container .content {
     overflow: auto;
     box-sizing: border-box;

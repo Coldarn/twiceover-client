@@ -13,11 +13,13 @@ define([
         populate: function () {
             var iterationHtml = App.review.iterations.map(function (it, index) {
                 const isActive = it === App.leftIteration || it === App.rightIteration;
-                return `<div class="iteration ${isActive ? 'active' : ''}" data-index="${index}">${index}</div>`;
+                const tooltip = index === 0 ? 'Unmodified Source' : 'Iteration ' + index;
+                return `<div class="iteration ${isActive ? 'active' : ''}"
+                    title="${tooltip}" data-index="${index}">${index}</div>`;
             }).join('');
 
             const addIteration = App.user.is(App.review.owningUser)
-                ? `<div class="iteration new-iteration">+</div>` : '';
+                ? `<div class="iteration new-iteration" title="Add Iteration">+</div>` : '';
 
             this.el.setAttribute('class', 'menu-bar ' + App.review.status);
             this.el.innerHTML = `<span class="home-button">Twice-Over</span> ${iterationHtml}${addIteration}`;

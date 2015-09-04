@@ -13,7 +13,7 @@ define([
         populate: function () {
             var iterationHtml = App.review.iterations.map(function (it, index) {
                 const isActive = it === App.leftIteration || it === App.rightIteration;
-                const tooltip = index === 0 ? 'Unmodified Source' : 'Iteration ' + index;
+                const tooltip = index === 0 ? 'Unmodified Code' : 'Iteration ' + index;
                 return `<div class="iteration ${isActive ? 'active' : ''}"
                     title="${tooltip}" data-index="${index}">${index}</div>`;
             }).join('');

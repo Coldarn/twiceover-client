@@ -55,7 +55,7 @@ define([
                 const content = c.user
                     ? `<img src="${c.user.getAvatarUrl(28)}" />`
                     : '0';
-                return `<button title="${c.user || 'Base Code'}" data-index="${index}">${content}</button>`;
+                return `<button title="${c.user || 'Unmodified Code'}" data-index="${index}">${content}</button>`;
             }).join('') + `<button title="Add Comment">+</button>`;
             this.iterations.queryAll('button')
                 .on('click', this.handleIterationClick.bind(this))

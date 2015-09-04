@@ -46,7 +46,7 @@ define([
             return reviews.map(function (review) {
                 return `<div class="review-link status-${review.status}" data-review-index="${review.ix}">
                     <span>${Util.escapeHtml(review.title)}</span>
-                    <span class="review-time">${moment(review.created).calendar()}<span>
+                    <span class="review-time">${moment(review.whenCreated).calendar()}<span>
                 </div>`;
             }).join('');
         },

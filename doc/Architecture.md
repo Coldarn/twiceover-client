@@ -15,4 +15,8 @@ The server codebase is by far the smaller of the two. Currently it is composed o
  - **Index (Web Server):** Exposes REST APIs for getting code reviews in a few different ways and responds to WebSocket connections by constructing Review instances.
  - **Reviews:** Provides an API for reading and writing review metadata such as owner, title, description, status, and reviewers and their status.
  - **Review:** Loads and saves review log events and merges and broadcasts events between clients in realtime.
- - **Notification:** Formats and sends emails when key review events occur, such as on new review creation, review/reviewer statuses changes, and when iterations are added.
+ - **Notification:** Formats and sends emails when key review events occur, such as on new review creation, review/reviewer status changes, and when iterations are added.
+
+## Client
+ 
+The Twice-Over client is where most of the magic happens.

@@ -416,17 +416,17 @@
        id="text3843-1"
        y="272.36218"
        x="110.00001"
-       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Segoe UI;-inkscape-font-specification:Segoe UI;font-stretch:normal;font-variant:normal"
        xml:space="preserve"
        inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
-         style="font-size:14px;text-align:center;text-anchor:middle"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Segoe UI;font-family:Segoe UI;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
          y="272.36218"
          x="110.00001"
          sodipodi:role="line"
          id="tspan3851-1">WebSockets (2-way)</tspan><tspan
-         style="font-size:14px;text-align:center;text-anchor:middle"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Segoe UI;font-family:Segoe UI;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
          y="289.86218"
          x="110.00001"
          sodipodi:role="line"
@@ -453,12 +453,12 @@
          sodipodi:role="line"
          x="270"
          y="272.36218"
-         style="font-size:14px;text-align:center;text-anchor:middle"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Segoe UI;font-family:Segoe UI;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
          id="tspan4511">HTTP</tspan><tspan
          sodipodi:role="line"
          x="270"
          y="289.86218"
-         style="font-size:14px;text-align:center;text-anchor:middle"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Segoe UI;font-family:Segoe UI;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
          id="tspan4515">get review list</tspan></text>
   </g>
 </svg>

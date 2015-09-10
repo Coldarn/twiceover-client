@@ -485,10 +485,13 @@ comment > iterations > *.selected {
 .review-status {
     display: flex;
     flex: 1;
-    flex-direction: row;
-    padding: 0 10px 10px 10px;
+    flex-direction: column;
+    padding: 0 10px 0 10px;
 }
-.review-status-left {
+.review-status-body {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
 }
 .review-status-left {
     overflow: auto;
@@ -508,6 +511,19 @@ comment > iterations > *.selected {
 }
 .review-status .email-entry .reviewer-container {
     display: none;
+}
+.review-status-footer {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 5px 0;
+}
+.review-status-footer > input {
+    flex: 1;
+    margin: 14px 0 5px 10px;
+    border: none;
+    color: #ddd;
+    background: transparent;
+    cursor: pointer;
 }
 
 .status-widget.editable {

@@ -12,7 +12,7 @@ define([
 
     var App = {
 
-        TEST_MODE: true,        // Provides pre-canned differences for quick testing
+        TEST_MODE: false,        // Provides pre-canned differences for quick testing
 
         user: null,             // Filled in on startup by querying the local system
         review: null,           // Active review
@@ -26,6 +26,7 @@ define([
 
         status: null,           // Manages local persistence of review status UI state
         remote: null,           // Manages server communication of review state
+        serverUrl: null,        // URL to the twiceover-server
 
         loadReview: function (logEvents) {
             const review = Review.load(EventLog.load(App.user, logEvents));
@@ -48,6 +49,7 @@ define([
             setTimeout(function () {
                 EventBus.fire('active_review_changed', review);
                 require('ipc').send('set-window-title', review.title);
+                document.getElementById('review-link-input').value = `twiceover://${App.serverUrl}/api/review/${App.review.id}`;
             });
         },
 

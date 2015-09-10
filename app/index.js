@@ -46,7 +46,7 @@ requirejs([
 			const urlParts = reviewToLoad.split('/');
 			App.serverUrl = urlParts[2];
 			fs.writeFile('server.json', JSON.stringify({ url: App.serverUrl }, null, 4));
-			reviewToLoad = Number(urlParts[urlParts.length - 1]);
+			reviewToLoad = urlParts[urlParts.length - 1];
 		} else {
 			try {
 				App.serverUrl = JSON.parse(fs.readFileSync('server.json')).url;

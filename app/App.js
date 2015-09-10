@@ -47,6 +47,7 @@ define([
             App.remote.setReview(review);
             setTimeout(function () {
                 EventBus.fire('active_review_changed', review);
+                require('ipc').send('set-window-title', review.title);
             });
         },
 

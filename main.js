@@ -10,7 +10,7 @@ if (process.argv.indexOf('--squirrel-install') >= 0 || process.argv.indexOf( '--
     // Create shortcuts so the user can find us again
     const updatePath = path.join(path.dirname(process.execPath), '..', 'Update.exe');
     child_process.exec(`"${updatePath}" --createShortcut "${process.execPath}"`);
-    
+
     // Register the twiceover:// protocol with Windows
     const regPath = path.join(__dirname, 'install.reg');
     const escapedExePath = process.execPath.replace(/\\/g, '\\\\');
@@ -19,11 +19,11 @@ if (process.argv.indexOf('--squirrel-install') >= 0 || process.argv.indexOf( '--
     app.quit();
 } else if (process.argv.indexOf('--squirrel-uninstall') >= 0 || process.argv.indexOf( '--squirrel-obsolete') >= 0) {
     const child_process = require('child_process');
-    
+
     // Remove the shortcuts
     const updatePath = path.join(path.dirname(process.execPath), '..', 'Update.exe');
     child_process.exec(`"${updatePath}" --removeShortcut "${process.execPath}"`);
-    
+
     // Remove protocol registration
     child_process.execSync(`regedit.exe -s "${path.join(__dirname, 'uninstall.reg')}"`);
     app.quit();
@@ -39,6 +39,9 @@ const ipc = require('ipc');
 ipc.on('get-review', function (event) {
     const lastArg = process.argv[process.argv.length - 1];
     event.returnValue = lastArg && lastArg.toLowerCase().startsWith('twiceover://') ? lastArg : null;
+});
+ipc.on('set-window-title', function (event, title) {
+    mainWindow.setTitle(title || 'Twice-Over');
 });
 ipc.on('reload-window', function (event) {
     event.sender.reloadIgnoringCache();

@@ -22,3 +22,11 @@ The server codebase is by far the smaller of the two. Currently it is composed o
 The Twice-Over client is where most of the magic happens. The Twice-Over client is implementented in JavaScript using [Electron](http://electron.atom.io/), the same toolkit used by the Atom and Visual Studio Code text editors.
 
 ![Client Architecture](https://cdn.rawgit.com/Coldarn/twiceover-client/master/doc/Client Architecture.svg?1)
+
+There are a few notable features in the client codebase:
+
+ - **It follows the [FLUX architecture](https://facebook.github.io/flux/)** for simple UI updating. (See EventBus above)
+ - **Review data and state are persisted using the [Event Sourcing Pattern](https://msdn.microsoft.com/en-us/library/dn589792.aspx)**, facilitating simple event broadcast & synchronization, persistence, and history. (See EventLog above)
+ - The materialized view of and mutation APIs for the review data are managed via a combined **Review Object Model**.
+ - **There are no user accounts.** User authentication and email autocomplete are instead handled by an external Active Directory client [*EmailChecker*](https://github.com/Coldarn/twiceover-emailchecker).
+ - **There is no UI framework used here.** The project leverages ES6 template strings and a very simple [*Component*](https://github.com/Coldarn/twiceover-client/blob/master/app/ui/util/Component.js) class to provide separation of concerns vaguely similar to Angular or ExtJS and a tiny [*ElementProxy*](https://github.com/Coldarn/twiceover-client/blob/master/app/ui/util/ElementProxy.js) class providing easy event binding and element selection. Modern browser APIs makes UI frameworks unnecessary for smaller projects IMO.

@@ -19,4 +19,6 @@ The server codebase is by far the smaller of the two. Currently it is composed o
 
 ## Client
  
-The Twice-Over client is where most of the magic happens.
+The Twice-Over client is where most of the magic happens. The Twice-Over client is implementented in JavaScript using [Electron](http://electron.atom.io/), the same toolkit used by the Atom and Visual Studio Code text editors.
+
+![Client Architecture](https://cdn.rawgit.com/Coldarn/twiceover-client/master/doc/Client Architecture.svg?1)

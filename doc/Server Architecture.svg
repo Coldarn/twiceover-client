@@ -1,0 +1,1011 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="670.5"
+   height="518.04297"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Server Architecture.svg"
+   inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient5195">
+      <stop
+         style="stop-color:#79b3ef;stop-opacity:1;"
+         offset="0"
+         id="stop5197" />
+      <stop
+         style="stop-color:#79b3ef;stop-opacity:0.21428572;"
+         offset="1"
+         id="stop5199" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5187">
+      <stop
+         style="stop-color:#8d8889;stop-opacity:0.83035713;"
+         offset="0"
+         id="stop5189" />
+      <stop
+         style="stop-color:#5288e8;stop-opacity:0;"
+         offset="1"
+         id="stop5191" />
+    </linearGradient>
+    <marker
+       inkscape:stockid="EmptyTriangleInL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyTriangleInL"
+       style="overflow:visible">
+      <path
+         id="path4340"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,4.8,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyTriangleOutL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyTriangleOutL"
+       style="overflow:visible">
+      <path
+         id="path4349"
+         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,-4.8,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyDiamondLstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyDiamondLstart"
+       style="overflow:visible">
+      <path
+         id="path4304"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,5.6,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyDiamondLend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyDiamondLend"
+       style="overflow:visible">
+      <path
+         id="path4313"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,-5.6,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path3873"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible">
+      <path
+         id="path3876"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-1"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3876-7"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-1-1"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3876-7-7"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3508"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3510"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3512"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3514"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3516"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3518"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker3520"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3522"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-1-17"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3876-7-4"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask5630">
+      <path
+         style="fill:#ffff98;fill-opacity:1;stroke:none"
+         d="m 425,302.36218 0,-30 30,0 -30,30 z"
+         id="path5632"
+         inkscape:connector-curvature="0" />
+    </mask>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2"
+     inkscape:cx="317.33963"
+     inkscape:cy="277.7379"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:snap-global="true"
+     inkscape:snap-bbox="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1378"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-nodes="true"
+     inkscape:bbox-paths="false"
+     inkscape:object-nodes="true"
+     fit-margin-top="10"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="10">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2985"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="-379.5px"
+       originy="-399.5px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-379.5,-134.81921)">
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       x="379.16177"
+       y="416.31964"
+       id="text3324"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3326"
+         x="379.16177"
+         y="416.31964" /></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3350"
+       y="162.36218"
+       x="720"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       xml:space="preserve"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Data Forking in the Domain.png"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-ydpi="95.969734"><tspan
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Arial;-inkscape-font-specification:Arial"
+         y="162.36218"
+         x="720"
+         id="tspan3352"
+         sodipodi:role="line">Twice-Over Server</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3725"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       transform="translate(-20,62.36218)"><flowRegion
+         id="flowRegion3727"><rect
+           id="rect3729"
+           width="1681.4999"
+           height="589.72705"
+           x="-52.325901"
+           y="-65.003288"
+           style="-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal" /></flowRegion><flowPara
+         id="flowPara3731" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3733"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       transform="translate(0,62.36218)"><flowRegion
+         id="flowRegion3735"><rect
+           id="rect3737"
+           width="154.5"
+           height="194.5"
+           x="1447"
+           y="126.50002"
+           style="-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal" /></flowRegion><flowPara
+         id="flowPara3739" /></flowRoot>    <g
+       id="g4529"
+       style="fill:#ffb2af;fill-opacity:0.75661376000000002"
+       transform="translate(429,685)"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-ydpi="95.969734">
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         style="fill:#ffdc98;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         id="rect4531"
+         width="160"
+         height="44.999996"
+         x="81"
+         y="-297.63782"
+         ry="9.5" />
+      <text
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         xml:space="preserve"
+         style="font-size:40px;font-style:oblique;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;stroke:none;font-family:Sans;-inkscape-font-specification:Segoe UI Oblique"
+         x="160.5"
+         y="-268.13782"
+         id="text4533"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4535"
+           x="160.5"
+           y="-268.13782"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;font-family:Arial;-inkscape-font-specification:Arial">Review</tspan></text>
+    </g>
+    <g
+       inkscape:export-ydpi="95.969734"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       transform="translate(609,490)"
+       style="fill:#ffb2af;fill-opacity:0.75661376000000002"
+       id="g4539">
+      <rect
+         ry="9.5"
+         y="-297.63782"
+         x="61"
+         height="44.999996"
+         width="200"
+         id="rect4541"
+         style="fill:#ffdc98;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4543"
+         y="-268.13782"
+         x="160.5"
+         style="font-size:40px;font-style:oblique;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;stroke:none;font-family:Sans;-inkscape-font-specification:Segoe UI Oblique"
+         xml:space="preserve"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"><tspan
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;font-family:Arial;-inkscape-font-specification:Arial"
+           y="-268.13782"
+           x="160.5"
+           id="tspan4545"
+           sodipodi:role="line">Index (Web Server)</tspan></text>
+    </g>
+    <g
+       inkscape:export-ydpi="95.969734"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       transform="translate(749,595)"
+       style="fill:#ffb2af;fill-opacity:0.75661376000000002"
+       id="g4555">
+      <rect
+         ry="9.5"
+         y="-297.63782"
+         x="81"
+         height="44.999996"
+         width="160"
+         id="rect4557"
+         style="fill:#ffdc98;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4559"
+         y="-268.13782"
+         x="160.5"
+         style="font-size:40px;font-style:oblique;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;stroke:none;font-family:Sans;-inkscape-font-specification:Segoe UI Oblique"
+         xml:space="preserve"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"><tspan
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;font-family:Arial;-inkscape-font-specification:Arial"
+           y="-268.13782"
+           x="160.5"
+           id="tspan4561"
+           sodipodi:role="line">Reviews</tspan></text>
+    </g>
+    <g
+       id="g4563"
+       transform="translate(271.38379,905.5)"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-ydpi="95.969734">
+      <rect
+         ry="9.9999971"
+         y="-408.13782"
+         x="118.61621"
+         height="45.000004"
+         width="180"
+         id="rect4565"
+         style="fill:#79b3ef;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         rx="10" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4567"
+         y="-377.63782"
+         x="209.11621"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"><tspan
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial"
+           y="-377.63782"
+           x="209.11621"
+           sodipodi:role="line"
+           id="tspan4571">Event Log Database</tspan></text>
+    </g>
+    <path
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4573"
+       d="m 580,431.86218 -80,65"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend-1)" />
+    <text
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       x="465"
+       y="456.86218"
+       id="text4575"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan4579"
+         sodipodi:role="line"
+         x="465"
+         y="456.86218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">reads/writes events</tspan><tspan
+         sodipodi:role="line"
+         x="465"
+         y="474.36218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         id="tspan4583">to disk (SQLite)</tspan></text>
+    <g
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       id="g4585"
+       transform="translate(385.88379,1005)">
+      <rect
+         ry="9.5"
+         y="-427.63782"
+         x="114.11621"
+         height="44.999996"
+         width="180"
+         id="rect4587"
+         style="fill:#b7e7bc;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4589"
+         y="-397.63782"
+         x="204.11621"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"><tspan
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Segoe UI;-inkscape-font-specification:Segoe UI"
+           y="-397.63782"
+           x="204.11621"
+           id="tspan4591"
+           sodipodi:role="line">twiceover-client</tspan></text>
+    </g>
+    <g
+       transform="translate(400.88379,1015)"
+       id="g4597"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         style="fill:#b7e7bc;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         id="rect4599"
+         width="180"
+         height="44.999996"
+         x="114.11621"
+         y="-427.63782"
+         ry="9.5" />
+      <text
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="204.11621"
+         y="-397.63782"
+         id="text4601"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan4603"
+           x="204.11621"
+           y="-397.63782"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Segoe UI;-inkscape-font-specification:Segoe UI">twiceover-client</tspan></text>
+    </g>
+    <g
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       id="g4605"
+       transform="translate(415.88379,1025)">
+      <rect
+         ry="9.5"
+         y="-427.63782"
+         x="114.11621"
+         height="44.999996"
+         width="180"
+         id="rect4607"
+         style="fill:#b7e7bc;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4609"
+         y="-397.63782"
+         x="204.11621"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"><tspan
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;font-family:Arial;-inkscape-font-specification:Arial"
+           y="-397.63782"
+           x="204.11621"
+           id="tspan4611"
+           sodipodi:role="line">Twice-Over Clients</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-1)"
+       d="m 605,431.86218 -15,145"
+       id="path4613"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4615"
+       d="m 605,431.86218 0,155"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend-1)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-1)"
+       d="m 605,431.86218 15,165"
+       id="path4617"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4619"
+       y="492.36218"
+       x="660"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       xml:space="preserve"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         id="tspan4623"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="492.36218"
+         x="660"
+         sodipodi:role="line">(WebSockets)</tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="509.86218"
+         x="660"
+         sodipodi:role="line"
+         id="tspan5591">sync and</tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="527.36218"
+         x="660"
+         sodipodi:role="line"
+         id="tspan4629">rebroadcast</tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="544.86218"
+         x="660"
+         sodipodi:role="line"
+         id="tspan4627">log events</tspan></text>
+    <g
+       inkscape:export-ydpi="95.969734"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       transform="translate(740.88379,815)"
+       id="g5043">
+      <rect
+         rx="10"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         style="fill:#79b3ef;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         id="rect5045"
+         width="180"
+         height="45.000004"
+         x="118.61621"
+         y="-408.13782"
+         ry="9.9999971" />
+      <text
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         x="209.11621"
+         y="-377.63782"
+         id="text5047"
+         sodipodi:linespacing="125%"><tspan
+           id="tspan5049"
+           sodipodi:role="line"
+           x="209.11621"
+           y="-377.63782"
+           style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;font-family:Arial;-inkscape-font-specification:Arial">Review Summary DB</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend-1)"
+       d="m 890,341.86218 0,65.5"
+       id="path5051"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5053"
+       y="362.36218"
+       x="950"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       xml:space="preserve"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="362.36218"
+         x="950"
+         sodipodi:role="line"
+         id="tspan5065">tracks &amp; exposes</tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="379.86218"
+         x="951.94141"
+         sodipodi:role="line"
+         id="tspan5075">review and </tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="397.36218"
+         x="950"
+         sodipodi:role="line"
+         id="tspan5069">reviewer state</tspan></text>
+    <path
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path5079"
+       d="m 810,237.36218 40,60"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-1)" />
+    <text
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       x="890"
+       y="262.36218"
+       id="text5081"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5087"
+         sodipodi:role="line"
+         x="890"
+         y="262.36218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">retrieves review</tspan><tspan
+         sodipodi:role="line"
+         x="890"
+         y="279.86218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         id="tspan5110">summary data</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-1)"
+       d="m 670,407.36218 160,-85"
+       id="path5089"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5091"
+       y="382.36218"
+       x="785"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       xml:space="preserve"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         id="tspan5095"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="382.36218"
+         x="785"
+         sodipodi:role="line">pushes review</tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="399.86218"
+         x="785"
+         sodipodi:role="line"
+         id="tspan5099">summary updates</tspan></text>
+    <g
+       id="g5112"
+       style="fill:#ffb2af;fill-opacity:0.75661376000000002"
+       transform="translate(469,595)"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-ydpi="95.969734">
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         style="fill:#ffb895;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         id="rect5114"
+         width="160"
+         height="44.999996"
+         x="81"
+         y="-297.63782"
+         ry="9.5" />
+      <text
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         xml:space="preserve"
+         style="font-size:40px;font-style:oblique;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;stroke:none;font-family:Sans;-inkscape-font-specification:Segoe UI Oblique"
+         x="160.5"
+         y="-268.13782"
+         id="text5116"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan5118"
+           x="160.5"
+           y="-268.13782"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;font-family:Arial;-inkscape-font-specification:Arial">Web Browser</tspan></text>
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:none"
+       d="m 720,236.86218 -35,60"
+       id="path5120"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5122"
+       y="261.86218"
+       x="650"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       xml:space="preserve"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         id="tspan5126"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="261.86218"
+         x="650"
+         sodipodi:role="line">requests</tspan><tspan
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="279.36218"
+         x="650"
+         sodipodi:role="line"
+         id="tspan5542">review lists</tspan></text>
+    <g
+       id="g5550"
+       style="fill:#ffb2af;fill-opacity:0.75661376000000002"
+       transform="translate(674,810)"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Pull Data from SQL.png"
+       inkscape:export-xdpi="95.969734"
+       inkscape:export-ydpi="95.969734">
+      <rect
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         style="fill:#ffdc98;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+         id="rect5552"
+         width="160"
+         height="44.999996"
+         x="81"
+         y="-297.63782"
+         ry="9.5" />
+      <text
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+         xml:space="preserve"
+         style="font-size:40px;font-style:oblique;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;stroke:none;font-family:Sans;-inkscape-font-specification:Segoe UI Oblique"
+         x="160.5"
+         y="-268.13782"
+         id="text5554"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan5556"
+           x="160.5"
+           y="-268.13782"
+           style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:0.75661376000000002;font-family:Arial;-inkscape-font-specification:Arial">Notifications</tspan></text>
+    </g>
+    <path
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path5564"
+       d="m 670,417.36218 110,95"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:none;marker-end:url(#Arrow1Lend-1)" />
+    <text
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       x="770"
+       y="447.36218"
+       id="text5566"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5572"
+         sodipodi:role="line"
+         x="770"
+         y="447.36218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">triggers emails</tspan><tspan
+         sodipodi:role="line"
+         x="770"
+         y="464.86218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         id="tspan5579">for certain</tspan><tspan
+         sodipodi:role="line"
+         x="770"
+         y="482.36218"
+         style="font-size:14px;text-align:center;text-anchor:middle;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         id="tspan5581">events</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+       style="fill:#ffdc98;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect5595"
+       width="20.00001"
+       height="20.000015"
+       x="410"
+       y="212.36218"
+       ry="4.9999976" />
+    <text
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       x="435"
+       y="227.36218"
+       id="text5602"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5606"
+         sodipodi:role="line"
+         x="435"
+         y="227.36218"
+         style="font-size:14px;text-align:start;text-anchor:start;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">Server Classes</tspan></text>
+    <rect
+       ry="4.9999976"
+       y="262.36218"
+       x="410"
+       height="20.000015"
+       width="20.00001"
+       id="rect5610"
+       style="fill:#b7e7bc;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text5612"
+       y="277.36218"
+       x="435"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       xml:space="preserve"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         style="font-size:14px;text-align:start;text-anchor:start;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         y="277.36218"
+         x="435"
+         sodipodi:role="line"
+         id="tspan5614">Client Endpoints</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+       style="fill:#79b3ef;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect5616"
+       width="20.00001"
+       height="20.000015"
+       x="410"
+       y="237.36218"
+       ry="4.9999976" />
+    <text
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       inkscape:export-filename="\\seadevfs01\dev_consultants\carnold\My Documents\Diagrams\Staged Messaging.png"
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+       x="435"
+       y="252.36218"
+       id="text5618"
+       sodipodi:linespacing="125%"><tspan
+         id="tspan5620"
+         sodipodi:role="line"
+         x="435"
+         y="252.36218"
+         style="font-size:14px;text-align:start;text-anchor:start;-inkscape-font-specification:Arial;font-family:Arial;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal">Disk Files</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\carnold\OneDrive\Work\Resultset Communication for Lhotse.png"
+       style="fill:#ffb895;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       id="rect5622"
+       width="20.00001"
+       height="20.000015"
+       x="430"
+       y="277.36218"
+       ry="4.9999976"
+       mask="url(#mask5630)"
+       transform="translate(-20.00002,-15.000009)" />
+  </g>
+</svg>

@@ -27,6 +27,7 @@ define([
             this.iconEl = this.query('.icon-container');
             this.commentEl = this.query('.comment-container')
                 .attr('contenteditable', App.user.is(this.user))
+                .on('keydown', this.handleKeyDown.bind(this))
                 .on('blur', this.handleCommentBlur.bind(this));
             PasteFilter(this.commentEl);
             this.commentEl.text(Util.escapeHtml(this.comment));
@@ -79,6 +80,12 @@ define([
         },
 
 
+
+        handleKeyDown: function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                this.commentEl[0].blur();
+            }
+        },
 
         handleStatusReset: function (event) {
             this.setStatus('active', true);

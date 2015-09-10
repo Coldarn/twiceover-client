@@ -6,7 +6,7 @@ At a high level, Twice-Over utilizes a client/server architecture. The client su
 
 ## Server
 
-While both client and server are implemented in JavaScript, they are architecturally and functionally quite different and share little code.
+The Twice-Over server is written as a nodejs module. *(Note: I would have preferred to use iojs, but node-sqlite3 doesn't work with it currently.)* Though it is implemented in primarily JavaScript like the client, they are architecturally and functionally quite different and share little code.
 
 ![Server Architecture](https://cdn.rawgit.com/Coldarn/twiceover-client/master/doc/Server Architecture.svg?1)
 

@@ -817,12 +817,20 @@ select {
     color: white;
 }
 
-.review-link.status-active:before {
+.review-link:before {
     position: absolute;
-    content: "\f096";
     left: 3px;
     top: 4px;
     font-family: "FontAwesome";
+}
+.review-link.status-active:before {
+    content: "\f096";
+}
+.review-link.status-complete:before {
+    content: "\f14a";
+}
+.review-link.status-aborted:before {
+    content: "\f146";
 }
 
 .review-link > span:first-child {

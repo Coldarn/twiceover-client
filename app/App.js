@@ -31,7 +31,6 @@ define([
         loadReview: function (logEvents) {
             const review = Review.load(EventLog.load(App.user, logEvents));
 
-            review.eventLog.subscribe(handleReviewEvent);
             App.setActiveReview(review);
             App.setActiveIterations(0, review.iterations.length - 1);
 
@@ -46,6 +45,7 @@ define([
             App.review = review;
             App.status = ReviewStatus(review.id);
             App.remote.setReview(review);
+            review.eventLog.subscribe(handleReviewEvent);
             setTimeout(function () {
                 EventBus.fire('active_review_changed', review);
                 require('ipc').send('set-window-title', review.title);

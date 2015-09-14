@@ -96,8 +96,8 @@ define([
         getStatus: function () {
             return {
                 user: this.owningUser,
-                status: this.status,
-                label: this.statusLabel
+                status: this.status || 'active',
+                label: this.statusLabel || ''
             };
         },
 

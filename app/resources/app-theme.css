@@ -519,7 +519,7 @@ comment > iterations > *.selected {
 }
 .review-status-footer > input {
     flex: 1;
-    margin: 14px 0 5px 10px;
+    margin: 14px 0 5px 16px;
     border: none;
     color: #ddd;
     background: transparent;

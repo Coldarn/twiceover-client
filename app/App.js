@@ -49,7 +49,7 @@ define([
             setTimeout(function () {
                 EventBus.fire('active_review_changed', review);
                 require('ipc').send('set-window-title', review.title);
-                document.getElementById('review-link-input').value = `twiceover://${App.serverUrl}/api/review/${App.review.id}`;
+                document.getElementById('review-link-input').value = `twiceover://${App.serverUrl}/review/${App.review.id}`;
             });
         },
 

@@ -24,7 +24,7 @@ define([
             me.query('#review-title').on('keyup', me.validateAll.bind(me));
 
             me.changesControl.appendTo(me.el.querySelector('#change-container'));
-            me.emailControl.insertAfter(me.el.querySelector('.new-review-right > label'));
+            me.emailControl.insertAfter(me.el.querySelector('.new-review-right > label.reviewers'));
 
             EventBus.on('change_node_selected', me.validateAll, me);
 			EventBus.on('reviewer_add_remove', me.validateAll, me);

@@ -3,8 +3,10 @@ define([
 	'ui/util/Component',
 	'ui/util/ElementProxy',
 	'util/EventBus',
+	'util/SavedEmails',
+	'om/User',
     'integrations/EmailChecker'
-], function (Util, Component, ElementProxy, EventBus, EmailChecker) {
+], function (Util, Component, ElementProxy, EventBus, SavedEmails, User, EmailChecker) {
 	'use strict';
 
 	const proto = {
@@ -48,7 +50,11 @@ define([
             }
 
             me.lastCheckValue = checkValue;
-            me.pendingSuggestions = EmailChecker.getSuggestions(checkValue).then(function (suggestions) {
+			me.pendingSuggestions = EmailChecker.getSuggestions(checkValue).then(function (suggestions) {
+				return SavedEmails.findMatches(checkValue, suggestions.map(User)).slice(0, 20);
+			}, function (err) {
+				return SavedEmails.findMatches(checkValue, []).slice(0, 20);
+			}).then(function (suggestions) {
                 me.pendingSuggestions = null;
 
                 if (me.entryEl.value.length < 2) {
@@ -56,9 +62,8 @@ define([
                     return;
                 }
 
-                suggestions = suggestions.slice(0, 20);
                 me.suggestionsEl.innerHTML = suggestions.map(function (email) {
-                    return `<div>${email}</div>`;
+                    return `<div>${Util.escapeHtml(email.toString())}</div>`;
                 }).join('');
                 me.suggestionsEl.style.display = null;
 
@@ -93,7 +98,7 @@ define([
                     if (!this.suggestionsEl.style.display && focusedSuggestionEl) {
                         this.selectSuggestion(focusedSuggestionEl.innerText);
                     } else {
-                        this.handleAddReviewer();
+                        this.handleAddReviewer(true);
                     }
                     break;
                 case 38:    // Up
@@ -126,13 +131,17 @@ define([
             }
         },
 
-        handleAddReviewer: function() {
+        handleAddReviewer: function(wasNotSuggestion) {
             const me = this,
                 reviewerListEl = this.el.querySelector('.reviewer-container');
 
             if (me.entryEl.value.length < 2 || !me.checkInputValid()) {
                 return;
             }
+
+			if (wasNotSuggestion) {
+				SavedEmails.add(me.entryEl.value);
+			}
 
             const itemEl = Component(`<div class="email"><span>${Util.escapeHtml(me.entryEl.value)}</span><span class="fa fa-times"></span></div>`);
             itemEl.appendTo(reviewerListEl);

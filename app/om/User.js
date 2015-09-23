@@ -34,7 +34,7 @@ define([], function () {
             return displayName;
         } else if (!displayName || typeof displayName !== 'string') {
             throw new Error('Email address string is required at minimum to construct a user');
-        } else  if (displayName && email) {
+        } else  if (displayName && typeof email === 'string') {
             obj.name = displayName.trim();
             obj.email = email.trim();
         } else if (displayName.indexOf('@') >= 0) {

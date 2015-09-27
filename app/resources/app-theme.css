@@ -307,7 +307,7 @@ body {
 }
 .code-pane .scroll-indicators {
     position: absolute;
-    width: 12px;
+    width: 13px;
     height: 100%;
     right: 0;
     pointer-events: none;

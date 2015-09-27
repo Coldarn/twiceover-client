@@ -150,6 +150,7 @@ define([
             const lineHeight = self.codeEl.lastChild.offsetHeight / self.highlightBlocks.length;
             const scaleHeight = Math.min(1, self.codeEl.offsetHeight / self.codeEl.scrollHeight);
             const topOffset = self.codeEl.lastChild.offsetTop;
+            const lineScale = Math.max(scaleHeight * lineHeight, 3);
 
             // Don't refresh if no review or file entry is loaded
             if (Number.isNaN(lineHeight) || Number.isNaN(scaleHeight)) {
@@ -159,14 +160,14 @@ define([
             self.scrollIndicatorRemoved.setHtml(self.highlightBlocks.map(function (b, i) {
                     return !b.removed ? '' : `<rect x="0" y="${i}" width="1" height="1" />`;
                 }).join(''))
-                .attr('transform', `scale(3,${scaleHeight * lineHeight})translate(0,${topOffset / lineHeight })`);
+                .attr('transform', `translate(1,0)scale(4,${lineScale})translate(0,${topOffset / lineHeight })`);
             self.scrollIndicatorAdded.setHtml(self.highlightBlocks.map(function (b, i) {
                     return !b.added ? '' : `<rect x="0" y="${i}" width="1" height="1" />`;
                 }).join(''))
-                .attr('transform', `translate(9,0)scale(3,${scaleHeight * lineHeight})translate(0,${topOffset / lineHeight})`);
+                .attr('transform', `translate(9,0)scale(4,${lineScale})translate(0,${topOffset / lineHeight})`);
             self.scrollIndicatorComments.setHtml(self.getActiveCommentRegions().map(function (r) {
                     return `<rect x="0" y="${r.lineStart * lineHeight * scaleHeight}"
-                        width="11" height="${(r.lineCount + 1) * lineHeight * scaleHeight}" />`;
+                        width="12" height="${(r.lineCount + 1) * lineHeight * scaleHeight}" />`;
                 }).join(''))
                 .attr('transform', `translate(0,${topOffset * scaleHeight})`);
         },

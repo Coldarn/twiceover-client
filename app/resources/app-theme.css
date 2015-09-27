@@ -461,6 +461,7 @@ comment > iterations {
     flex-direction: row;
 }
 comment button {
+    position: relative;
     padding: 0;
     color: #ccc;
     width: 30px;
@@ -473,11 +474,28 @@ comment button {
     font-family: 'Averia Sans Libre', sans-serif;
     font-style: italic;
 }
+comment > iterations > button:not(.selected):after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background: rgba(0,0,0,0.3);
+}
+comment > iterations > button,
+comment > iterations > button > img,
+comment button:after {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+comment > iterations > button:focus {
+    outline: none;
+}
 comment > iterations > *.selected {
-    background: #666;
-    border: 1px solid #bbb;
+    border: 1px solid #ddd;
     z-index: 1;
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 -1px 6px black;
 }
 
 

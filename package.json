@@ -13,7 +13,7 @@
     "url": "git+https://github.com/Coldarn/twiceover-client.git"
   },
   "dependencies": {
-    "electron-prebuilt": "^0.30.4"
+    "electron-prebuilt": "^0.33.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

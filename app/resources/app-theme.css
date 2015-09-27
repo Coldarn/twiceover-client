@@ -280,6 +280,7 @@ body {
 }
 .code-pane > pre {
     position: relative;
+    overflow: auto;
 }
 .code-pane > header {
 	flex: none;
@@ -331,7 +332,6 @@ code.code-block {
     padding: 10px;
     line-height: 1.35em;
     background: transparent;
-    overflow: auto;
     padding-bottom: 100px;
 }
 

@@ -505,6 +505,7 @@ comment > iterations > *.selected {
     flex: 1;
     flex-direction: column;
     padding: 0 10px 0 10px;
+    overflow: auto;
 }
 .review-status-body {
     display: flex;

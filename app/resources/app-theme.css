@@ -110,8 +110,9 @@ body {
     color: #ddd;
     font-weight: 400;
     font-size: 14px;
-    margin-right: -5px;
     z-index: 2;
+    overflow-x: visible;
+    position: relative;
 }
 .file-pane > footer,
 .file-pane > content > .filler,
@@ -127,10 +128,26 @@ body {
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    margin-right: -6px;
+}
+.file-pane > content::-webkit-scrollbar-thumb {
+    background: #444;
+}
+.file-pane > content::-webkit-scrollbar {
+    width: 5px;
+}
+.file-pane > content:after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    right: -6px;
+    top: 0;
+    bottom: 21px;
+    cursor: col-resize;
+    /*background: rgba(255, 255, 255, 0.3);*/
 }
 .file-pane footer {
     display: flex;
-    padding-right: 5px;
 }
 .file-pane footer > button {
     flex: 1 1 auto;

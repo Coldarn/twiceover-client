@@ -8,11 +8,25 @@ define([
 ], function (Util, EventBus, ElementProxy, Component, App, CommentLocation) {
     'use strict';
 
+    const SCROLLBAR_RULES = [
+        `.file-pane > content::after { right: 5px; }`,
+        `.file-pane > content { border-right-width: 5px; border-right-style: solid; border-right-color: transparent; }`
+    ];
+    const DRAG_HANDLE_WIDTH = 7;
+
     var self = {
         __proto__: Component.prototype,
 
+        scrollbarVisible: false,
+        resizeDrag: false,
+
         initComponent: function () {
-            self.listEl = self.el.querySelector('content');
+            self.listEl = self.query('content')
+                .on('mousedown', self.handleResizeStart);
+
+            window.addEventListener('mousemove', self.handleResizeMove);
+            window.addEventListener('mouseup', self.handleResizeEnd);
+
             self.queryAll('footer > button').on('mousedown', function () {
                 App.setDiffMode(this.innerText);
             });
@@ -26,15 +40,16 @@ define([
                         ${self.buildEntryHtml(path)}
                     </li>`;
                 }).join('');
-            self.listEl.innerHTML = `<ul class="file-list">
+            self.listEl.setHtml(`<ul class="file-list">
                 <li class="file-entry title" title="${App.review.title}">${App.review.title}</li>
                 ${fileHtml}
-            </ul><div class="filler"> </div>`;
+            </ul><div class="filler"> </div>`);
 
             self.queryAll('.file-entry').on('click', function () {
                 App.setActiveEntry(this.classList.contains('title') ? null : this.dataset.path);
             });
             self.attachLinkHandlers();
+            self.handleWindowResize();
         },
 
         buildEntryHtml: function (path) {
@@ -116,6 +131,47 @@ define([
             self.queryAll('footer > button').forEach(function (el) {
                 el.classList.toggle('selected', el.dataset.diffmode === diffMode);
             });
+        },
+
+        // Unfortunately, CSS doesn't allow us to position our scrollbar specially, so we have to do it manually.
+        // This method tracks if the file list has a visible scrollbar so we can apply some style tweaks.
+        handleWindowResize: function () {
+            if (self.scrollbarVisible !== self.listEl[0].scrollHeight > self.listEl[0].offsetHeight) {
+                self.scrollbarVisible = self.listEl[0].scrollHeight > self.listEl[0].offsetHeight;
+
+                const sheet = document.styleSheets[document.styleSheets.length - 1];
+                if (self.scrollbarVisible) {
+                    self.scrollbarRuleIndex = sheet.cssRules.length;
+                    SCROLLBAR_RULES.forEach(function (rule) {
+                        sheet.insertRule(rule, sheet.rules.length);
+                    });
+                } else {
+                    SCROLLBAR_RULES.forEach(function (rule) {
+                        const index = Array.prototype.findIndex.call(sheet.rules, function (r) {
+                            return r.cssText === rule;
+                        });
+                        sheet.deleteRule(index);
+                    });
+                }
+            }
+        },
+
+        handleResizeStart: function (e) {
+            const bounds = self.listEl[0].getBoundingClientRect();
+            const x = e.x + (self.scrollbarVisible ? 11 : 0);
+            if (x >= bounds.width - DRAG_HANDLE_WIDTH && x < bounds.width) {
+                self.resizeDrag = true;
+            }
+        },
+
+        handleResizeMove: function (e) {
+            if (self.resizeDrag) {
+                self.el.style.width = self.el.getBoundingClientRect().width + e.movementX + 'px';
+            }
+        },
+
+        handleResizeEnd: function (e) {
+            self.resizeDrag = false;
         }
     };
 
@@ -126,6 +182,8 @@ define([
     EventBus.on('review_comment_removed', self.handleCommentAddedOrRemoved, self);
     EventBus.on('review_comment_edited', self.handleCommentAddedOrRemoved, self);
     EventBus.on('diff_mode_changed', self.handleDiffModeChanged, self);
+
+    window.addEventListener('resize', self.handleWindowResize);
 
     self.setEl(document.querySelector('.file-pane'));
 

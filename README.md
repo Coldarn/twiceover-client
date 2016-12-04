@@ -7,9 +7,11 @@ Corporate development shops not willing or able to use version control systems l
 ## Background
 For those who have developed code at Microsoft in recent years and experienced the wonder that is their internal tool CodeFlow, Twice-Over's design will seem familiar. For all others, come and experience the joy of iterative code review!
 
-## In-Progress Screenshots
+## Screenshots
 
-![Review Main Area](media/review-main.png)
+![(01) Review dashboard](media/(01) Review dashboard.png)
+Starting point when launching the app.
+
 ![New Review](media/new-review.png)
 
 ## Status

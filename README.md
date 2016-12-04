@@ -9,10 +9,46 @@ For those who have developed code at Microsoft in recent years and experienced t
 
 ## Screenshots
 
-![(01) Review dashboard](media/(01) Review dashboard.png)
+![Review dashboard](media/(01) Review dashboard.png)
 Starting point when launching the app.
 
-![New Review](media/new-review.png)
+
+![Create new review and add reviewers with pluggable auto-complete](media/(02) Create new review and add reviewers with pluggable auto-complete.png)
+Create a new review and add reviewers with a pluggable auto-completion subsystem.
+
+
+![Line diff](media/(03) Line diff.png)
+Line-based diff view. Several diff modes and are available via buttons in the bottom-left corner.
+
+
+![Character diff](media/(04) Character diff.png)
+Character-based diff view. Choose which view mode you want based on the type of changes in the active file.
+
+
+![Add comment to any line](media/(05) Add comment to any line.png)
+Select one or more lines to add comments.
+
+
+![Edit code inline when adding comments](media/(06) Edit code inline when adding comments.png)
+Add comments to one or more lines and edit the code directly! This cool feature allows you to provide suggested changes directly inline with consistent code formatting and spacing.
+
+
+![Comments can have discussion threads](media/(07) Comments can have discussion threads.png)
+Comments can have discussion threads and multiple iterations. You can add text-based comments alongside code-based comments.
+
+
+![Review original code in comment view](media/(08) Review original code in comment view.png)
+You can also review the originally-authored code easily while in comment view.
+
+
+![Add Iterations](media/(09) Add Iterations.png)
+Once you make changes to your code based on the comments, publish a new iteration and show it off!
+
+
+![View overall reviewer status and mark complete](media/(10) View overall reviewer status and mark complete.png)
+At any time, check out reviewer status and abandon or mark the code review complete.
+
+
 
 ## Status
 

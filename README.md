@@ -1,8 +1,10 @@
 # Twice-Over
-An iterative code review tool supporting cross-iteration diffing and change commenting with syntax highlighting. Built to support Windows environments using TFS and Visual Studio.
+An iterative code review tool supporting cross-iteration diffing and change commenting with syntax highlighting. Current implementation supports Windows environments using TFS and Visual Studio.
 
 ## Why another code review tool?
-Corporate development shops not willing or able to use version control systems like git or mercurial are stuck in the dark ages when it comes to code reviews. Twice-Over aims to fix this.
+Corporate development shops not willing or able to use version control systems like git or mercurial with products like GitHub are stuck in the dark ages when it comes to code reviews.
+
+Twice-Over aims to fix this. It is decoupled from the version control system allowing more flexible usage. The current version ships with TFS integration, but Twice-Over's design does not require any specific version control system.
 
 ## Background
 For those who have developed code at Microsoft in recent years and experienced the wonder that is their internal tool CodeFlow, Twice-Over's design will seem familiar. For all others, come and experience the joy of iterative code review!
@@ -51,10 +53,10 @@ At any time, check out reviewer status and abandon or mark the code review compl
 
 
 ## Status
-
 Twice-Over is in alpha currently. Here is the current development outline for the project:
+
 ### twiceover-client
-nw.js-based thick client to support code review creation from changes on the local system.
+[Electron](http://electron.atom.io/)-based thick client to support code review creation from changes on the local system.
 
 **Done:**
 - TFS integration via subprocess calls to tf.exe, requires Visual Studio 2010+ on the system
